@@ -19,6 +19,10 @@ export async function connectDB() {
     }
   }
 
+  if (process.env.VERCEL) {
+    throw new Error("[db] No MongoDB reachable — check Atlas Network Access includes 0.0.0.0/0 for Vercel");
+  }
+
   console.warn("[db] MongoDB unavailable, starting in-memory MongoDB (dev fallback)...");
   memServer = await MongoMemoryServer.create();
   await mongoose.connect(memServer.getUri("golz"));
