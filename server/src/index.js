@@ -1,0 +1,136 @@
+import "dotenv/config";
+import express from "express";
+import helmet from "helmet";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import path from "path";
+import fs from "fs";
+import cron from "node-cron";
+import { fileURLToPath } from "url";
+
+import { connectDB } from "./config/db.js";
+import { requireAuth, requireAdmin } from "./middleware/auth.js";
+import { upload, UPLOAD_DIR } from "./middleware/upload.js";
+import { seedIfEmpty } from "./seed.js";
+
+import publicRoutes from "./routes/public.js";
+import adminAuthRoutes from "./routes/admin/auth.js";
+import adminServiceRoutes from "./routes/admin/services.js";
+import adminBlogRoutes from "./routes/admin/blogs.js";
+import adminGalleryRoutes from "./routes/admin/gallery.js";
+import adminTestimonialRoutes from "./routes/admin/testimonials.js";
+import adminMessageRoutes from "./routes/admin/messages.js";
+import adminSettingRoutes from "./routes/admin/settings.js";
+import adminDashboardRoutes from "./routes/admin/dashboard.js";
+import adminMediaRoutes from "./routes/admin/media.js";
+import Blog from "./models/Blog.js";
+import Service from "./models/Service.js";
+import Setting from "./models/Setting.js";
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const app = express();
+
+app.set("trust proxy", 1);
+app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false }));
+app.use(cors({ origin: process.env.CLIENT_ORIGIN || "http://localhost:5173", credentials: true }));
+app.use(express.json({ limit: "5mb" }));
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+
+app.use("/uploads", express.static(UPLOAD_DIR, { maxAge: "30d" }));
+
+// ---------- Routes ----------
+app.use("/api/public", publicRoutes);
+app.use("/api/auth", adminAuthRoutes);
+
+const adminGuard = [requireAuth, requireAdmin];
+const fileUpload = upload.single("file");
+app.use("/api/admin/dashboard", ...adminGuard, adminDashboardRoutes);
+app.use("/api/admin/services", ...adminGuard, fileUpload, adminServiceRoutes);
+app.use("/api/admin/blogs", ...adminGuard, adminBlogRoutes);
+app.use("/api/admin/gallery", ...adminGuard, fileUpload, adminGalleryRoutes);
+app.use("/api/admin/testimonials", ...adminGuard, fileUpload, adminTestimonialRoutes);
+app.use("/api/admin/messages", ...adminGuard, adminMessageRoutes);
+app.use("/api/admin/settings", ...adminGuard, adminSettingRoutes);
+app.use("/api/admin/media", ...adminGuard, fileUpload, adminMediaRoutes);
+
+// Generic file upload (used by admin editors for covers, avatars, inline images)
+app.post("/api/admin/upload", ...adminGuard, upload.single("file"), async (req, res) => {
+  try {
+    if (!req.file) return res.status(400).json({ message: "No file uploaded" });
+    const { processUpload } = await import("./middleware/upload.js");
+    const { url, thumb } = await processUpload(req.file, "golz/misc");
+    res.json({ url, thumb });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+});
+
+// ---------- SEO endpoints ----------
+app.get("/robots.txt", async (_req, res) => {
+  const seo = (await Setting.findOne({ key: "seo" }))?.value || {};
+  const site = process.env.SITE_URL || "https://www.golznutrition.in";
+  res.type("text/plain").send(
+    `User-agent: *\nAllow: /\nDisallow: /admin\n\nSitemap: ${site}/sitemap.xml\n` +
+      (seo.robotsText ? `\n${seo.robotsText}` : "")
+  );
+});
+
+app.get("/sitemap.xml", async (_req, res) => {
+  const site = process.env.SITE_URL || "https://www.golznutrition.in";
+  const [services, blogs] = await Promise.all([
+    Service.find({ published: true }),
+    Blog.find({ published: true }),
+  ]);
+  const staticPages = ["", "about", "services", "gallery", "blog", "contact", "privacy-policy", "terms"];
+  const urls = [
+    ...staticPages.map((p) => `<url><loc>${site}/${p}</loc><changefreq>weekly</changefreq></url>`),
+    ...services.map((s) => `<url><loc>${site}/services/${s.slug}</loc></url>`),
+    ...blogs.map((b) => `<url><loc>${site}/blog/${b.slug}</loc></url>`),
+  ];
+  res.type("application/xml").send(
+    `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join("\n")}\n</urlset>`
+  );
+});
+
+// ---------- Scheduled blog publishing ----------
+cron.schedule("* * * * *", async () => {
+  try {
+    const due = await Blog.find({ published: false, scheduledAt: { $ne: null, $lte: new Date() } });
+    for (const b of due) {
+      b.published = true;
+      b.publishedAt = b.publishedAt || new Date();
+      await b.save();
+      console.log(`[cron] published scheduled blog: ${b.title}`);
+    }
+  } catch (err) {
+    console.error("[cron] error:", err.message);
+  }
+});
+
+// ---------- Production static hosting ----------
+const clientDist = path.join(__dirname, "..", "..", "client", "dist");
+if (fs.existsSync(clientDist)) {
+  app.use(express.static(clientDist, { maxAge: "1h", index: false }));
+  app.get(/^\/(?!api|uploads).*/, (_req, res) => res.sendFile(path.join(clientDist, "index.html")));
+}
+
+app.get("/api/health", (_req, res) => res.json({ ok: true, time: new Date().toISOString() }));
+
+app.use("/api", (_req, res) => res.status(404).json({ message: "API endpoint not found" }));
+app.use((err, _req, res, _next) => {
+  console.error("[error]", err.message);
+  res.status(err.status || 500).json({ message: err.message || "Internal server error" });
+});
+
+const PORT = process.env.PORT || 5000;
+
+connectDB()
+  .then(async () => {
+    await seedIfEmpty();
+    app.listen(PORT, () => console.log(`[server] GOLZ API running on http://localhost:${PORT}`));
+  })
+  .catch((err) => {
+    console.error("[server] failed to start:", err);
+    process.exit(1);
+  });

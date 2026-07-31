@@ -1,0 +1,217 @@
+import { useEffect, useRef, useState } from "react";
+import { Upload, Trash2, Star, Eye, EyeOff, Pencil, CheckSquare, Square, Filter } from "lucide-react";
+import api from "../api/client";
+import SEO from "../components/SEO";
+import PageLoader from "../components/PageLoader";
+import { Modal, ConfirmDialog, Toast, Field, Toggle, EmptyState } from "./AdminUI";
+import { formatDate } from "../utils/helpers";
+
+export default function GalleryAdmin() {
+  const [items, setItems] = useState(null);
+  const [categories, setCategories] = useState(["General"]);
+  const [filter, setFilter] = useState("All");
+  const [selected, setSelected] = useState([]);
+  const [editing, setEditing] = useState(null);
+  const [deleting, setDeleting] = useState(null);
+  const [bulkDelete, setBulkDelete] = useState(false);
+  const [toast, setToast] = useState(null);
+  const [dragIndex, setDragIndex] = useState(null);
+  const [uploading, setUploading] = useState(0);
+  const fileRef = useRef(null);
+
+  const load = () => api.get("/admin/gallery").then(({ data }) => { setItems(data); setSelected([]); });
+  useEffect(() => {
+    load();
+    api.get("/admin/gallery/categories").then(({ data }) => setCategories([...data]));
+  }, []);
+
+  useEffect(() => {
+    if (!editing) return;
+    const t = setTimeout(async () => {
+      await api.put(`/admin/gallery/${editing._id}`, editing).catch(() => {});
+      load();
+    }, 700);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editing]);
+
+  const showToast = (message, type = "success") => { setToast({ message, type }); setTimeout(() => setToast(null), 3000); };
+
+  const uploadFiles = async (files) => {
+    setUploading(files.length);
+    for (const file of files) {
+      const form = new FormData();
+      form.append("file", file);
+      form.append("category", "General");
+      try {
+        await api.post("/admin/gallery/upload", form);
+      } catch { /* skip failed file */ }
+      setUploading((u) => u - 1);
+    }
+    showToast("Upload complete");
+    load();
+    api.get("/admin/gallery/categories").then(({ data }) => setCategories([...data]));
+  };
+
+  const toggle = async (item, field) => {
+    await api.put(`/admin/gallery/${item._id}`, { [field]: !item[field] });
+    load();
+  };
+
+  const reorder = async (next) => {
+    setItems(next);
+    await api.post("/admin/gallery/reorder", { ids: next.map((g) => g._id) });
+  };
+
+  const visible = (items || []).filter((g) => filter === "All" || g.category === filter);
+
+  return (
+    <>
+      <SEO title="Gallery & Media" />
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
+        <div className="flex flex-wrap items-center gap-2">
+          <Filter size={16} className="text-charcoal/40" />
+          {["All", ...categories].map((c) => (
+            <button key={c} onClick={() => setFilter(c)} className={`chip ${filter === c ? "chip-active" : ""}`}>{c}</button>
+          ))}
+        </div>
+        <div className="flex items-center gap-3">
+          {selected.length > 0 && (
+            <button onClick={() => setBulkDelete(true)} className="btn-primary !bg-red-500 !px-5 !py-2.5 !text-sm hover:!bg-red-600">
+              <Trash2 size={15} /> Delete ({selected.length})
+            </button>
+          )}
+          <button onClick={() => fileRef.current?.click()} disabled={uploading > 0} className="btn-primary !px-5 !py-2.5 !text-sm disabled:opacity-60">
+            <Upload size={16} /> {uploading > 0 ? `Uploading ${uploading}…` : "Upload Images / Videos"}
+          </button>
+          <input ref={fileRef} type="file" multiple accept="image/*,video/*" className="hidden"
+            onChange={(e) => { const files = Array.from(e.target.files || []); if (files.length) uploadFiles(files); e.target.value = ""; }} />
+        </div>
+      </div>
+
+      {!items ? (
+        <PageLoader />
+      ) : visible.length === 0 ? (
+        <EmptyState text="No media in this category. Upload images or videos to get started." />
+      ) : (
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+          {visible.map((g, i) => (
+            <div
+              key={g._id}
+              draggable={!selected.length}
+              onDragStart={() => setDragIndex(i)}
+              onDragOver={(e) => e.preventDefault()}
+              onDrop={() => {
+                if (dragIndex === null || dragIndex === i) return;
+                const next = [...visible];
+                const [moved] = next.splice(dragIndex, 1);
+                next.splice(i, 0, moved);
+                reorder(next.map((x) => x));
+                setDragIndex(null);
+              }}
+              className={`group relative overflow-hidden rounded-2xl shadow-card ${dragIndex === i ? "opacity-50 ring-2 ring-primary" : ""} ${selected.includes(g._id) ? "ring-2 ring-primary" : ""}`}
+            >
+              {g.type === "video" ? (
+                <video src={g.url} muted className="aspect-square w-full object-cover" />
+              ) : (
+                <img src={g.url} alt={g.alt} className="aspect-square w-full object-cover" loading="lazy" />
+              )}
+              <span className="absolute left-2 top-2 rounded-md bg-charcoal/70 px-2 py-0.5 text-[10px] font-semibold text-white">{g.category}</span>
+              <button
+                onClick={() => setSelected((s) => (s.includes(g._id) ? s.filter((x) => x !== g._id) : [...s, g._id]))}
+                className="absolute right-2 top-2 rounded-md bg-white/90 p-1.5 text-charcoal shadow transition hover:bg-primary hover:text-white"
+                aria-label="Select"
+              >
+                {selected.includes(g._id) ? <CheckSquare size={14} className="text-primary" /> : <Square size={14} />}
+              </button>
+              <div className="absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-charcoal/85 to-transparent p-2.5 opacity-0 transition group-hover:opacity-100">
+                <div className="flex gap-1">
+                  <button onClick={() => toggle(g, "featured")} className="rounded-lg bg-white/15 p-1.5 text-white hover:bg-gold" title="Feature" aria-label="Toggle featured">
+                    <Star size={13} className={g.featured ? "fill-gold text-gold" : ""} />
+                  </button>
+                  <button onClick={() => toggle(g, "published")} className="rounded-lg bg-white/15 p-1.5 text-white hover:bg-primary" title="Show/hide" aria-label="Toggle publish">
+                    {g.published ? <Eye size={13} /> : <EyeOff size={13} />}
+                  </button>
+                  <button onClick={() => setEditing({ ...g })} className="rounded-lg bg-white/15 p-1.5 text-white hover:bg-primary" title="Edit details" aria-label="Edit details">
+                    <Pencil size={13} />
+                  </button>
+                  <button onClick={() => setDeleting(g)} className="rounded-lg bg-white/15 p-1.5 text-white hover:bg-red-500" title="Delete" aria-label="Delete item">
+                    <Trash2 size={13} />
+                  </button>
+                </div>
+              </div>
+              <div className="absolute left-2 top-7 max-w-[90%]">
+                {g.featured && <span className="rounded-md bg-gold px-2 py-0.5 text-[10px] font-bold text-white">★ Featured</span>}
+              </div>
+              {!g.published && <span className="absolute inset-0 bg-charcoal/55" />}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {items && items.length > 0 && (
+        <p className="mt-4 text-center text-xs text-charcoal/40">Tip: drag tiles to reorder • {items.length} total items • Hover a tile for actions</p>
+      )}
+
+      {/* Edit modal */}
+      <Modal open={!!editing} onClose={() => setEditing(null)} title="Edit media details">
+        {editing && (
+          <div className="space-y-5">
+            <div className="flex gap-4">
+              {editing.type === "video"
+                ? <video src={editing.url} controls className="h-32 w-48 shrink-0 rounded-xl object-cover" />
+                : <img src={editing.url} alt="" className="h-32 w-48 shrink-0 rounded-xl object-cover" />}
+              <div className="flex-1 space-y-4">
+                <Field label="Category">
+                  <input className="input" list="cat-list" value={editing.category} onChange={(e) => setEditing({ ...editing, category: e.target.value })} />
+                  <datalist id="cat-list">{categories.map((c) => <option key={c} value={c} />)}</datalist>
+                </Field>
+                <div className="flex gap-6">
+                  <label className="flex items-center gap-2.5 text-sm font-medium text-charcoal/75">
+                    <Toggle checked={editing.published} onChange={(published) => setEditing({ ...editing, published })} label="Published" /> Published
+                  </label>
+                  <label className="flex items-center gap-2.5 text-sm font-medium text-charcoal/75">
+                    <Toggle checked={editing.featured} onChange={(featured) => setEditing({ ...editing, featured })} label="Featured" /> Featured
+                  </label>
+                </div>
+              </div>
+            </div>
+            <Field label="Caption">
+              <input className="input" value={editing.caption} onChange={(e) => setEditing({ ...editing, caption: e.target.value })} />
+            </Field>
+            <Field label="SEO alt text">
+              <input className="input" value={editing.alt} onChange={(e) => setEditing({ ...editing, alt: e.target.value })} />
+            </Field>
+            <p className="text-xs text-charcoal/40">Uploaded {formatDate(editing.createdAt)} — changes save automatically.</p>
+          </div>
+        )}
+      </Modal>
+
+      <ConfirmDialog
+        open={!!deleting}
+        onClose={() => setDeleting(null)}
+        title="Delete this item?"
+        text="It will be removed from the public gallery immediately."
+        onConfirm={async () => {
+          await api.delete(`/admin/gallery/${deleting._id}`);
+          setDeleting(null);
+          load();
+          showToast("Item deleted");
+        }}
+      />
+      <ConfirmDialog
+        open={bulkDelete}
+        onClose={() => setBulkDelete(false)}
+        title={`Delete ${selected.length} items?`}
+        text="All selected media will be removed permanently."
+        onConfirm={async () => {
+          await api.post("/admin/gallery/bulk-delete", { ids: selected });
+          setBulkDelete(false);
+          load();
+          showToast(`${selected.length} items deleted`);
+        }}
+      />
+      <Toast message={toast?.message} type={toast?.type} onClose={() => setToast(null)} />
+    </>
+  );
+}
