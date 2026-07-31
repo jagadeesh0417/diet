@@ -2,6 +2,7 @@
   "name": "nutrix",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "description": "Premium nutrition consultation website — React (Vite) + Express + MongoDB",
   "workspaces": [
     "server",
