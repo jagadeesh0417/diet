@@ -33,6 +33,8 @@ const app = express();
 app.set("trust proxy", 1);
 app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false }));
 app.use(cors({ origin: process.env.CLIENT_ORIGIN || "http://localhost:5173", credentials: true }));
+// On Vercel the body is already parsed for JSON payloads — skip re-parsing.
+app.use((req, _res, next) => { if (req.body) req._body = true; next(); });
 app.use(express.json({ limit: "5mb" }));
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -125,12 +127,20 @@ app.use((err, _req, res, _next) => {
 
 const PORT = process.env.PORT || 5000;
 
-connectDB()
-  .then(async () => {
-    await seedIfEmpty();
-    app.listen(PORT, () => console.log(`[server] GOLZ API running on http://localhost:${PORT}`));
-  })
-  .catch((err) => {
-    console.error("[server] failed to start:", err);
-    process.exit(1);
-  });
+export async function bootstrap() {
+  await connectDB();
+  await seedIfEmpty();
+}
+
+export { app };
+
+const isDirectRun = process.argv[1]?.replace(/\\/g, "/").endsWith("src/index.js") || process.argv[1]?.replace(/\\/g, "/").endsWith("/index.js");
+
+if (isDirectRun) {
+  bootstrap()
+    .then(() => app.listen(PORT, () => console.log(`[server] GOLZ API running on http://localhost:${PORT}`)))
+    .catch((err) => {
+      console.error("[server] failed to start:", err);
+      process.exit(1);
+    });
+}

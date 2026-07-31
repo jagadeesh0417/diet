@@ -1,11 +1,15 @@
 import multer from "multer";
 import path from "path";
 import fs from "fs";
+import os from "os";
 import { fileURLToPath } from "url";
 import { uploadToCloudinary, isCloudinaryConfigured } from "../config/cloudinary.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-export const UPLOAD_DIR = path.join(__dirname, "..", "..", "uploads");
+// Serverless (Vercel) filesystems are read-only/ephemeral — write to /tmp instead.
+export const UPLOAD_DIR = process.env.VERCEL
+  ? path.join(os.tmpdir(), "uploads")
+  : path.join(__dirname, "..", "..", "uploads");
 
 if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
 
