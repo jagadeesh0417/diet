@@ -1,4 +1,4 @@
-﻿import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
+﻿import { memo, useCallback, useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import { motion, useMotionValue, useSpring, animate, useReducedMotion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Reveal from "./Reveal";
@@ -100,9 +100,10 @@ function TestimonialsSection({ items = [] }) {
   const [dragging, setDragging] = useState(false);
   const [visible, setVisible] = useState(true);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const el = viewportRef.current;
     if (!el) return;
+    setWidth(el.getBoundingClientRect().width);
     const ro = new ResizeObserver(([entry]) => setWidth(entry.contentRect.width));
     ro.observe(el);
     return () => ro.disconnect();
@@ -245,28 +246,30 @@ function TestimonialsSection({ items = [] }) {
               onFocus={() => setPaused(true)}
               onBlur={() => setPaused(false)}
             >
-              <motion.div
-                className="flex cursor-grab active:cursor-grabbing"
-                style={{ x, touchAction: "pan-y" }}
-                drag="x"
-                dragConstraints={{ left: -(maxPos * step + 160), right: 160 }}
-                dragElastic={0.1}
-                dragMomentum={false}
-                onDragStart={() => setDragging(true)}
-                onDragEnd={handleDragEnd}
-              >
-                {track.map((t, i) => (
-                  <div
-                    key={i}
-                    className="h-auto shrink-0"
-                    style={{ width: step, paddingRight: i === track.length - 1 ? 0 : GAP }}
-                  >
-                    <TiltCard>
-                      <TestimonialCard item={t} />
-                    </TiltCard>
-                  </div>
-                ))}
-              </motion.div>
+              {width > 0 && (
+                <motion.div
+                  className="flex cursor-grab active:cursor-grabbing"
+                  style={{ x, touchAction: "pan-y" }}
+                  drag="x"
+                  dragConstraints={{ left: -(maxPos * step + 160), right: 160 }}
+                  dragElastic={0.1}
+                  dragMomentum={false}
+                  onDragStart={() => setDragging(true)}
+                  onDragEnd={handleDragEnd}
+                >
+                  {track.map((t, i) => (
+                    <div
+                      key={i}
+                      className="h-auto shrink-0"
+                      style={{ width: step, paddingRight: i === track.length - 1 ? 0 : GAP }}
+                    >
+                      <TiltCard>
+                        <TestimonialCard item={t} />
+                      </TiltCard>
+                    </div>
+                  ))}
+                </motion.div>
+              )}
 
               <button onClick={prev} aria-label="Previous testimonials" className={`${arrowBase} absolute left-0 top-1/2 z-10 hidden -translate-y-1/2 p-3 sm:flex`}>
                 <ChevronLeft size={22} />
