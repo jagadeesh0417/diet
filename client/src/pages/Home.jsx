@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import {
   ArrowRight, CalendarCheck, ShieldCheck, ClipboardList, MonitorSmartphone, FlaskConical,
-  Star, ArrowUpRight, BadgeCheck, Camera, Apple, Zap, Compass, HeartPulse, Check,
+  Star, ArrowUpRight, BadgeCheck, Camera, Check,
 } from "lucide-react";
 import { useSite } from "../context/SiteContext";
 import SEO from "../components/SEO";
@@ -148,20 +148,6 @@ export default function Home() {
                       <p className="text-muted">Nutritionist photo — manage from admin panel</p>
                     </div>
                   )}
-
-                <div className="absolute -right-14 top-1/2 hidden -translate-y-1/2 flex-col gap-3 xl:flex">
-                  {[
-                    { icon: Apple, label: "Nourish Your Body" },
-                    { icon: Zap, label: "Fuel Every Day" },
-                    { icon: Compass, label: "Plan with Purpose" },
-                    { icon: HeartPulse, label: "Thrive Every Day" },
-                  ].map(({ icon: Icon, label }) => (
-                    <div key={label} className="flex items-center gap-2 rounded-full bg-white px-4 py-2.5 shadow-card ring-1 ring-ink/5">
-                      <Icon size={15} className="text-olive" />
-                      <span className="text-xs font-semibold text-ink">{label}</span>
-                    </div>
-                  ))}
-                </div>
                 </motion.div>
               </motion.div>
             </motion.div>
