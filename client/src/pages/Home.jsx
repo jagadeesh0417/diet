@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import {
   ArrowRight, CalendarCheck, ShieldCheck, ClipboardList, MonitorSmartphone, FlaskConical,
-  Star, ArrowUpRight, BadgeCheck, Camera, Apple, Zap, Compass, HeartPulse, CheckCircle2, PieChart, Flame, TrendingUp, Check,
+  Star, ArrowUpRight, BadgeCheck, Camera, Apple, Zap, Compass, HeartPulse, Check,
 } from "lucide-react";
 import { useSite } from "../context/SiteContext";
 import SEO from "../components/SEO";
@@ -131,78 +131,23 @@ export default function Home() {
             >
               <motion.div style={{ y: parallaxY }} className="relative">
                 <div className="absolute -inset-5 rounded-[32px] bg-gradient-to-br from-olive/15 via-beige to-terracotta/15 blur-2xl" aria-hidden="true" />
-                {h.heroPortrait ? (
-                  <img
-                    src={h.heroPortrait}
-                    alt="Nutritionist preparing a healthy salad"
-                    className="relative aspect-[4/5] w-full rounded-[24px] object-cover shadow-lift"
-                    loading="lazy"
-                  />
-                ) : (
-                  <div className="flex aspect-[4/5] w-full items-center justify-center rounded-[24px] border-2 border-dashed border-ink/20">
-                    <p className="text-muted">Nutritionist photo — manage from admin panel</p>
-                  </div>
-                )}
-
                 <motion.div
                   animate={{ y: [0, -10, 0] }}
                   transition={{ repeat: Infinity, duration: 5 }}
-                  className="float-card absolute -left-12 top-8 hidden w-44 p-4 lg:block"
+                  className="relative"
                 >
-                  <p className="mb-2 flex items-center gap-1.5 text-xs font-bold text-ink"><PieChart size={13} className="text-terracotta" /> Macro Balance</p>
-                  <div className="flex items-center gap-3">
-                    <svg viewBox="0 0 100 100" className="h-16 w-16 -rotate-90">
-                      <circle cx="50" cy="50" r="34" fill="none" stroke="#EFE9E0" strokeWidth="11" />
-                      <circle cx="50" cy="50" r="34" fill="none" stroke="#6E8B5C" strokeWidth="11" strokeDasharray="85.4 213.6" />
-                      <circle cx="50" cy="50" r="34" fill="none" stroke="#C97858" strokeWidth="11" strokeDasharray="64.1 213.6" transform="rotate(144 50 50)" />
-                      <circle cx="50" cy="50" r="34" fill="none" stroke="#DFA63B" strokeWidth="11" strokeDasharray="64.1 213.6" transform="rotate(252 50 50)" />
-                    </svg>
-                    <div className="space-y-1 text-[10px] font-medium text-muted">
-                      <p className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-olive" />40% Carbs</p>
-                      <p className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-terracotta" />30% Protein</p>
-                      <p className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-honey" />30% Healthy Fats</p>
+                  {h.heroPortrait ? (
+                    <img
+                      src={h.heroPortrait}
+                      alt="Nutritionist preparing a healthy salad"
+                      className="aspect-[4/5] w-full rounded-[24px] object-cover shadow-lift"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="flex aspect-[4/5] w-full items-center justify-center rounded-[24px] border-2 border-dashed border-ink/20">
+                      <p className="text-muted">Nutritionist photo — manage from admin panel</p>
                     </div>
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  animate={{ y: [0, 10, 0] }}
-                  transition={{ repeat: Infinity, duration: 6 }}
-                  className="float-card absolute -right-6 top-1/3 hidden items-center gap-3 px-5 py-4 lg:flex"
-                >
-                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-terracotta/10 text-terracotta"><Flame size={22} /></span>
-                  <div>
-                    <p className="font-heading text-xl font-bold text-ink">450</p>
-                    <p className="text-xs text-muted">Calories / meal</p>
-                  </div>
-                </motion.div>
-
-                <motion.div
-                  animate={{ y: [0, -8, 0] }}
-                  transition={{ repeat: Infinity, duration: 5.5, delay: 0.3 }}
-                  className="float-card absolute -left-10 bottom-28 hidden w-48 p-4 lg:block"
-                >
-                  <p className="mb-2 text-xs font-bold text-ink">Healthy Meal Checklist</p>
-                  <ul className="space-y-1.5">
-                    {["Balanced Meals", "Whole Foods", "Portion Control", "Healthy Habits"].map((c) => (
-                      <li key={c} className="flex items-center gap-1.5 text-[11px] font-medium text-muted">
-                        <CheckCircle2 size={13} className="text-olive" /> {c}
-                      </li>
-                    ))}
-                  </ul>
-                </motion.div>
-
-                <motion.div
-                  animate={{ y: [0, 8, 0] }}
-                  transition={{ repeat: Infinity, duration: 6, delay: 0.6 }}
-                  className="float-card absolute -right-4 bottom-8 hidden px-5 py-4 lg:block"
-                >
-                  <p className="mb-1 flex items-center gap-1.5 text-xs font-bold text-ink"><TrendingUp size={13} className="text-terracotta" /> Weekly Progress</p>
-                  <svg viewBox="0 0 120 40" className="h-10 w-28">
-                    <polyline points="0,32 18,28 36,30 54,22 72,24 90,14 108,10 120,6" fill="none" stroke="#6E8B5C" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                    <circle cx="120" cy="6" r="3" fill="#C97858" />
-                  </svg>
-                </motion.div>
+                  )}
 
                 <div className="absolute -right-14 top-1/2 hidden -translate-y-1/2 flex-col gap-3 xl:flex">
                   {[
@@ -217,6 +162,7 @@ export default function Home() {
                     </div>
                   ))}
                 </div>
+                </motion.div>
               </motion.div>
             </motion.div>
           </div>
