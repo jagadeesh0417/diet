@@ -299,7 +299,58 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ================= WHY CHOOSE US ================= */}
+      {/* ================= HOW IT WORKS ================= */}
+      <section className="bg-section-sage py-24 sm:py-32">
+        <div className="container-x">
+          <Reveal className="mx-auto max-w-[820px] text-center">
+            <span className="mb-6 inline-flex items-center rounded-full border border-primary/30 bg-white/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-primary">
+              Steps
+            </span>
+            <h2 className="font-heading text-4xl font-semibold leading-tight tracking-tight text-ink sm:text-5xl">
+              How It Works
+            </h2>
+            <p className="mx-auto mt-6 max-w-[700px] text-base leading-[1.8] text-muted sm:text-[17px]">
+              Precision nutrition, step by step — every plan is built on real data about your body and fine-tuned as you progress.
+            </p>
+          </Reveal>
+
+          <div className="mt-16 grid gap-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+            {[
+              {
+                no: "01",
+                title: "Book your appointment",
+                text: "Choose online or in-clinic. All consultations are by prior appointment — call or WhatsApp to reserve your slot.",
+              },
+              {
+                no: "02",
+                title: "Understand where you stand",
+                text: "We map your health, habits and goals with a scientific BCA (Body Composition Analysis), and medical checkups where needed, for a precise picture of your body.",
+              },
+              {
+                no: "03",
+                title: "Get a personalized plan for you",
+                text: "Receive a precision diet plan built specially for you with your preferred foods along with exercise schedules — calibrated to your body, goals and health needs to prevent, manage and reverse disorders.",
+              },
+              {
+                no: "04",
+                title: "Progress with regular follow-ups",
+                text: "We track your numbers at every follow-up and fine-tune your plan with precision as your body responds.",
+              },
+            ].map((step, i) => (
+              <Reveal key={step.no} delay={i * 0.08}>
+                <div className="relative h-full">
+                  <p className="font-heading text-6xl font-semibold leading-none text-primary/15 transition-colors duration-300 hover:text-primary/30">
+                    {step.no}
+                  </p>
+                  <span className="mt-5 block h-px w-12 bg-lime" />
+                  <h3 className="mt-4 font-heading text-xl font-semibold leading-snug text-ink">{step.title}</h3>
+                  <p className="mt-3 text-[15px] leading-[1.8] text-muted">{step.text}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
       <section className="py-24">
         <div className="container-x grid items-center gap-16 lg:grid-cols-2">
           <div>
