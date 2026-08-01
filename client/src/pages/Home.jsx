@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import {
   ArrowRight, CalendarCheck, ShieldCheck, ClipboardList, MonitorSmartphone, FlaskConical,
-  Star, ArrowUpRight, BadgeCheck, Camera, Check,
+  Star, ArrowUpRight, BadgeCheck, Camera, Check, MapPin, Clock, Phone,
 } from "lucide-react";
 import { useSite } from "../context/SiteContext";
 import SEO from "../components/SEO";
@@ -375,6 +375,67 @@ export default function Home() {
       <Suspense fallback={<section className="bg-primary py-24" aria-hidden="true" />}>
         <TestimonialsSection items={site.testimonials} />
       </Suspense>
+
+      {/* ================= LOCATION & CONTACT ================= */}
+      <section className="bg-section-sage py-24 sm:py-28">
+        <div className="container-x">
+          <SectionHeading
+            eyebrow="Location & Contact"
+            title="How to book appointment"
+          />
+          <div className="grid gap-8 lg:grid-cols-2">
+            <Reveal className="h-full">
+              <div className="flex h-full flex-col rounded-[24px] border border-[#ECECEC] bg-white p-8 shadow-soft sm:p-10">
+                <span className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                  <MapPin size={26} />
+                </span>
+                <h3 className="font-heading text-2xl font-semibold text-ink">Clinic Locations</h3>
+                <address className="mt-6 space-y-5 not-italic">
+                  {[
+                    "@Kshema Healthcare, #338, Bogadi main road, Bogadi, Mysuru, Karnataka 570026",
+                    "#1286, 15A Cross, Roopanagar, Mysuru",
+                  ].map((line, i) => (
+                    <p key={line} className="flex items-start gap-3.5 text-[15px] leading-[1.7] text-muted">
+                      <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">
+                        {i + 1}
+                      </span>
+                      {line}
+                    </p>
+                  ))}
+                </address>
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.1} className="h-full">
+              <div className="flex h-full flex-col rounded-[24px] border border-[#ECECEC] bg-white p-8 shadow-soft sm:p-10">
+                <span className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                  <Phone size={26} />
+                </span>
+                <h3 className="font-heading text-2xl font-semibold text-ink">Timings & Contact</h3>
+                <dl className="mt-6 space-y-5">
+                  <div className="flex items-center gap-3.5">
+                    <Clock size={20} className="shrink-0 text-primary" />
+                    <dt className="w-24 shrink-0 text-sm font-semibold text-ink">Timings</dt>
+                    <dd className="text-[15px] leading-[1.7] text-muted">10:30 am – 5:00 pm</dd>
+                  </div>
+                  <div className="flex items-center gap-3.5">
+                    <Phone size={20} className="shrink-0 text-primary" />
+                    <dt className="w-24 shrink-0 text-sm font-semibold text-ink">Contact</dt>
+                    <dd>
+                      <a
+                        href={`tel:${(site.general?.phone || "+91 934-267-4406").replace(/[^+\d]/g, "")}`}
+                        className="text-[15px] font-semibold text-primary underline-offset-4 transition hover:underline"
+                      >
+                        {site.general?.phone || "+91 934-267-4406"}
+                      </a>
+                    </dd>
+                  </div>
+                </dl>
+              </div>
+            </Reveal>
+          </div>
+        </div>
+      </section>
 
       <section className="py-24">
         <div className="container-x grid items-center gap-16 lg:grid-cols-2">
