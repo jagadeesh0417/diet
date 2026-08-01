@@ -51,6 +51,7 @@ import {
   Building2, Pill, Salad, ShieldCheck, Sparkles, Utensils, FlaskConical,
   Wallet, RefreshCcw, UserCheck, TrendingUp, Award, HeartHandshake,
   ClipboardCheck, Clock, Apple, Activity, Leaf, Star, Users, Stethoscope,
+  Scale, Brain, Accessibility, Cross, Dna, PersonStanding, Footprints,
 } from "lucide-react";
 
 const ICONS = {
@@ -58,6 +59,7 @@ const ICONS = {
   Building2, Pill, Salad, ShieldCheck, Sparkles, Utensils, FlaskConical,
   Wallet, RefreshCcw, UserCheck, TrendingUp, Award, HeartHandshake,
   ClipboardCheck, Clock, Apple, Activity, Leaf, Star, Users, Stethoscope,
+  Scale, Brain, Accessibility, Cross, Dna, PersonStanding, Footprints,
 };
 
 export const ICON_MAP = new Map(Object.entries(ICONS));

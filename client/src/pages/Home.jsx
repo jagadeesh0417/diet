@@ -9,7 +9,6 @@ import { useSite } from "../context/SiteContext";
 import SEO from "../components/SEO";
 import Reveal from "../components/Reveal";
 import SectionHeading from "../components/SectionHeading";
-import ServiceCard from "../components/ServiceCard";
 import BlogCard from "../components/BlogCard";
 import TestimonialSlider from "../components/TestimonialSlider";
 import { ICON_MAP } from "../utils/helpers";
@@ -315,24 +314,42 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ================= SERVICES PREVIEW ================= */}
-      <section className="bg-section-sage py-24">
+      {/* ================= SERVICES ================= */}
+      <section className="bg-white py-24 sm:py-32">
         <div className="container-x">
-          <SectionHeading
-            eyebrow="What We Offer"
-            title="Nutrition Programs For Every Goal"
-            subtitle="Science-backed programs designed around your health condition, lifestyle and food preferences."
-          />
-          <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-4">
-            {(site.services || []).slice(0, 8).map((s, i) => (
-              <Reveal key={s._id} delay={(i % 4) * 0.08}>
-                <ServiceCard service={s} />
-              </Reveal>
-            ))}
-          </div>
-          <Reveal className="mt-12 text-center">
-            <Link to="/services" className="btn-outline">View All Services <ArrowUpRight size={18} /></Link>
+          <Reveal className="mx-auto max-w-[900px] text-center">
+            <span className="mb-6 inline-flex items-center rounded-full border border-primary/30 bg-primary/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-primary">
+              Services
+            </span>
+            <h2 className="font-heading text-4xl font-semibold leading-tight tracking-tight text-ink sm:text-5xl">
+              Nutrition &amp; Care for Every Stage to Meet Your Goals &amp; Health Needs
+            </h2>
+            <p className="mx-auto mt-6 max-w-[820px] text-base leading-[1.8] text-muted sm:text-[17px]">
+              From weight management and diabetes care to pregnancy, children's nutrition, sports nutrition, oncology, and healthy aging, every nutrition plan is personalized to your body, goals, medical history, and food preferences.
+            </p>
           </Reveal>
+
+          <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            {(site.services || []).map((s, i) => {
+              const Icon = ICON_MAP.get(s.icon) || ICON_MAP.get("Sparkles");
+              return (
+                <Reveal key={s._id} delay={(i % 3) * 0.08} className="h-full">
+                  <Link
+                    to={`/services/${s.slug}`}
+                    className="group flex min-h-[280px] flex-col rounded-[24px] border border-[#ECECEC] bg-white p-8 transition-all duration-300 ease-out hover:-translate-y-2 hover:border-transparent hover:shadow-lift"
+                  >
+                    <span className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/5 text-primary transition-transform duration-300 ease-out group-hover:scale-110">
+                      {Icon && <Icon size={26} />}
+                    </span>
+                    <h3 className="font-heading text-2xl font-semibold leading-snug text-ink transition-colors group-hover:text-primary">
+                      {s.title}
+                    </h3>
+                    <p className="mt-3 text-[15px] leading-[1.8] text-muted">{s.shortDesc}</p>
+                  </Link>
+                </Reveal>
+              );
+            })}
+          </div>
         </div>
       </section>
 

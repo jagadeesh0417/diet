@@ -17,11 +17,11 @@ const img = (id) => `https://images.unsplash.com/${id}?auto=format&fit=crop&w=12
 const SERVICES = [
   {
     title: "Weight Management",
-    icon: "Flame",
+    icon: "Scale",
     image: img("photo-1512621776951-a57141f2eefd"),
     category: "metabolic",
     forWho: "Anyone wanting to lose or gain weight and keep it that way.",
-    shortDesc: "Lose or gain weight without stress or crash diets — and hold the result for life.",
+    shortDesc: "Lose or gain weight through sustainable nutrition, personalized meal planning, and healthy lifestyle changes without restrictive diets.",
     description:
       "Weight rarely changes for one reason — it's usually a mix of metabolism, hormones, sleep, stress and daily habits. Instead of a crash diet you'll abandon in three weeks, we find the real reasons behind your weight and build a balanced plan around the food you already eat, so the result actually lasts.",
     planCovers: [
@@ -35,11 +35,11 @@ const SERVICES = [
   },
   {
     title: "Prevent & Manage Diabetes",
-    icon: "Activity",
+    icon: "Stethoscope",
     image: img("photo-1490645935967-10de6ba17061"),
     category: "metabolic",
     forWho: "Prediabetes, Type 2 diabetes, or a family history of it.",
-    shortDesc: "Customized diet solutions to regularize blood sugar and manage prediabetes.",
+    shortDesc: "Evidence-based nutrition plans to regulate blood sugar, prevent complications, improve insulin sensitivity, and support long-term metabolic health.",
     description:
       "Practical, everyday food plans designed to regularise blood sugar — using normal Indian meals, not restrictive \"diet food.\" Your plan works alongside your medication, and over time many clients are able to reduce their medication and, in some cases, reverse Type 2 diabetes.",
     planCovers: [
@@ -53,11 +53,11 @@ const SERVICES = [
   },
   {
     title: "Thyroid & PCOS / Hormonal Health",
-    icon: "Flower2",
+    icon: "Brain",
     image: img("photo-1490474418585-ba9bad8fd0ea"),
     category: "metabolic",
     forWho: "Hypothyroid, hyperthyroid, PCOS or other hormonal imbalances.",
-    shortDesc: "Targeted nutrition to rebalance hormones, support thyroid function and manage PCOS/PCOD.",
+    shortDesc: "Targeted nutrition therapy to improve thyroid function, balance hormones, reduce PCOS symptoms, and support reproductive wellness.",
     description:
       "Targeted nutrition to rebalance hormones, support thyroid function and manage PCOS. Many first-time hypothyroid clients have returned to normal ranges with their plans, and PCOS support focuses on the insulin and weight factors that drive symptoms.",
     planCovers: [
@@ -70,12 +70,12 @@ const SERVICES = [
     price: 5999,
   },
   {
-    title: "Heart Ailments",
-    icon: "HeartPulse",
+    title: "Heart Health",
+    icon: "Heart",
     image: img("photo-1505576399279-565b52d4ac71"),
     category: "metabolic",
     forWho: "Cardiovascular disease, hypertension, high cholesterol, or stroke prevention.",
-    shortDesc: "Heart-friendly plans for cardiovascular disease, hypertension and stroke prevention.",
+    shortDesc: "Heart-friendly nutrition programs that support cholesterol management, blood pressure control, and cardiovascular wellness.",
     description:
       "Heart-friendly plans that manage cholesterol, blood pressure and weight through sustainable, everyday nutrition — not bland \"heart food,\" but meals your family can eat too.",
     planCovers: [
@@ -88,12 +88,12 @@ const SERVICES = [
     price: 5999,
   },
   {
-    title: "Nutrition for Pregnancy",
-    icon: "Baby",
+    title: "Pregnancy Nutrition",
+    icon: "PersonStanding",
     image: img("photo-1504674900247-0877df9cc836"),
     category: "family",
     forWho: "Expecting mothers, including those with gestational diabetes or thyroid issues.",
-    shortDesc: "Special plans that protect your health and your baby's growth — for a safe, healthy delivery.",
+    shortDesc: "Nutrition guidance before, during, and after pregnancy with customized meal plans supporting both mother and baby's health.",
     description:
       "Special plans that protect your health and your baby's growth, with dedicated support for gestational diabetes and thyroid concerns during pregnancy — for a safe, healthy delivery and a strong start to feeding.",
     planCovers: [
@@ -106,12 +106,12 @@ const SERVICES = [
     price: 6999,
   },
   {
-    title: "Nutrition for Women's Health",
-    icon: "Heart",
+    title: "Women's Health",
+    icon: "Flower2",
     image: img("photo-1544367567-0f2fcb009e0b"),
     category: "family",
     forWho: "Women at every life stage, from teenage years to menopause.",
-    shortDesc: "Whole-person care at every life stage — teenage health, anaemia, hormonal balance and menopause.",
+    shortDesc: "Nutrition support for every stage of a woman's life including fertility, anemia, menopause, hormonal balance, and overall wellness.",
     description:
       "Whole-person care across life: teenage health, anaemia, weight, mental wellbeing, hormonal balance and menopause — so you can care for your family while keeping your own health first.",
     planCovers: [
@@ -129,7 +129,7 @@ const SERVICES = [
     image: img("photo-1546069901-ba9599a7e63c"),
     category: "family",
     forWho: "Children with low weight, slow growth, frequent illness or fussy eating.",
-    shortDesc: "Support for low weight, slow growth, frequent illness and weak immunity in children.",
+    shortDesc: "Healthy nutrition plans for children's growth, immunity, development, eating habits, and long-term wellness.",
     description:
       "Support for low weight, slow growth, frequent illness and weak immunity — with growth monitoring and gentle nutrition counselling that helps children overcome obstacles and thrive, and builds healthy eating habits early.",
     planCovers: [
@@ -143,11 +143,11 @@ const SERVICES = [
   },
   {
     title: "Care for Old Age",
-    icon: "Stethoscope",
+    icon: "Footprints",
     image: img("photo-1559839734-2b71ea197ec2"),
     category: "family",
     forWho: "Seniors and their families.",
-    shortDesc: "Senior nutrition supporting immunity, strength, digestion, IBS & IBD and overall wellbeing.",
+    shortDesc: "Balanced nutrition plans designed for healthy aging, digestion, bone health, immunity, and chronic disease management.",
     description:
       "Nutrition tailored to senior health — supporting immunity, strength, digestion and overall wellbeing through balanced, easy-to-follow food plans, with special attention to conditions like IBS and IBD.",
     planCovers: [
@@ -160,12 +160,12 @@ const SERVICES = [
     price: 3999,
   },
   {
-    title: "Nutrition for Specially-Abled Children",
-    icon: "HeartHandshake",
+    title: "Specially-Abled Child",
+    icon: "Accessibility",
     image: img("photo-1516627145497-ae6968895b74"),
     category: "specialised",
     forWho: "Children with autism, ADHD, cerebral palsy, hearing impairment, intellectual disability or epilepsy.",
-    shortDesc: "Specialized plans for autism, ADHD, cerebral palsy, hearing impairment, MR and epilepsy.",
+    shortDesc: "Customized nutrition support for autism, ADHD, cerebral palsy, epilepsy, sensory disorders, and developmental conditions.",
     description:
       "This is at the heart of Dr. Sushma's work — over 3,000 diet plans delivered for children with special needs. Plans are gut-microbiome-focused, with gluten- and casein-free protocols where appropriate, and regular monitoring that supports behaviour and wellbeing. Every plan works with a child's sensitivities, not against them.",
     planCovers: [
@@ -180,11 +180,11 @@ const SERVICES = [
   },
   {
     title: "Oncology Nutrition",
-    icon: "Pill",
+    icon: "Cross",
     image: img("photo-1576091160399-112ba8d25d1d"),
     category: "specialised",
     forWho: "Patients during and after cancer treatment.",
-    shortDesc: "Nourishing, therapeutic diets to maintain strength, immunity and energy through treatment and recovery.",
+    shortDesc: "Clinical nutrition support to improve immunity, strength, recovery, and quality of life during cancer treatment.",
     description:
       "Nourishing, therapeutic diets to help maintain strength, immunity and energy through cancer treatment and recovery — preventing muscle loss, managing weight, and easing the side-effects that make eating hard.",
     planCovers: [
@@ -197,12 +197,12 @@ const SERVICES = [
     price: 6999,
   },
   {
-    title: "Nutrition for Sports Personnel",
-    icon: "Medal",
+    title: "Sports Nutrition",
+    icon: "Dumbbell",
     image: img("photo-1517836357463-d25dfeac3438"),
     category: "performance",
     forWho: "Athletes and serious fitness enthusiasts.",
-    shortDesc: "Performance nutrition matched to your sport, intensity and training.",
+    shortDesc: "Performance nutrition plans for athletes and fitness enthusiasts focusing on energy, recovery, muscle gain, endurance, and body composition.",
     description:
       "Performance nutrition matched to your sport, intensity and training. We guide what, how much and when to eat — for energy, strength and recovery — backed by body composition monitoring so your plan tracks with your results.",
     planCovers: [
@@ -215,12 +215,12 @@ const SERVICES = [
     price: 7999,
   },
   {
-    title: "Nutrigenomics & Gut Microbiome",
-    icon: "FlaskConical",
+    title: "Nutrigenomics & Gut Health",
+    icon: "Dna",
     image: img("photo-1540420773420-3366772f4999"),
     category: "performance",
     forWho: "Anyone who wants precision, DNA-based nutrition.",
-    shortDesc: "Advanced, DNA-personalized nutrition delivered in collaboration with Gene Box Academy.",
+    shortDesc: "Advanced personalized nutrition based on genetics, gut microbiome analysis, metabolic health, and precision nutrition.",
     description:
       "Diet plans based on genetic mapping and gut-microbiome analysis — advanced, DNA-personalised nutrition delivered with precision, in collaboration with Gene Box Academy. This is nutrition tailored not just to your condition, but to how your genes and gut actually respond to food.",
     planCovers: [
