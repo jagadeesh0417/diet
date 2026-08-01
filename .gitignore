@@ -8,3 +8,4 @@ server/uploads/*
 client/.env
 
 .vercel
+public/banner
