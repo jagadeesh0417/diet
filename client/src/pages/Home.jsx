@@ -9,7 +9,6 @@ import { useSite } from "../context/SiteContext";
 import SEO from "../components/SEO";
 import Reveal from "../components/Reveal";
 import SectionHeading from "../components/SectionHeading";
-import BlogCard from "../components/BlogCard";
 import TestimonialSlider from "../components/TestimonialSlider";
 import { ICON_MAP } from "../utils/helpers";
 
@@ -421,27 +420,6 @@ export default function Home() {
               <p className="font-heading text-lg font-bold text-charcoal">98% Success Rate</p>
               <p className="mt-1 text-sm text-charcoal/60">of clients hit their health milestone within the promised timeframe.</p>
             </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ================= LATEST BLOGS ================= */}
-      <section className="bg-section-sage py-24">
-        <div className="container-x">
-          <SectionHeading
-            eyebrow="From The Blog"
-            title="Latest Nutrition Insights"
-            subtitle="Practical, evidence-based articles written by our team."
-          />
-          <div className="grid gap-7 md:grid-cols-3">
-            {site.blogs.map((b, i) => (
-              <Reveal key={b._id} delay={i * 0.1}>
-                <BlogCard blog={b} />
-              </Reveal>
-            ))}
-          </div>
-          <Reveal className="mt-12 text-center">
-            <Link to="/blog" className="btn-outline">Visit Blog <ArrowUpRight size={18} /></Link>
           </Reveal>
         </div>
       </section>
