@@ -9,3 +9,4 @@ client/.env
 
 .vercel
 public/banner
+public/*.png
