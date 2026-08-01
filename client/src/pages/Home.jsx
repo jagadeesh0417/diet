@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, lazy, Suspense } from "react";
+﻿import { useEffect, useRef, useState, lazy, Suspense } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import {
@@ -77,7 +77,7 @@ export default function Home() {
       />
 
       {/* ================= HERO ================= */}
-      <section className="relative overflow-hidden bg-cream pb-20 pt-[120px] sm:pb-28 lg:pt-[150px]">
+      <section className="relative overflow-hidden bg-paper pb-20 pt-[120px] sm:pb-28 lg:pt-[150px]">
         <div className="absolute inset-0 bg-hero-pattern" aria-hidden="true" />
         <div className="absolute -right-32 top-24 h-[26rem] w-[26rem] rounded-full bg-olive/10 blur-3xl" aria-hidden="true" />
         <div className="absolute -left-24 bottom-0 h-96 w-96 rounded-full bg-terracotta/10 blur-3xl" aria-hidden="true" />
@@ -91,7 +91,7 @@ export default function Home() {
                 </span>
               )}
               <h1 className="font-heading text-5xl font-semibold leading-[1.05] tracking-tight text-ink sm:text-6xl lg:text-[68px]">
-                {h.heroTitle || "Real food. Real plans. Real results—built around you."}
+                {h.heroTitle || "Real food. Real plans. Real resultsâ€”built around you."}
               </h1>
               <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">
                 {h.heroSubtitle || "Science-backed, personalized nutrition plans designed to improve your health without giving up the foods you love. Online and in-clinic consultations available."}
@@ -140,12 +140,12 @@ export default function Home() {
                     <img
                       src={h.heroPortrait}
                       alt="Nutritionist preparing a healthy salad"
-                      className="w-full rounded-[24px] object-cover shadow-lift"
+                      className="w-full rounded-[180px_180px_22px_22px] object-cover shadow-lift"
                       loading="lazy"
                     />
                   ) : (
-                    <div className="flex aspect-[4/5] w-full items-center justify-center rounded-[24px] border-2 border-dashed border-ink/20">
-                      <p className="text-muted">Nutritionist photo — manage from admin panel</p>
+                    <div className="flex aspect-[4/5] w-full items-center justify-center rounded-[180px_180px_22px_22px] border-2 border-dashed border-ink/20">
+                      <p className="text-muted">Nutritionist photo â€” manage from admin panel</p>
                     </div>
                   )}
                 </motion.div>
@@ -166,7 +166,7 @@ export default function Home() {
                   <Icon size={26} />
                 </span>
                 <div>
-                  <p className="font-heading text-sm font-semibold text-charcoal">✔ {t.title}</p>
+                  <p className="font-heading text-sm font-semibold text-charcoal">âœ” {t.title}</p>
                   <p className="mt-0.5 text-xs text-charcoal/50">{t.text}</p>
                 </div>
               </motion.div>
@@ -176,7 +176,7 @@ export default function Home() {
       </section>
 
       {/* ================= STATISTICS ================= */}
-      <section className="bg-sageLight py-20 sm:py-24">
+      <section className="bg-sageLight py-[84px]">
         <div className="container-x">
           <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {(h.stats || []).map((s, i) => (
@@ -194,7 +194,7 @@ export default function Home() {
       </section>
 
       {/* ================= MEET THE FOUNDER ================= */}
-      <section className="bg-white py-24">
+      <section className="bg-white py-[84px]">
         <div className="container-x grid items-center gap-16 lg:grid-cols-2">
           <Reveal className="relative order-first lg:order-none">
             <div className="absolute -inset-4 rounded-[36px] bg-gradient-to-br from-sage via-sage2/60 to-transparent blur-xl" aria-hidden="true" />
@@ -247,7 +247,7 @@ export default function Home() {
       </section>
 
       {/* ================= SERVICES ================= */}
-      <section className="bg-white py-24 sm:py-32">
+      <section className="bg-white py-[84px]">
         <div className="container-x">
           <Reveal className="mx-auto max-w-[900px] text-center">
             <span className="mb-6 inline-flex items-center rounded-full border border-primary/30 bg-primary/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-primary">
@@ -286,7 +286,7 @@ export default function Home() {
       </section>
 
       {/* ================= HOW IT WORKS ================= */}
-      <section className="bg-section-sage py-24 sm:py-32">
+      <section className="bg-section-sage py-[84px]">
         <div className="container-x">
           <Reveal className="mx-auto max-w-[820px] text-center">
             <span className="mb-6 inline-flex items-center rounded-full border border-primary/30 bg-white/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-primary">
@@ -296,7 +296,7 @@ export default function Home() {
               How It Works
             </h2>
             <p className="mx-auto mt-6 max-w-[700px] text-base leading-[1.8] text-muted sm:text-[17px]">
-              Precision nutrition, step by step — every plan is built on real data about your body and fine-tuned as you progress.
+              Precision nutrition, step by step â€” every plan is built on real data about your body and fine-tuned as you progress.
             </p>
           </Reveal>
 
@@ -305,7 +305,7 @@ export default function Home() {
               {
                 no: "01",
                 title: "Book your appointment",
-                text: "Choose online or in-clinic. All consultations are by prior appointment — call or WhatsApp to reserve your slot.",
+                text: "Choose online or in-clinic. All consultations are by prior appointment â€” call or WhatsApp to reserve your slot.",
               },
               {
                 no: "02",
@@ -315,7 +315,7 @@ export default function Home() {
               {
                 no: "03",
                 title: "Get a personalized plan for you",
-                text: "Receive a precision diet plan built specially for you with your preferred foods along with exercise schedules — calibrated to your body, goals and health needs to prevent, manage and reverse disorders.",
+                text: "Receive a precision diet plan built specially for you with your preferred foods along with exercise schedules â€” calibrated to your body, goals and health needs to prevent, manage and reverse disorders.",
               },
               {
                 no: "04",
@@ -339,7 +339,7 @@ export default function Home() {
       </section>
 
       {/* ================= GALLERY ================= */}
-      <section className="py-24">
+      <section className="py-[84px]">
         <div className="container-x">
           <SectionHeading
             eyebrow="Gallery"
@@ -372,18 +372,18 @@ export default function Home() {
       </section>
 
       {/* ================= TESTIMONIALS ================= */}
-      <Suspense fallback={<section className="bg-primary py-24" aria-hidden="true" />}>
+      <Suspense fallback={<section className="bg-primary py-[84px]" aria-hidden="true" />}>
         <TestimonialsSection items={site.testimonials} />
       </Suspense>
 
       {/* ================= BOOK APPOINTMENT ================= */}
-      <section className="py-16 sm:py-24">
+      <section className="py-16 sm:py-[84px]">
         <div className="container-x">
           <div className="mx-auto max-w-[1200px] rounded-[20px] bg-[#FAF8F5] px-6 py-16 shadow-[0_40px_80px_-40px_rgba(20,35,27,0.18)] sm:px-10 lg:px-20 lg:py-[100px]">
             <div className="grid items-center gap-12 md:grid-cols-[55fr_45fr] md:gap-14 lg:grid-cols-2">
               <Reveal>
                 <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-ink">
-                  📍 Location &amp; Contact
+                  ðŸ“ Location &amp; Contact
                 </span>
                 <h2 className="mt-6 font-display text-[40px] font-bold leading-[1.1] text-[#111111] sm:text-[48px] lg:text-[56px]">
                   How to Book Appointment
@@ -394,7 +394,7 @@ export default function Home() {
                     <h3 className="font-display text-[28px] font-bold text-[#111111]">Clinic Location</h3>
                     <div className="mt-4 space-y-4 text-lg leading-relaxed text-[#555555]">
                       <p className="whitespace-pre-line">
-                        {`1. ${site.general?.address || "@Kshema Healthcare,\n#338, Bogadi Main Road,\nBogadi,\nMysuru,\nKarnataka – 570026"}`}
+                        {`1. ${site.general?.address || "@Kshema Healthcare,\n#338, Bogadi Main Road,\nBogadi,\nMysuru,\nKarnataka â€“ 570026"}`}
                       </p>
                       <p className="whitespace-pre-line">
                         {`2. #1286,\n15A Cross,\nRoopanagar,\nMysuru`}
@@ -404,7 +404,7 @@ export default function Home() {
 
                   <div>
                     <h3 className="font-display text-[28px] font-bold text-[#111111]">Timings</h3>
-                    <p className="mt-4 text-lg leading-relaxed text-[#555555]">10:30 AM – 5:00 PM</p>
+                    <p className="mt-4 text-lg leading-relaxed text-[#555555]">10:30 AM â€“ 5:00 PM</p>
                   </div>
 
                   <div>
@@ -451,7 +451,7 @@ export default function Home() {
       </section>
 
       {/* ================= CTA ================= */}
-      <section className="relative overflow-hidden py-24">
+      <section className="relative overflow-hidden py-[84px]">
         {h.cta?.image && (
           <div className="absolute inset-0">
             <img src={h.cta.image} alt="" className="h-full w-full object-cover" loading="lazy" />
@@ -465,7 +465,7 @@ export default function Home() {
             </h2>
             <p className="mx-auto mt-5 max-w-xl text-lg text-white/80">{h.cta?.subtitle || "Book your consultation today."}</p>
             <div className="mt-9">
-              <button onClick={() => navigate(h.cta?.buttonLink || "/contact")} className="btn-gold !bg-white !text-primary hover:!bg-offwhite">
+              <button onClick={() => navigate(h.cta?.buttonLink || "/contact")} className="btn-lime">
                 {h.cta?.buttonLabel || "Book Now"} <ArrowRight size={18} />
               </button>
             </div>

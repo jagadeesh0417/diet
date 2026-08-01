@@ -1,4 +1,4 @@
-import { memo } from "react";
+﻿import { memo } from "react";
 import SectionHeading from "./SectionHeading";
 import Reveal from "./Reveal";
 import TestimonialCard from "./TestimonialCard";
@@ -7,7 +7,7 @@ function TestimonialsSection({ items = [] }) {
   if (!items.length) return null;
 
   return (
-    <section className="relative overflow-hidden bg-primary py-24">
+    <section className="relative overflow-hidden bg-primary py-[84px]">
       <div
         className="pointer-events-none absolute inset-0"
         style={{ background: "radial-gradient(circle at 15% 20%, rgba(255,255,255,0.07) 0%, transparent 45%), radial-gradient(circle at 85% 80%, rgba(163,198,68,0.09) 0%, transparent 50%)" }}

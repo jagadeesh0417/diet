@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
@@ -22,8 +22,8 @@ const CATEGORIES = [
 
 const STEPS = [
   { title: "Consultation", text: "We start by understanding you: your health history, condition, lifestyle, food habits and goals." },
-  { title: "Assessment", text: "We review your labs, body composition and — where relevant — your DNA and gut-microbiome data, so the plan is built on evidence, not guesswork." },
-  { title: "Your personalised plan", text: "You get a plan designed around your body and your everyday food — not a generic chart." },
+  { title: "Assessment", text: "We review your labs, body composition and â€” where relevant â€” your DNA and gut-microbiome data, so the plan is built on evidence, not guesswork." },
+  { title: "Your personalised plan", text: "You get a plan designed around your body and your everyday food â€” not a generic chart." },
   { title: "Monitoring & adjustment", text: "We track your progress and refine the plan as your body responds, so it keeps working over time." },
 ];
 
@@ -160,7 +160,7 @@ export default function Services() {
     <>
       <SEO
         title="Services"
-        description="Nutrition & care for every stage of life — weight, diabetes, thyroid & PCOS, pregnancy, children's health, special needs, oncology, sports and precision nutrition. Personalised plans built around you."
+        description="Nutrition & care for every stage of life â€” weight, diabetes, thyroid & PCOS, pregnancy, children's health, special needs, oncology, sports and precision nutrition. Personalised plans built around you."
         keywords="nutrition services, diet plans, weight loss program, PCOS diet, diabetes diet"
         jsonLd={{
           "@context": "https://schema.org",
@@ -184,7 +184,7 @@ export default function Services() {
               Nutrition &amp; care for every stage of life
             </h1>
             <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted">
-              From weight and diabetes to pregnancy, children's health and special needs — every plan is built around your body, your goals and your food habits. No fad diets. No crash plans. Just science-backed nutrition you can actually live with.
+              From weight and diabetes to pregnancy, children's health and special needs â€” every plan is built around your body, your goals and your food habits. No fad diets. No crash plans. Just science-backed nutrition you can actually live with.
             </p>
             <Link to="/contact" className="btn-primary mt-10">
               <CalendarCheck size={19} /> Book a Consultation
@@ -211,14 +211,14 @@ export default function Services() {
 
       {/* ================= CATEGORY SECTIONS ================= */}
       {!services ? (
-        <section className="py-24"><PageLoader label="Loading services…" /></section>
+        <section className="py-[84px]"><PageLoader label="Loading servicesâ€¦" /></section>
       ) : (
         grouped.map((cat) => (
-          <section key={cat.id} id={cat.id} className="scroll-mt-[140px] py-24 odd:bg-paper even:bg-white">
+          <section key={cat.id} id={cat.id} className="scroll-mt-[140px] py-[84px] odd:bg-paper even:bg-white">
             <div className="container-x">
               <SectionHeading
                 center={false}
-                eyebrow={`${cat.no} · ${cat.title}`}
+                eyebrow={`${cat.no} Â· ${cat.title}`}
                 title={cat.title}
                 subtitle={cat.blurb}
               />
@@ -287,7 +287,7 @@ export default function Services() {
       )}
 
       {/* ================= HOW IT WORKS ================= */}
-      <section className="bg-primary py-24">
+      <section className="bg-primary py-[84px]">
         <div className="container-x">
           <SectionHeading
             light

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+﻿import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   GraduationCap, Award, Target, Eye, ArrowRight, CheckCircle2, BadgeCheck,
@@ -71,13 +71,13 @@ export default function About() {
       />
       <PageHero
         title={a.heroTitle || "About Dr. Sushma Appaiah"}
-        subtitle={`${a.name} — ${a.designation}`}
+        subtitle={`${a.name} â€” ${a.designation}`}
         breadcrumb={["About"]}
         image={a.image}
       />
 
       {/* ================= STORY ================= */}
-      <section className="py-24">
+      <section className="py-[84px]">
         <div className="container-x grid items-center gap-14 lg:grid-cols-[0.9fr_1.1fr]">
           <Reveal className="relative order-2 lg:order-1">
             <div className="absolute -left-5 top-5 h-40 w-40 rounded-3xl bg-sage/60" />
@@ -106,12 +106,12 @@ export default function About() {
       </section>
 
       {/* ================= WHAT SHE HELPS WITH ================= */}
-      <section className="bg-section-sage py-24">
+      <section className="bg-section-sage py-[84px]">
         <div className="container-x">
           <SectionHeading
             eyebrow="What She Helps With"
             title="A Practice Built Around You"
-            subtitle="From metabolic conditions to family nutrition, every area of her work follows the same principle — nutrition that is personal."
+            subtitle="From metabolic conditions to family nutrition, every area of her work follows the same principle â€” nutrition that is personal."
           />
           <div className="grid gap-6 lg:grid-cols-2">
             {(a.helpGroups || []).map((group, gi) => {
@@ -141,7 +141,7 @@ export default function About() {
       </section>
 
       {/* ================= SPECIAL NEEDS ================= */}
-      <section className="relative overflow-hidden bg-primary py-24">
+      <section className="relative overflow-hidden bg-primary py-[84px]">
         <div className="absolute -right-32 top-0 h-96 w-96 rounded-full bg-sage/10 blur-3xl" aria-hidden="true" />
         <div className="absolute -left-24 bottom-0 h-72 w-72 rounded-full bg-lime/10 blur-3xl" aria-hidden="true" />
         <div className="container-x relative z-10 grid items-center gap-12 lg:grid-cols-2">
@@ -169,14 +169,14 @@ export default function About() {
                 {sn.stat?.label || "diet plans delivered for children with special needs"}
               </p>
               <p className="mt-8 text-xs uppercase tracking-widest text-[#9FB4A5]">Through institutions like</p>
-              <p className="mt-2 font-heading text-lg font-semibold text-[#EEF3EA]">AIISH, Mysore · Early-intervention school programs</p>
+              <p className="mt-2 font-heading text-lg font-semibold text-[#EEF3EA]">AIISH, Mysore Â· Early-intervention school programs</p>
             </div>
           </Reveal>
         </div>
       </section>
 
       {/* ================= CREDENTIALS ================= */}
-      <section className="py-24">
+      <section className="py-[84px]">
         <div className="container-x">
           <SectionHeading eyebrow="Credentials" title="Formally Trained, Practically Experienced" />
           <div className="grid gap-5 sm:grid-cols-2">
@@ -195,7 +195,7 @@ export default function About() {
       </section>
 
       {/* ================= RECOGNITION ================= */}
-      <section className="bg-section-sage py-24">
+      <section className="bg-section-sage py-[84px]">
         <div className="container-x">
           <SectionHeading
             eyebrow="Recognition"
@@ -221,7 +221,7 @@ export default function About() {
       </section>
 
       {/* ================= BEYOND THE CLINIC ================= */}
-      <section className="py-24">
+      <section className="py-[84px]">
         <div className="container-x grid items-center gap-14 lg:grid-cols-2">
           <Reveal>
             <SectionHeading
@@ -231,9 +231,9 @@ export default function About() {
             />
             <p className="text-base leading-relaxed text-ink/75">{a.beyondClinic}</p>
             <div className="mt-8 flex flex-wrap items-center gap-2.5">
-              <span className="text-xs font-semibold uppercase tracking-widest text-muted">Life member —</span>
-              {(a.affiliations || "AFSTI · Indian Dietetics Association (IDA) · Indian Nutritional Medical Association (INMA)")
-                .split("·").map((af) => (
+              <span className="text-xs font-semibold uppercase tracking-widest text-muted">Life member â€”</span>
+              {(a.affiliations || "AFSTI Â· Indian Dietetics Association (IDA) Â· Indian Nutritional Medical Association (INMA)")
+                .split("Â·").map((af) => (
                   <span key={af} className="rounded-full border border-line bg-white px-4 py-2 text-sm font-medium text-ink/80">
                     {af.trim()}
                   </span>
