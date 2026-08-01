@@ -370,7 +370,7 @@ const HOMEPAGE = {
   aboutPreview: {
     title: "Meet Dr. Sushma Appaiah",
     text: "Dr. Sushma Appaiah is a certified clinical nutritionist with over 20 years of experience helping individuals and families achieve better health through sustainable nutrition. Her approach combines evidence-based science with personalized meal planning to create lasting lifestyle changes.",
-    image: img("photo-1559839734-2b71ea197ec2"),
+    image: "/doctor-portrait.png",
     buttonLabel: "Know More",
     buttonLink: "/about",
     list: [
@@ -401,7 +401,7 @@ const ABOUT = {
   heroTitle: "About Dr. Sushma Appaiah",
   name: "Dr. Sushma Appaiah",
   designation: "Founder & Nutrition Scientist, GOLZ",
-  image: img("photo-1559839734-2b71ea197ec2"),
+  image: "/doctor-portrait.png",
   bio: "Dr. Sushma Appaiah is the Founder of GOLZ (Giggles of Livez) and a Ph.D nutrition scientist with 19 years in clinical nutrition, corporate wellness, and health counselling. She holds a Ph.D in Food Science & Technology from CSIR-CFTRI, Mysore, and an M.Sc in Food & Nutrition (2nd Rank) from the University of Mysore.",
   story:
     "Dr. Sushma Appaiah is the founder of GOLZ (Giggles of Livez) and a Ph.D nutrition scientist with 19 years in clinical nutrition, corporate wellness, and health counselling. She holds a Ph.D in Food Science & Technology from CSIR-CFTRI, Mysore, and an M.Sc in Food & Nutrition (2nd Rank) from the University of Mysore.",
