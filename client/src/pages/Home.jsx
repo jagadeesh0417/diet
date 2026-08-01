@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import {
   ArrowRight, CalendarCheck, ShieldCheck, ClipboardList, MonitorSmartphone, FlaskConical,
-  Star, ArrowUpRight, BadgeCheck, Camera,
+  Star, ArrowUpRight, BadgeCheck, Camera, MapPin,
 } from "lucide-react";
 import { useSite } from "../context/SiteContext";
 import SEO from "../components/SEO";
@@ -16,6 +16,14 @@ import LazyImage from "../components/LazyImage";
 import { ICON_MAP } from "../utils/helpers";
 
 const TRUST_ICONS = [ShieldCheck, ClipboardList, MonitorSmartphone, FlaskConical, Star];
+
+const AVATARS = [
+  "https://i.pravatar.cc/96?img=32",
+  "https://i.pravatar.cc/96?img=12",
+  "https://i.pravatar.cc/96?img=20",
+  "https://i.pravatar.cc/96?img=45",
+  "https://i.pravatar.cc/96?img=15",
+];
 
 function CountUp({ value, suffix = "" }) {
   const [display, setDisplay] = useState(0);
@@ -59,6 +67,12 @@ export default function Home() {
   const h = site.homepage || {};
   const seo = site.seo || {};
 
+  const heroTitle = h.heroTitle || "Transform Your Health Through Personalized Nutrition";
+  const heroTitleParts = (() => {
+    const i = heroTitle.indexOf("—");
+    return i === -1 ? null : [heroTitle.slice(0, i + 1), heroTitle.slice(i + 1).trim()];
+  })();
+
   return (
     <>
       <SEO
@@ -87,33 +101,51 @@ export default function Home() {
             <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
               {h.heroBadge && (
                 <span className="mb-7 inline-flex items-center gap-2 rounded-full border border-line bg-white/80 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-primary backdrop-blur">
-                  <BadgeCheck size={15} /> {h.heroBadge}
+                  <MapPin size={15} /> {h.heroBadge}
                 </span>
               )}
               <h1 className="text-ink font-heading text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl lg:text-[68px]">
-                {h.heroTitle || "Transform Your Health Through Personalized Nutrition"}
+                {heroTitleParts ? (
+                  <>
+                    {heroTitleParts[0]}{" "}
+                    <em className="font-heading italic text-primary">{heroTitleParts[1]}</em>
+                  </>
+                ) : (
+                  heroTitle
+                )}
               </h1>
               <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">
                 {h.heroSubtitle || "Evidence-based nutrition plans tailored for your lifestyle, health goals, and medical conditions."}
               </p>
               <div className="mt-10 flex flex-wrap gap-4">
                 <Link to={h.ctaPrimary?.link || "/contact"} className="btn-primary">
-                  <CalendarCheck size={19} /> {h.ctaPrimary?.label || "Book Consultation"}
+                  <CalendarCheck size={19} /> {h.ctaPrimary?.label || "Book a Consultation"}
                 </Link>
-                <Link to={h.ctaSecondary?.link || "/services"} className="btn-outline">
-                  <ArrowRight size={19} /> {h.ctaSecondary?.label || "Explore Services"}
-                </Link>
+                {h.ctaSecondary?.label && (
+                  <Link to={h.ctaSecondary.link || "/services"} className="btn-outline">
+                    <ArrowRight size={19} /> {h.ctaSecondary.label}
+                  </Link>
+                )}
               </div>
 
-              <div className="mt-14 grid max-w-xl grid-cols-2 gap-8 sm:grid-cols-4">
-                {(h.stats || []).map((s) => (
-                  <div key={s.label} className="border-l-2 border-primary/25 pl-4">
-                    <p className="font-heading text-3xl font-semibold text-ink">
-                      <CountUp value={Number(s.value)} suffix={s.suffix} />
-                    </p>
-                    <p className="mt-1 text-xs font-medium text-muted">{s.label}</p>
+              <div className="mt-12 flex flex-wrap items-center gap-x-10 gap-y-5">
+                <div className="flex items-center">
+                  <div className="flex -space-x-3">
+                    {AVATARS.map((a) => (
+                      <img
+                        key={a}
+                        src={a}
+                        alt="Happy GOLZ client"
+                        loading="lazy"
+                        className="h-11 w-11 rounded-full object-cover shadow-sm ring-[3px] ring-white"
+                      />
+                    ))}
                   </div>
-                ))}
+                  <p className="ml-4 flex items-center gap-1.5 font-heading text-lg font-semibold text-ink">
+                    4.8 <Star size={17} className="fill-honey text-honey" />
+                    <span className="text-sm font-medium text-muted">Google Rating</span>
+                  </p>
+                </div>
               </div>
             </motion.div>
 

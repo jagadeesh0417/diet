@@ -1,0 +1,12 @@
+import "dotenv/config";
+import mongoose from "mongoose";
+await mongoose.connect(process.env.MONGO_DIRECT_URI, { serverSelectionTimeoutMS: 8000 });
+const col = mongoose.connection.db.collection("settings");
+const doc = await col.findOne({ key: "homepage" });
+doc.value.heroTitle = "Real food. Real plans. Real results— built around you";
+doc.value.ctaPrimary = { label: "Book a consultation", link: "/contact" };
+doc.value.ctaSecondary = { label: "", link: "" };
+await col.updateOne({ key: "homepage" }, { $set: { value: doc.value } });
+const check = await col.findOne({ key: "homepage" });
+console.log("heroTitle codes:", [...check.value.heroTitle].map((c) => c.codePointAt(0).toString(16)).join(" "));
+await mongoose.disconnect();
