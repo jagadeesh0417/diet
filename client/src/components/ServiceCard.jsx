@@ -1,12 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowRight, Clock } from "lucide-react";
 import { ICON_MAP } from "../utils/helpers";
-import { useSite } from "../context/SiteContext";
 import LazyImage from "./LazyImage";
-import { formatMoney } from "../utils/helpers";
 
 export default function ServiceCard({ service }) {
-  const { site } = useSite();
   const navigate = useNavigate();
   const Icon = ICON_MAP.get(service.icon) || ICON_MAP.get("Sparkles");
 
@@ -18,11 +15,6 @@ export default function ServiceCard({ service }) {
           <span className="absolute left-4 top-4 flex h-11 w-11 items-center justify-center rounded-xl bg-white/95 text-primary shadow-soft backdrop-blur">
             {Icon && <Icon size={22} />}
           </span>
-          {service.price != null && (
-            <span className="absolute right-4 top-4 rounded-full bg-lime px-3 py-1 text-xs font-bold text-ink shadow-soft">
-              {formatMoney(service.price, site.general?.currency)}
-            </span>
-          )}
         </Link>
       )}
       <div className="flex flex-1 flex-col p-6">

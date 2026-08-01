@@ -11,7 +11,7 @@ import Reveal from "../components/Reveal";
 import SectionHeading from "../components/SectionHeading";
 import PageLoader from "../components/PageLoader";
 import { useSite } from "../context/SiteContext";
-import { formatMoney, ICON_MAP } from "../utils/helpers";
+import { ICON_MAP } from "../utils/helpers";
 
 const CATEGORIES = [
   { id: "metabolic", no: "1", title: "Metabolic & Lifestyle", blurb: "Weight, blood sugar, hormones and heart health." },
@@ -127,10 +127,6 @@ export default function Services() {
 
             <aside>
               <div className="card sticky top-28 p-8">
-                <p className="text-sm text-muted">Program Fee</p>
-                <p className="mb-6 font-heading text-3xl font-semibold text-primary">
-                  {formatMoney(active.price, site.general?.currency)}
-                </p>
                 <div className="mb-7 space-y-3 text-sm text-ink/70">
                   {active.duration && (
                     <p className="flex items-center gap-3"><Clock size={17} className="text-primary" /> {active.duration}</p>
@@ -189,11 +185,6 @@ export default function Services() {
               </ul>
             </div>
             <div className="flex flex-wrap items-center gap-4">
-              {s.price != null && (
-                <span className="font-heading text-xl font-semibold text-primary">
-                  {formatMoney(s.price, site.general?.currency)}
-                </span>
-              )}
               <Link to={`/contact?service=${encodeURIComponent(s.title)}`} className="btn-primary ml-auto !px-5 !py-2.5 !text-sm">
                 Book <ArrowRight size={15} />
               </Link>
