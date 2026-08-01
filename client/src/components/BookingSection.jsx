@@ -1,6 +1,6 @@
 ﻿import { memo } from "react";
-import { Link } from "react-router-dom";
-import { MapPin, Clock3, Phone, Mail, Calendar, Navigation, MessageCircle } from "lucide-react";
+import { MapPin, Clock3, Phone, Mail, Navigation, MessageCircle } from "lucide-react";
+import { motion } from "framer-motion";
 import { useSite } from "../context/SiteContext";
 import Reveal from "./Reveal";
 import SectionHeading from "./SectionHeading";
@@ -14,50 +14,50 @@ const MAP_LINKS = {
   roopanagar: "https://www.google.com/maps/dir/?api=1&destination=%231286+15A+Cross+Roopanagar+Mysuru",
 };
 
-function IconTile({ Icon }) {
-  return (
-    <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[14px] bg-primary/10 text-primary transition-transform duration-300 ease-out group-hover:scale-110">
-      <Icon size={22} />
-    </span>
-  );
-}
+const PILL_BTN =
+  "inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-white transition-all duration-300 ease-out hover:-translate-y-0.5 hover:bg-primary-dark hover:shadow-soft focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/30";
 
-function InfoCard({ icon, title, badge, children, footer }) {
+function ClinicBlock({ title, badge, address, directionsUrl }) {
   return (
-    <div className="group flex h-full flex-col rounded-[24px] border border-line bg-white p-7 shadow-soft transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-card">
-      <div className="flex items-start justify-between gap-3">
-        <div className="flex items-center gap-3.5">
-          <IconTile Icon={icon} />
-          <h3 className="font-heading text-[19px] font-semibold leading-snug text-ink">{title}</h3>
+    <div className="flex flex-col gap-4 py-6 sm:flex-row sm:items-center sm:justify-between">
+      <div className="min-w-0">
+        <div className="flex flex-wrap items-center gap-2.5">
+          <h3 className="font-heading text-lg font-semibold text-ink">{title}</h3>
+          {badge}
         </div>
-        {badge}
+        <p className="mt-2 whitespace-pre-line text-[15px] leading-relaxed text-muted">{address}</p>
       </div>
-      <div className="mt-5 grow">{children}</div>
-      {footer && <div className="mt-6">{footer}</div>}
+      <a
+        href={directionsUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={`Get directions to ${title}`}
+        className={`${PILL_BTN} shrink-0 self-start sm:self-center`}
+      >
+        <Navigation size={15} /> Get Directions
+      </a>
     </div>
   );
 }
 
-function ClinicCard({ title, address, directionsUrl, badge }) {
+function ContactRow({ icon: Icon, label, href, children }) {
+  const content = (
+    <>
+      <p className="text-xs font-semibold uppercase tracking-wider text-muted">{label}</p>
+      <p className="truncate text-[15px] font-medium text-ink">{children}</p>
+    </>
+  );
   return (
-    <InfoCard
-      icon={MapPin}
-      title={title}
-      badge={badge}
-      footer={
-        <a
-          href={directionsUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          aria-label={`Get directions to ${title}`}
-          className="btn-outline w-full !py-2.5 !text-sm transition-transform duration-300 ease-out hover:scale-[1.02]"
-        >
-          <Navigation size={16} /> Directions
+    <div className="flex items-center gap-3.5">
+      <Icon size={18} className="shrink-0 text-primary" />
+      {href ? (
+        <a href={href} target={href.startsWith("http") ? "_blank" : undefined} rel={href.startsWith("http") ? "noopener noreferrer" : undefined} className="min-w-0 transition hover:opacity-75">
+          {content}
         </a>
-      }
-    >
-      <p className="whitespace-pre-line text-[15px] leading-[1.8] text-muted">{address}</p>
-    </InfoCard>
+      ) : (
+        <div className="min-w-0">{content}</div>
+      )}
+    </div>
   );
 }
 
@@ -71,113 +71,99 @@ function BookingSection() {
   const waLink = `https://wa.me/${whatsapp}?text=${encodeURIComponent("Hi! I'd like to book a nutrition consultation.")}`;
 
   return (
-    <section className="bg-white section-pad">
-      <div className="container-x">
+    <section
+      className="relative overflow-hidden bg-[#F8FAF7] section-pad"
+      style={{
+        background:
+          "radial-gradient(circle at 88% 8%, rgba(163,198,68,0.09) 0%, transparent 42%), radial-gradient(circle at 6% 92%, rgba(28,75,55,0.06) 0%, transparent 45%), #F8FAF7",
+      }}
+    >
+      <div className="container-x relative z-10">
         <SectionHeading
-          title="Book Your Consultation"
-          subtitle="Choose your preferred clinic and schedule a personalized nutrition consultation."
+          title="Visit Our Clinics"
+          subtitle="Book an appointment at the location most convenient for you."
         />
 
-        <div className="grid gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-12">
-          <div>
-            <div className="grid gap-6 sm:grid-cols-2">
-              <Reveal className="h-full">
-                <ClinicCard
+        <div className="grid items-start gap-10 lg:grid-cols-[2fr_3fr] lg:gap-14">
+          {/* ---- Information panel ---- */}
+          <Reveal className="order-2 lg:order-1">
+            <div className="rounded-[28px] border border-[#ECEFEA] bg-white p-8 shadow-[0_20px_60px_rgba(0,0,0,0.08)] sm:p-10">
+              <div className="flex items-center gap-3 border-b border-gray-100 pb-7">
+                <MapPin size={20} className="shrink-0 text-primary" />
+                <h2 className="font-heading text-xl font-bold text-ink">Clinic Locations</h2>
+              </div>
+
+              <div className="divide-y divide-gray-100">
+                <ClinicBlock
                   title="Bogadi Clinic"
-                  badge={<span className="rounded-full bg-lime/15 px-3 py-1 text-xs font-semibold text-limeDark">Primary Clinic</span>}
+                  badge={<span className="rounded-full bg-lime/15 px-2.5 py-0.5 text-[11px] font-bold uppercase tracking-wide text-limeDark">Primary Clinic</span>}
                   directionsUrl={MAP_LINKS.bogadi}
-                  address={`Kshema Healthcare\n#338\nBogadi Main Road\nBogadi\nMysuru – 570026`}
+                  address={`Kshema Healthcare\n#338, Bogadi Main Road\nBogadi, Mysuru – 570026`}
                 />
-              </Reveal>
-              <Reveal delay={0.08} className="h-full">
-                <ClinicCard
+                <ClinicBlock
                   title="Roopanagar Clinic"
                   directionsUrl={MAP_LINKS.roopanagar}
-                  address={`#1286\n15A Cross\nRoopanagar\nMysuru`}
+                  address={`#1286, 15A Cross\nRoopanagar, Mysuru`}
                 />
-              </Reveal>
-              <Reveal delay={0.16} className="h-full">
-                <InfoCard icon={Clock3} title="Consultation Hours">
-                  <div className="space-y-4 text-[15px] leading-relaxed">
-                    <div>
-                      <p className="font-semibold text-ink">Monday – Saturday</p>
-                      <p className="mt-2 text-muted">Morning &nbsp;9:00 AM – 1:00 PM</p>
-                      <p className="mt-1 text-muted">Evening &nbsp;4:30 PM – 8:00 PM</p>
-                    </div>
-                    <div>
-                      <p className="font-semibold text-ink">Sunday</p>
-                      <p className="mt-2 text-limeDark">Closed</p>
+              </div>
+
+              <div className="border-t border-gray-100 pt-7">
+                <div className="flex items-center gap-3">
+                  <Clock3 size={20} className="shrink-0 text-primary" />
+                  <h3 className="font-heading text-xl font-bold text-ink">Consultation Hours</h3>
+                </div>
+                <div className="mt-5 space-y-5 text-[15px]">
+                  <div>
+                    <p className="font-semibold text-ink">Monday – Saturday</p>
+                    <div className="mt-2 grid grid-cols-[minmax(0,90px)_1fr] gap-x-4 gap-y-1.5 text-muted">
+                      <span className="font-medium text-ink/60">Morning</span>
+                      <span>9:00 AM – 1:00 PM</span>
+                      <span className="font-medium text-ink/60">Evening</span>
+                      <span>4:30 PM – 8:00 PM</span>
                     </div>
                   </div>
-                </InfoCard>
-              </Reveal>
-              <Reveal delay={0.24} className="h-full">
-                <InfoCard icon={Phone} title="Contact">
-                  <ul className="space-y-3.5 text-[15px]">
-                    <li>
-                      <a href={`tel:${phone.replace(/[^+\d]/g, "")}`} className="flex items-center gap-3 text-muted transition-colors duration-200 hover:text-primary">
-                        <Phone size={17} className="shrink-0 text-primary" /> <span className="font-medium">{phone}</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href={waLink} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3 text-muted transition-colors duration-200 hover:text-primary">
-                        <MessageCircle size={17} className="shrink-0 text-primary" /> <span className="font-medium">WhatsApp</span>
-                      </a>
-                    </li>
-                    <li>
-                      <a href={`mailto:${email}`} className="flex items-center gap-3 text-muted transition-colors duration-200 hover:text-primary">
-                        <Mail size={17} className="shrink-0 text-primary" /> <span className="font-medium">{email}</span>
-                      </a>
-                    </li>
-                  </ul>
-                </InfoCard>
-              </Reveal>
+                  <div className="flex items-center justify-between">
+                    <p className="font-semibold text-ink">Sunday</p>
+                    <p className="font-semibold text-limeDark">Closed</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="mt-7 flex flex-col gap-5 border-t border-gray-100 pt-7">
+                <ContactRow icon={Phone} label="Phone" href={`tel:${phone.replace(/[^+\d]/g, "")}`}>{phone}</ContactRow>
+                <ContactRow icon={MessageCircle} label="WhatsApp" href={waLink}>Chat with us instantly</ContactRow>
+                <ContactRow icon={Mail} label="Email" href={`mailto:${email}`}>{email}</ContactRow>
+              </div>
             </div>
+          </Reveal>
 
-            <Reveal delay={0.3} className="mt-10">
-              <div className="flex flex-col gap-4 sm:flex-row">
-                <Link to="/contact" className="btn-primary w-full transition-transform duration-300 ease-out hover:scale-[1.02] sm:w-auto">
-                  <Calendar size={18} /> Book Consultation
-                </Link>
-                <a
-                  href={waLink}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-outline w-full transition-transform duration-300 ease-out hover:scale-[1.02] sm:w-auto"
-                >
-                  <MessageCircle size={18} /> Chat on WhatsApp
-                </a>
-              </div>
-            </Reveal>
-          </div>
-
-          <Reveal delay={0.15} className="h-full">
-            <div className="flex h-full flex-col rounded-[24px] border border-line bg-white p-6 shadow-soft sm:p-8">
-              <p className="mb-5 text-[15px] leading-[1.8] text-muted">
-                Our clinics are conveniently located in Mysuru with easy accessibility and parking.
-              </p>
-              <div className="relative h-[300px] grow overflow-hidden rounded-[18px] shadow-soft lg:h-auto">
-                <iframe
-                  src={g.mapEmbed || FALLBACK_MAP}
-                  title="GOLZ clinic locations map"
-                  loading="lazy"
-                  allowFullScreen
-                  referrerPolicy="no-referrer-when-downgrade"
-                  className="absolute inset-0 h-full w-full border-0"
-                />
-                <span className="absolute left-4 top-4 z-10 inline-flex items-center gap-2 rounded-full bg-white/95 px-4 py-2 text-sm font-semibold text-primary shadow-card backdrop-blur">
-                  <MapPin size={15} /> Visit Our Clinic
-                </span>
-              </div>
+          {/* ---- Map ---- */}
+          <Reveal delay={0.12} className="order-1 lg:order-2">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.96 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              className="relative h-[380px] overflow-hidden rounded-[24px] shadow-[0_20px_60px_rgba(0,0,0,0.08)] sm:h-[460px] lg:h-[600px]"
+            >
+              <iframe
+                src={g.mapEmbed || FALLBACK_MAP}
+                title="GOLZ clinic locations map"
+                loading="lazy"
+                allowFullScreen
+                referrerPolicy="no-referrer-when-downgrade"
+                className="absolute inset-0 h-full w-full border-0"
+              />
               <a
                 href={MAP_LINKS.open}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn-outline mt-6 w-full transition-transform duration-300 ease-out hover:scale-[1.02]"
+                aria-label="Open clinic location in Google Maps"
+                className="absolute left-5 top-5 z-10 inline-flex items-center gap-2 rounded-full bg-white/95 px-4 py-2.5 text-sm font-semibold text-primary shadow-card backdrop-blur transition-all duration-300 hover:-translate-y-0.5 hover:bg-white"
               >
-                <Navigation size={16} /> Open in Google Maps
+                <MapPin size={16} className="text-primary" /> Visit Our Clinic
               </a>
-            </div>
+            </motion.div>
           </Reveal>
         </div>
       </div>
