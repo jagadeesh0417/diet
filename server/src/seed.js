@@ -351,7 +351,7 @@ const HOMEPAGE = {
     "Science-backed, personalized nutrition plans designed to improve your health without giving up the foods you love. Online and in-clinic consultations available.",
   heroBadge: "Personalized Nutrition Care Since 2015",
   heroImage: img("photo-1490645935967-10de6ba17061"),
-  heroPortrait: img("photo-1511690656952-81f3050d6cda"),
+  heroPortrait: "/hero-banner.png",
   ctaPrimary: { label: "Book a Consultation", link: "/contact" },
   ctaSecondary: { label: "Explore Services", link: "/services" },
   stats: [
