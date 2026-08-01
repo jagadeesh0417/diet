@@ -8,6 +8,7 @@ import { useSite } from "../context/SiteContext";
 import SEO from "../components/SEO";
 import Reveal from "../components/Reveal";
 import SectionHeading from "../components/SectionHeading";
+import BookingSection from "../components/BookingSection";
 import { ICON_MAP } from "../utils/helpers";
 
 const TestimonialsSection = lazy(() => import("../components/TestimonialsSection"));
@@ -353,79 +354,8 @@ export default function Home() {
         <TestimonialsSection items={site.testimonials} />
       </Suspense>
 
-      {/* ================= BOOK APPOINTMENT ================= */}
-      <section className="py-16 sm:py-[84px]">
-        <div className="container-x">
-          <div className="mx-auto max-w-[1200px] rounded-[20px] bg-[#FAF8F5] px-6 py-16 shadow-[0_40px_80px_-40px_rgba(20,35,27,0.18)] sm:px-10 lg:px-20 lg:py-[100px]">
-            <div className="grid items-center gap-12 md:grid-cols-[55fr_45fr] md:gap-14 lg:grid-cols-2">
-              <Reveal>
-                <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-ink">
-                  ðŸ“ Location &amp; Contact
-                </span>
-                <h2 className="mt-6 font-display text-[40px] font-bold leading-[1.1] text-[#111111] sm:text-[48px] lg:text-[56px]">
-                  How to Book Appointment
-                </h2>
-
-                <div className="mt-10 space-y-12">
-                  <div>
-                    <h3 className="font-display text-[28px] font-bold text-[#111111]">Clinic Location</h3>
-                    <div className="mt-4 space-y-4 text-lg leading-relaxed text-[#555555]">
-                      <p className="whitespace-pre-line">
-                        {`1. ${site.general?.address || "@Kshema Healthcare,\n#338, Bogadi Main Road,\nBogadi,\nMysuru,\nKarnataka â€“ 570026"}`}
-                      </p>
-                      <p className="whitespace-pre-line">
-                        {`2. #1286,\n15A Cross,\nRoopanagar,\nMysuru`}
-                      </p>
-                    </div>
-                  </div>
-
-                  <div>
-                    <h3 className="font-display text-[28px] font-bold text-[#111111]">Timings</h3>
-                    <p className="mt-4 text-lg leading-relaxed text-[#555555]">10:30 AM â€“ 5:00 PM</p>
-                  </div>
-
-                  <div>
-                    <h3 className="font-display text-[28px] font-bold text-[#111111]">Contact</h3>
-                    <div className="mt-4 space-y-1 text-lg leading-relaxed text-[#555555]">
-                      <p>
-                        Phone:{" "}
-                        <a
-                          href={`tel:${(site.general?.phone || "+91 934-267-4406").replace(/[^+\d]/g, "")}`}
-                          className="font-semibold text-primary underline-offset-4 transition hover:underline"
-                        >
-                          {site.general?.phone || "+91 934-267-4406"}
-                        </a>
-                      </p>
-                      <p>
-                        Email:{" "}
-                        <a
-                          href={`mailto:${site.general?.email || "nutrigolz@gmail.com"}`}
-                          className="font-semibold text-primary underline-offset-4 transition hover:underline"
-                        >
-                          {site.general?.email || "nutrigolz@gmail.com"}
-                        </a>
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </Reveal>
-
-              <Reveal delay={0.12}>
-                <div className="overflow-hidden rounded-[20px] shadow-soft transition-transform duration-300 ease-out hover:scale-[1.02]">
-                  <iframe
-                    src={site.general?.mapEmbed || "https://maps.google.com/maps?q=Bogadi%20Main%20Road%20Mysuru%20Karnataka%20570026&t=&z=14&ie=UTF8&iwloc=&output=embed"}
-                    title="GOLZ clinic location map"
-                    className="h-[350px] w-full border-0 md:h-[650px]"
-                    loading="lazy"
-                    allowFullScreen
-                    referrerPolicy="no-referrer-when-downgrade"
-                  />
-                </div>
-              </Reveal>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* ================= BOOK CONSULTATION ================= */}
+      <BookingSection />
 
       {/* ================= CTA ================= */}
       <section className="relative overflow-hidden py-[84px]">
