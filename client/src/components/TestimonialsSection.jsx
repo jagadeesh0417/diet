@@ -107,7 +107,7 @@ function TestimonialsSection({ items = [] }) {
     const ro = new ResizeObserver(([entry]) => setWidth(entry.contentRect.width));
     ro.observe(el);
     return () => ro.disconnect();
-  }, []);
+  }, [carousel]);
 
   useEffect(() => {
     const el = viewportRef.current;
@@ -115,7 +115,7 @@ function TestimonialsSection({ items = [] }) {
     const io = new IntersectionObserver(([e]) => setVisible(e.isIntersecting), { threshold: 0.15 });
     io.observe(el);
     return () => io.disconnect();
-  }, []);
+  }, [carousel]);
 
   const step = width > 0 ? (width - (perPage - 1) * GAP) / perPage + GAP : 0;
 
