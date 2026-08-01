@@ -139,7 +139,7 @@ export default function Home() {
                     <img
                       src={h.heroPortrait}
                       alt="Nutritionist preparing a healthy salad"
-                      className="aspect-[4/5] w-full rounded-[24px] object-cover shadow-lift"
+                      className="w-full rounded-[24px] object-cover shadow-lift"
                       loading="lazy"
                     />
                   ) : (
