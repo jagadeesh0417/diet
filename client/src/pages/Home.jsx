@@ -1,8 +1,9 @@
+import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import {
   ArrowRight, CalendarCheck, ShieldCheck, ClipboardList, MonitorSmartphone, FlaskConical,
-  Star, ArrowUpRight, BadgeCheck, Camera, Apple, Zap, Compass, HeartPulse, CheckCircle2, PieChart, Flame, TrendingUp,
+  Star, ArrowUpRight, BadgeCheck, Camera, Apple, Zap, Compass, HeartPulse, CheckCircle2, PieChart, Flame, TrendingUp, Check,
 } from "lucide-react";
 import { useSite } from "../context/SiteContext";
 import SEO from "../components/SEO";
@@ -14,6 +15,42 @@ import TestimonialSlider from "../components/TestimonialSlider";
 import { ICON_MAP } from "../utils/helpers";
 
 const TRUST_ICONS = [ShieldCheck, ClipboardList, MonitorSmartphone, FlaskConical, Star];
+
+function CountUp({ value, suffix = "" }) {
+  const [display, setDisplay] = useState(0);
+  const ref = useRef(null);
+  const started = useRef(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !started.current) {
+          started.current = true;
+          const duration = 1600;
+          const start = performance.now();
+          const tick = (now) => {
+            const p = Math.min((now - start) / duration, 1);
+            setDisplay(Math.round(value * (1 - Math.pow(1 - p, 3))));
+            if (p < 1) requestAnimationFrame(tick);
+          };
+          requestAnimationFrame(tick);
+        }
+      },
+      { threshold: 0.4 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [value]);
+
+  return (
+    <span ref={ref}>
+      {display.toLocaleString("en-IN")}
+      {suffix}
+    </span>
+  );
+}
 
 export default function Home() {
   const { site } = useSite();
@@ -207,39 +244,71 @@ export default function Home() {
         </Reveal>
       </section>
 
-      {/* ================= ABOUT PREVIEW ================= */}
-      <section className="py-24">
-        <div className="container-x grid items-center gap-14 lg:grid-cols-2">
-          <Reveal className="relative">
-            <div className="absolute -left-6 -top-6 h-40 w-40 rounded-3xl bg-sage/40" />
-            <div className="absolute -bottom-8 -right-6 h-52 w-52 rounded-full bg-primary/10 blur-xl" />
-            {h.aboutPreview?.image && (
-              <img src={h.aboutPreview.image} alt="Nutritionist portrait" className="relative z-10 aspect-[4/3] w-full rounded-[2rem] object-cover shadow-lift" loading="lazy" />
-            )}
-            <div className="glass absolute -bottom-6 left-8 z-20 flex items-center gap-3 rounded-2xl px-6 py-4 shadow-card">
-              <span className="flex h-12 w-12 items-center justify-center rounded-full bg-lime text-ink"><BadgeCheck size={24} /></span>
-              <div>
-                <p className="font-heading text-lg font-bold text-charcoal">12+ Years</p>
-                <p className="text-xs text-charcoal/60">Clinical Experience</p>
-              </div>
-            </div>
+      {/* ================= STATISTICS ================= */}
+      <section className="bg-sageLight py-20 sm:py-24">
+        <div className="container-x">
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            {(h.stats || []).map((s, i) => (
+              <Reveal key={s.label} delay={i * 0.08}>
+                <div className="group rounded-[24px] border border-ink/5 bg-white p-8 text-center shadow-soft transition-all duration-300 hover:-translate-y-1.5 hover:shadow-lift">
+                  <p className="font-heading text-6xl font-semibold tracking-tight text-primary">
+                    <CountUp value={Number(s.value)} suffix={s.suffix} />
+                  </p>
+                  <p className="mx-auto mt-3 max-w-[220px] text-sm font-medium leading-snug text-muted">{s.label}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ================= MEET THE FOUNDER ================= */}
+      <section className="bg-white py-24">
+        <div className="container-x grid items-center gap-16 lg:grid-cols-2">
+          <Reveal className="relative order-first lg:order-none">
+            <div className="absolute -inset-4 rounded-[36px] bg-gradient-to-br from-sage via-sage2/60 to-transparent blur-xl" aria-hidden="true" />
+            <motion.div animate={{ y: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 6 }} className="relative">
+              {h.aboutPreview?.image && (
+                <img
+                  src={h.aboutPreview.image}
+                  alt="Dr. Sushma Appaiah"
+                  className="aspect-[4/5] w-full rounded-[28px] object-cover shadow-lift"
+                  loading="lazy"
+                />
+              )}
+            </motion.div>
           </Reveal>
 
-          <Reveal delay={0.1}>
-            <SectionHeading center={false} eyebrow="About Me" title={h.aboutPreview?.title || "Meet Your Nutritionist"} />
-            <p className="mb-8 text-base leading-relaxed text-charcoal/65">
-              {h.aboutPreview?.text || "Certified clinical nutritionist helping people transform their health."}
+          <Reveal delay={0.1} className="text-center lg:text-left">
+            <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-line bg-white px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-primary shadow-card">
+              <BadgeCheck size={14} /> About the Founder
+            </span>
+            <h2 className="font-heading text-4xl font-semibold leading-tight text-ink sm:text-5xl">
+              {h.aboutPreview?.title || "Meet Dr. Sushma Appaiah"}
+            </h2>
+            <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-muted lg:mx-0">
+              {h.aboutPreview?.text || "Dr. Sushma Appaiah is a certified clinical nutritionist with over 20 years of experience helping individuals and families achieve better health through sustainable nutrition. Her approach combines evidence-based science with personalized meal planning to create lasting lifestyle changes."}
             </p>
-            <ul className="mb-9 grid gap-3 sm:grid-cols-2">
-              {["Personalized meal plans", "Medical nutrition therapy", "Online & clinic consultations", "Long-term habit coaching"].map((f) => (
-                <li key={f} className="flex items-center gap-2.5 text-sm font-medium text-charcoal/75">
-                  <span className="flex h-6 w-6 items-center justify-center rounded-full bg-primary/10 text-primary">✔</span> {f}
+            <ul className="mx-auto mt-8 grid max-w-xl gap-3 text-left sm:grid-cols-2 lg:mx-0">
+              {(h.aboutPreview?.list || [
+                "Clinical Nutrition Expert",
+                "Lifestyle Disease Management",
+                "Personalized Diet Plans",
+                "Child & Women's Nutrition Specialist",
+              ]).map((item) => (
+                <li key={item} className="flex items-center gap-2.5 text-sm font-semibold text-ink">
+                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-lime text-ink"><Check size={14} /></span> {item}
                 </li>
               ))}
             </ul>
-            <Link to={h.aboutPreview?.buttonLink || "/about"} className="btn-primary">
-              {h.aboutPreview?.buttonLabel || "Read More"} <ArrowRight size={18} />
-            </Link>
+            <div className="mt-9 flex flex-col items-center gap-4 sm:flex-row sm:justify-center lg:justify-start">
+              <Link to={h.aboutPreview?.buttonLink || "/about"} className="btn-primary w-full sm:w-auto">
+                {h.aboutPreview?.buttonLabel || "Know More"} <ArrowRight size={18} />
+              </Link>
+              <Link to="/contact" className="btn-outline w-full sm:w-auto">
+                Book Consultation <ArrowUpRight size={18} />
+              </Link>
+            </div>
           </Reveal>
         </div>
       </section>

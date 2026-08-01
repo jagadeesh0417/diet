@@ -355,10 +355,10 @@ const HOMEPAGE = {
   ctaPrimary: { label: "Book a Consultation", link: "/contact" },
   ctaSecondary: { label: "Explore Services", link: "/services" },
   stats: [
-    { value: 19, suffix: "+", label: "Years of science-backed nutrition care" },
-    { value: 15000, suffix: "+", label: "Nutrition & health programs completed" },
+    { value: 20, suffix: "+", label: "Years of science-backed nutrition care" },
+    { value: 15000, suffix: "+", label: "Nutrition & wellness programs completed" },
     { value: 5000, suffix: "+", label: "Personalized diet plans delivered" },
-    { value: 3000, suffix: "+", label: "Diet plans for special kids" },
+    { value: 3000, suffix: "+", label: "Specialized diet plans for children" },
   ],
   trustItems: [
     { title: "Certified Nutrition Expert", text: "Ph.D. — CSIR-CFTRI, Mysuru" },
@@ -368,11 +368,17 @@ const HOMEPAGE = {
     { title: "Continuous Support", text: "We stay with you until results stick" },
   ],
   aboutPreview: {
-    title: "Hello, I'm Dr. Sushma Appaiah",
-    text: "With 19 years of experience in clinical nutrition and clients across 13 countries, I help people prevent and manage health disorders through personalized, evidence-based nutrition — without removing the food they enjoy.",
+    title: "Meet Dr. Sushma Appaiah",
+    text: "Dr. Sushma Appaiah is a certified clinical nutritionist with over 20 years of experience helping individuals and families achieve better health through sustainable nutrition. Her approach combines evidence-based science with personalized meal planning to create lasting lifestyle changes.",
     image: img("photo-1559839734-2b71ea197ec2"),
-    buttonLabel: "Read More",
+    buttonLabel: "Know More",
     buttonLink: "/about",
+    list: [
+      "Clinical Nutrition Expert",
+      "Lifestyle Disease Management",
+      "Personalized Diet Plans",
+      "Child & Women's Nutrition Specialist",
+    ],
   },
   whyChooseUs: [
     { icon: "Utensils", title: "Personalized Meal Plans", text: "Custom plans for your body type, lifestyle and food preferences." },

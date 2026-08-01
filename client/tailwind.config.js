@@ -22,6 +22,7 @@ export default {
         },
         beige: "#F7F4EF",
         cream: "#FFFDF8",
+        sageLight: "#EDF4EC",
         paper: "#F7F8F5",
         sage: "#E7EEE4",
         sage2: "#D6E2D1",
