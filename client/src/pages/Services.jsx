@@ -151,10 +151,58 @@ export default function Services() {
   }
 
   /* -------- Services listing -------- */
-  const grouped = (services || []).map((cat) => ({
+  const knownCategories = new Set(CATEGORIES.map((c) => c.id));
+  const grouped = CATEGORIES.map((cat) => ({
     ...cat,
     items: (services || []).filter((s) => s.category === cat.id),
   }));
+  const orphans = (services || []).filter((s) => !knownCategories.has(s.category));
+
+  const renderRow = (s, i) => {
+    const Icon = ICON_MAP.get(s.icon) || ICON_MAP.get("Sparkles");
+    return (
+      <Reveal key={s._id} delay={(i % 2) * 0.08}>
+        <article className="card grid gap-8 p-8 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:p-10">
+          <div>
+            <div className="mb-4 flex items-center gap-4">
+              <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[14px] bg-primary/10 text-primary">
+                {Icon && <Icon size={24} />}
+              </span>
+              <h3 className="font-heading text-[19px] font-semibold leading-snug text-ink">
+                <Link to={`/services/${s.slug}`} className="transition hover:text-primary">{s.title}</Link>
+              </h3>
+            </div>
+            <p className="mb-3 text-sm font-medium text-primary">
+              <span className="uppercase tracking-wide text-[11px]">For: </span>{s.forWho}
+            </p>
+            <p className="text-[15px] leading-relaxed text-ink/70">{s.description}</p>
+          </div>
+          <div className="flex flex-col justify-between gap-6 border-t border-line pt-6 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0">
+            <div>
+              <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted">What your plan covers</p>
+              <ul className="space-y-2.5">
+                {(s.planCovers || []).map((c) => (
+                  <li key={c} className="flex items-start gap-2.5 text-sm leading-relaxed text-ink/80">
+                    <CheckCircle2 size={16} className="mt-0.5 shrink-0 text-limeDark" /> {c}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="flex flex-wrap items-center gap-4">
+              {s.price != null && (
+                <span className="font-heading text-xl font-semibold text-primary">
+                  {formatMoney(s.price, site.general?.currency)}
+                </span>
+              )}
+              <Link to={`/contact?service=${encodeURIComponent(s.title)}`} className="btn-primary ml-auto !px-5 !py-2.5 !text-sm">
+                Book <ArrowRight size={15} />
+              </Link>
+            </div>
+          </div>
+        </article>
+      </Reveal>
+    );
+  };
 
   return (
     <>
@@ -206,6 +254,15 @@ export default function Services() {
               {cat.title}
             </a>
           ))}
+          {orphans.length > 0 && (
+            <a
+              href="#more-services"
+              className="whitespace-nowrap rounded-full px-4 py-2 font-body text-[14.5px] font-medium text-ink/70 transition hover:bg-primary/5 hover:text-primary"
+            >
+              <span className="mr-1.5 text-xs font-semibold text-limeDark">+</span>
+              All Services
+            </a>
+          )}
         </div>
       </nav>
 
@@ -223,55 +280,25 @@ export default function Services() {
                 subtitle={cat.blurb}
               />
               <div className="space-y-6">
-                {cat.items.map((s, i) => {
-                  const Icon = ICON_MAP.get(s.icon) || ICON_MAP.get("Sparkles");
-                  return (
-                    <Reveal key={s._id} delay={(i % 2) * 0.08}>
-                      <article className="card grid gap-8 p-8 lg:grid-cols-[minmax(0,1.6fr)_minmax(0,1fr)] lg:p-10">
-                        <div>
-                          <div className="mb-4 flex items-center gap-4">
-                            <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[14px] bg-primary/10 text-primary">
-                              {Icon && <Icon size={24} />}
-                            </span>
-                            <h3 className="font-heading text-[19px] font-semibold leading-snug text-ink">
-                              <Link to={`/services/${s.slug}`} className="transition hover:text-primary">{s.title}</Link>
-                            </h3>
-                          </div>
-                          <p className="mb-3 text-sm font-medium text-primary">
-                            <span className="uppercase tracking-wide text-[11px]">For: </span>{s.forWho}
-                          </p>
-                          <p className="text-[15px] leading-relaxed text-ink/70">{s.description}</p>
-                        </div>
-                        <div className="flex flex-col justify-between gap-6 border-t border-line pt-6 lg:border-l lg:border-t-0 lg:pl-8 lg:pt-0">
-                          <div>
-                            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-muted">What your plan covers</p>
-                            <ul className="space-y-2.5">
-                              {(s.planCovers || []).map((c) => (
-                                <li key={c} className="flex items-start gap-2.5 text-sm leading-relaxed text-ink/80">
-                                  <CheckCircle2 size={16} className="mt-0.5 shrink-0 text-limeDark" /> {c}
-                                </li>
-                              ))}
-                            </ul>
-                          </div>
-                          <div className="flex flex-wrap items-center gap-4">
-                            {s.price != null && (
-                              <span className="font-heading text-xl font-semibold text-primary">
-                                {formatMoney(s.price, site.general?.currency)}
-                              </span>
-                            )}
-                            <Link to={`/contact?service=${encodeURIComponent(s.title)}`} className="btn-primary ml-auto !px-5 !py-2.5 !text-sm">
-                              Book <ArrowRight size={15} />
-                            </Link>
-                          </div>
-                        </div>
-                      </article>
-                    </Reveal>
-                  );
-                })}
+                {cat.items.map(renderRow)}
               </div>
             </div>
           </section>
         ))
+      )}
+
+      {orphans.length > 0 && (
+        <section id="more-services" className="scroll-mt-[140px] py-[84px] odd:bg-paper even:bg-white">
+          <div className="container-x">
+            <SectionHeading
+              center={false}
+              eyebrow="All Services"
+              title="More Services"
+              subtitle="Additional services — every plan is personalised to your body and goals."
+            />
+            <div className="space-y-6">{orphans.map(renderRow)}</div>
+          </div>
+        </section>
       )}
 
       {services?.some((s) => s.credibility) && (
