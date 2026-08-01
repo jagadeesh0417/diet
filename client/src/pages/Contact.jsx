@@ -59,10 +59,29 @@ export default function Contact() {
     setBusy(true);
     setError(null);
     try {
-      const endpoint = mode === "booking" ? "/public/appointments" : "/public/contact";
-      const { data } = await api.post(endpoint, values);
-      setSent(data.message);
-      reset({ service: "" });
+      if (mode === "message") {
+        const whatsapp = g.whatsapp || "919342674406";
+        const text = [
+          "Hi GOLZ! New message from your website:",
+          "",
+          `Name: ${values.name}`,
+          `Phone: ${values.phone}`,
+          `Email: ${values.email}`,
+          values.subject ? `Subject: ${values.subject}` : "",
+          "",
+          values.message,
+        ]
+          .filter(Boolean)
+          .join("\n");
+        window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(text)}`, "_blank", "noopener,noreferrer");
+        api.post("/public/contact", values).catch(() => {});
+        setSent("WhatsApp is opening with your message — just press send there and we'll get back to you shortly.");
+        reset({ service: "" });
+      } else {
+        const { data } = await api.post("/public/appointments", values);
+        setSent(data.message);
+        reset({ service: "" });
+      }
     } catch (e) {
       setError(e.response?.data?.message || "Something went wrong. Please try again.");
     } finally {
@@ -209,7 +228,7 @@ export default function Contact() {
                   </div>
                   {error && <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-600">{error}</p>}
                   <button type="submit" disabled={busy} className="btn-primary w-full disabled:opacity-60">
-                    {busy ? <ButtonSpinner /> : <>{mode === "booking" ? <><CalendarCheck size={17} /> Request Consultation</> : <><Send size={17} /> Send Message</>}</>}
+                    {busy ? <ButtonSpinner /> : <>{mode === "booking" ? <><CalendarCheck size={17} /> Request Consultation</> : <><MessageCircle size={17} /> Send via WhatsApp</>}</>}
                   </button>
                 </form>
               )}
