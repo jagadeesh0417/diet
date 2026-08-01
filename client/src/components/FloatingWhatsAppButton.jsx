@@ -36,6 +36,7 @@ export default function FloatingWhatsAppButton() {
       <FaWhatsapp size={32} aria-hidden="true" />
       <span
         role="tooltip"
+        aria-hidden="true"
         className="pointer-events-none absolute bottom-full right-0 mb-3 hidden whitespace-nowrap rounded-lg bg-ink px-3 py-1.5 text-xs font-semibold text-white opacity-0 shadow-popup transition-opacity duration-200 group-hover:opacity-100 sm:block"
       >
         Chat on WhatsApp
