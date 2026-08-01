@@ -173,11 +173,11 @@ function TestimonialsSection({ items = [] }) {
   if (T === 0) return null;
 
   const arrowBase =
-    "flex items-center justify-center rounded-full border border-[#D4AF37]/40 bg-white/[0.06] text-[#F0C75E] backdrop-blur-xl transition-all duration-300 hover:scale-105 hover:bg-[#D4AF37]/20 hover:text-white active:scale-95";
+    "flex items-center justify-center rounded-full border border-[#D4AF37]/40 bg-white/[0.06] text-[#F0C75E] backdrop-blur-xl transition-all duration-300 active:scale-95 sm:hover:scale-105 sm:hover:bg-[#D4AF37]/20 sm:hover:text-white";
 
   return (
     <section
-      className="relative overflow-hidden bg-gradient-to-b from-[#0B3D2E] via-[#14532D] to-[#1B4332] py-[80px] md:py-[100px] lg:py-[120px]"
+      className="relative overflow-hidden bg-gradient-to-b from-[#0B3D2E] via-[#14532D] to-[#1B4332] py-[60px] md:py-[100px] lg:py-[120px]"
       aria-roledescription="carousel"
       aria-label="Client success stories"
       onPointerEnter={() => setPaused(true)}
@@ -196,7 +196,7 @@ function TestimonialsSection({ items = [] }) {
       <div className="pointer-events-none absolute -right-16 bottom-10 h-72 w-72 rounded-full border border-white/[0.06]" aria-hidden="true" />
 
       <div className="container-x relative z-10">
-        <Reveal className="mx-auto mb-14 max-w-3xl text-center">
+        <Reveal className="mx-auto mb-10 max-w-3xl text-center sm:mb-14">
           <span className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-[#D4AF37]/30 bg-[#D4AF37]/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-[#F0C75E]">
             <span className="h-1.5 w-1.5 rounded-full bg-[#D4AF37]" aria-hidden="true" /> Success Stories
           </span>
@@ -209,10 +209,10 @@ function TestimonialsSection({ items = [] }) {
           </p>
         </Reveal>
 
-        <div className="mx-auto mb-14 grid max-w-3xl grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="mx-auto mb-10 grid max-w-3xl grid-cols-1 gap-4 sm:mb-14 sm:grid-cols-3">
           {TRUST_STATS.map((s, i) => (
             <Reveal key={s.label} delay={i * 0.1}>
-              <div className="rounded-2xl border border-white/10 bg-white/[0.06] px-6 py-5 text-center backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-[#D4AF37]/30">
+              <div className="rounded-2xl border border-white/10 bg-white/[0.06] px-6 py-5 text-center backdrop-blur transition-all duration-300 sm:hover:-translate-y-1 sm:hover:border-[#D4AF37]/30">
                 <p className="font-heading text-3xl font-bold text-[#D4AF37]">
                   <Counter value={s.value} suffix={s.suffix} decimals={s.decimals} />
                 </p>
@@ -241,7 +241,7 @@ function TestimonialsSection({ items = [] }) {
 
             <div
               ref={viewportRef}
-              className="relative overflow-hidden py-8 -my-8"
+              className="relative overflow-hidden py-4 -my-4 sm:py-8 sm:-my-8"
               onFocus={() => setPaused(true)}
               onBlur={() => setPaused(false)}
             >
@@ -289,7 +289,7 @@ function TestimonialsSection({ items = [] }) {
         )}
 
         {carousel && (
-          <div className="mt-8 flex items-center justify-center gap-5">
+          <div className="mt-6 flex items-center justify-center gap-3 sm:mt-8 sm:gap-5">
             <button onClick={prev} aria-label="Previous testimonials" className={`${arrowBase} h-9 w-9 sm:hidden`}>
               <ChevronLeft size={18} />
             </button>

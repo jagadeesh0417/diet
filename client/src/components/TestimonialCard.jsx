@@ -9,7 +9,7 @@ function TestimonialCard({ item }) {
   const long = text.length > 240;
 
   return (
-    <article className="relative flex h-full flex-col rounded-[24px] border border-gray-100 bg-white p-7 shadow-[0_20px_60px_rgba(0,0,0,0.12)] transition-all duration-300 ease-out hover:-translate-y-2 hover:scale-[1.02] hover:shadow-[0_32px_80px_rgba(0,0,0,0.22)]">
+    <article className="relative flex h-full flex-col rounded-[24px] border border-gray-100 bg-white p-6 shadow-[0_20px_60px_rgba(0,0,0,0.12)] transition-all duration-300 ease-out sm:p-7 sm:hover:-translate-y-2 sm:hover:scale-[1.02] sm:hover:shadow-[0_32px_80px_rgba(0,0,0,0.22)]">
       <Quote size={40} strokeWidth={1.2} className="absolute right-6 top-6 text-[#D4AF37]/25" aria-hidden="true" />
 
       <div className="flex items-center gap-1" aria-label={`${rating} out of 5 stars`}>
