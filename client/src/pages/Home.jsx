@@ -437,47 +437,6 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="py-24">
-        <div className="container-x grid items-center gap-16 lg:grid-cols-2">
-          <div>
-            <SectionHeading
-              center={false}
-              eyebrow="Why Choose Us"
-              title="Care That Actually Gets You Results"
-              subtitle="We combine medical science, real-world practicality and genuine human support."
-            />
-            <div className="grid gap-5 sm:grid-cols-2">
-              {(h.whyChooseUs || []).map((w, i) => {
-                const Icon = ICON_MAP.get(w.icon) || ICON_MAP.get("Sparkles");
-                return (
-                  <Reveal key={w.title} delay={(i % 2) * 0.1}>
-                    <div className="group card flex gap-4 p-6 hover:shadow-lift">
-                      <span className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl bg-primary/10 text-primary transition group-hover:bg-primary group-hover:text-white">
-                        {Icon && <Icon size={23} />}
-                      </span>
-                      <div>
-                        <h3 className="mb-1 font-heading text-base font-semibold text-charcoal">{w.title}</h3>
-                        <p className="text-sm leading-relaxed text-charcoal/60">{w.text}</p>
-                      </div>
-                    </div>
-                  </Reveal>
-                );
-              })}
-            </div>
-          </div>
-
-          <Reveal delay={0.15} className="relative">
-            <div className="overflow-hidden rounded-[2rem] shadow-lift">
-              <img src={h.heroImage || h.cta?.image} alt="Healthy nutrition" className="aspect-[4/5] w-full object-cover" loading="lazy" />
-            </div>
-            <div className="glass absolute -bottom-8 -left-6 max-w-xs rounded-2xl p-6 shadow-card">
-              <p className="font-heading text-lg font-bold text-charcoal">98% Success Rate</p>
-              <p className="mt-1 text-sm text-charcoal/60">of clients hit their health milestone within the promised timeframe.</p>
-            </div>
-          </Reveal>
-        </div>
-      </section>
-
       {/* ================= CTA ================= */}
       <section className="relative overflow-hidden py-24">
         {h.cta?.image && (
