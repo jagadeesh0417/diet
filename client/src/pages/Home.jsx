@@ -337,6 +337,53 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ================= GALLERY ================= */}
+      <section className="py-24">
+        <div className="container-x">
+          <SectionHeading
+            eyebrow="Gallery"
+            title="Moments From Our Journey"
+            subtitle="Recipes, workshops, events and real client transformations."
+          />
+          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+            {site.gallery.slice(0, 8).map((g, i) => (
+              <Reveal key={g._id} delay={(i % 4) * 0.06}>
+                <Link to="/gallery" className="group relative block overflow-hidden rounded-2xl" aria-label={`View ${g.caption || "gallery item"}`}>
+                  {g.type === "video" ? (
+                    <video src={g.url} muted className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                  ) : (
+                    <img src={g.url} alt={g.alt || g.caption} loading="lazy" className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                  )}
+                  <span className="absolute inset-0 bg-gradient-to-t from-charcoal/70 to-transparent opacity-0 transition group-hover:opacity-100" />
+                  {g.caption && (
+                    <span className="absolute bottom-3 left-3 right-3 translate-y-2 text-xs font-medium text-white opacity-0 transition group-hover:translate-y-0 group-hover:opacity-100">
+                      {g.caption}
+                    </span>
+                  )}
+                </Link>
+              </Reveal>
+            ))}
+          </div>
+          <Reveal className="mt-12 text-center">
+            <Link to="/gallery" className="btn-primary"><Camera size={18} /> View Gallery</Link>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ================= TESTIMONIALS ================= */}
+      <section className="bg-primary py-24">
+        <div className="container-x">
+          <SectionHeading
+            light
+            eyebrow="Success Stories"
+            title="Real People. Real Transformations."
+            subtitle="Before and after journeys from clients who trusted the process."
+          />
+          <TestimonialSlider items={site.testimonials} />
+        </div>
+      </section>
+
       <section className="py-24">
         <div className="container-x grid items-center gap-16 lg:grid-cols-2">
           <div>
@@ -374,52 +421,6 @@ export default function Home() {
               <p className="font-heading text-lg font-bold text-charcoal">98% Success Rate</p>
               <p className="mt-1 text-sm text-charcoal/60">of clients hit their health milestone within the promised timeframe.</p>
             </div>
-          </Reveal>
-        </div>
-      </section>
-
-      {/* ================= SUCCESS STORIES ================= */}
-      <section className="bg-primary py-24">
-        <div className="container-x">
-          <SectionHeading
-            light
-            eyebrow="Success Stories"
-            title="Real People. Real Transformations."
-            subtitle="Before and after journeys from clients who trusted the process."
-          />
-          <TestimonialSlider items={site.testimonials} />
-        </div>
-      </section>
-
-      {/* ================= GALLERY PREVIEW ================= */}
-      <section className="py-24">
-        <div className="container-x">
-          <SectionHeading
-            eyebrow="Gallery"
-            title="Moments From Our Journey"
-            subtitle="Recipes, workshops, events and real client transformations."
-          />
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-            {site.gallery.slice(0, 8).map((g, i) => (
-              <Reveal key={g._id} delay={(i % 4) * 0.06}>
-                <Link to="/gallery" className="group relative block overflow-hidden rounded-2xl" aria-label={`View ${g.caption || "gallery item"}`}>
-                  {g.type === "video" ? (
-                    <video src={g.url} muted className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                  ) : (
-                    <img src={g.url} alt={g.alt || g.caption} loading="lazy" className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                  )}
-                  <span className="absolute inset-0 bg-gradient-to-t from-charcoal/70 to-transparent opacity-0 transition group-hover:opacity-100" />
-                  {g.caption && (
-                    <span className="absolute bottom-3 left-3 right-3 translate-y-2 text-xs font-medium text-white opacity-0 transition group-hover:translate-y-0 group-hover:opacity-100">
-                      {g.caption}
-                    </span>
-                  )}
-                </Link>
-              </Reveal>
-            ))}
-          </div>
-          <Reveal className="mt-12 text-center">
-            <Link to="/gallery" className="btn-primary"><Camera size={18} /> View Gallery</Link>
           </Reveal>
         </div>
       </section>
