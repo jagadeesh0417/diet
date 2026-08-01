@@ -1,41 +1,16 @@
-import { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Leaf, Phone, Mail, MapPin, Clock, Facebook, Instagram, Youtube, Twitter, Linkedin,
-  Send, ChevronRight, MessageCircle,
+  ChevronRight, MessageCircle,
 } from "lucide-react";
 import { useSite } from "../context/SiteContext";
-import { ButtonSpinner } from "./PageLoader";
 
 const SOCIAL_ICONS = { facebook: Facebook, instagram: Instagram, youtube: Youtube, twitter: Twitter, linkedin: Linkedin };
 
 export default function Footer() {
   const { site } = useSite();
-  const [email, setEmail] = useState("");
-  const [status, setStatus] = useState(null);
-  const [busy, setBusy] = useState(false);
   const g = site.general || {};
   const year = new Date().getFullYear();
-
-  const subscribe = async (e) => {
-    e.preventDefault();
-    setBusy(true);
-    setStatus(null);
-    try {
-      const res = await fetch("/api/public/subscribe", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
-      const data = await res.json();
-      setStatus({ ok: res.ok, text: data.message || "Done!" });
-      if (res.ok) setEmail("");
-    } catch {
-      setStatus({ ok: false, text: "Something went wrong. Try again." });
-    } finally {
-      setBusy(false);
-    }
-  };
 
   const socials = Object.entries(g.socials || {})
     .filter(([, url]) => url)
@@ -44,7 +19,7 @@ export default function Footer() {
 
   return (
     <footer className="bg-primary text-[#DBE6D5]/85">
-      <div className="container-x grid gap-10 py-16 sm:grid-cols-2 lg:grid-cols-4">
+      <div className="container-x grid gap-10 py-16 sm:grid-cols-2 lg:grid-cols-3">
         <div>
           <div className="mb-5 flex items-center gap-2.5">
             <span className="flex h-11 w-11 items-center justify-center rounded-[14px] bg-white/10 text-lime">
@@ -98,36 +73,6 @@ export default function Footer() {
               </p>
             ))}
           </div>
-        </div>
-
-        <div>
-          <h3 className="mb-5 font-heading text-base font-semibold text-[#EEF3EA]">Newsletter</h3>
-          <p className="mb-4 text-sm text-[#A9C0A0]">Get nutrition tips, recipes and healthy-living advice in your inbox.</p>
-          <form onSubmit={subscribe} className="rounded-[18px] bg-[#1E3228] p-5">
-            <input
-              type="email"
-              required
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Your email address"
-              aria-label="Email address"
-              className="mb-3 w-full rounded-[11px] border border-white/15 bg-[#16281F] px-4 py-3 text-sm text-white placeholder-white/40 outline-none transition focus:border-lime"
-            />
-            <button type="submit" className="flex w-full items-center justify-center gap-2 rounded-full bg-lime px-5 py-3 text-sm font-semibold text-ink transition hover:bg-limeDark">
-              {busy ? <ButtonSpinner /> : <Send size={16} />} Subscribe
-            </button>
-          </form>
-          {status && <p className={`mt-2 text-xs ${status.ok ? "text-lime" : "text-honey"}`}>{status.text}</p>}
-          <p className="mt-4 text-xs text-[#A9C0A0]/80">By subscribing you agree to our privacy policy.</p>
-          {g.mapEmbed && (
-            <iframe
-              src={g.mapEmbed}
-              title="Clinic location map"
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              className="mt-5 h-32 w-full rounded-[18px] border-0 opacity-90 grayscale-[30%]"
-            />
-          )}
         </div>
       </div>
 
