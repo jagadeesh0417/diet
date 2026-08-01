@@ -1,9 +1,8 @@
-import { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
 import {
   ArrowRight, CalendarCheck, ShieldCheck, ClipboardList, MonitorSmartphone, FlaskConical,
-  Star, ArrowUpRight, BadgeCheck, Camera,
+  Star, ArrowUpRight, BadgeCheck, Camera, Apple, Zap, Compass, HeartPulse, CheckCircle2, PieChart, Flame, TrendingUp,
 } from "lucide-react";
 import { useSite } from "../context/SiteContext";
 import SEO from "../components/SEO";
@@ -12,52 +11,17 @@ import SectionHeading from "../components/SectionHeading";
 import ServiceCard from "../components/ServiceCard";
 import BlogCard from "../components/BlogCard";
 import TestimonialSlider from "../components/TestimonialSlider";
-import LazyImage from "../components/LazyImage";
 import { ICON_MAP } from "../utils/helpers";
 
 const TRUST_ICONS = [ShieldCheck, ClipboardList, MonitorSmartphone, FlaskConical, Star];
-
-function CountUp({ value, suffix = "" }) {
-  const [display, setDisplay] = useState(0);
-  const ref = useRef(null);
-  const started = useRef(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !started.current) {
-          started.current = true;
-          const duration = 1600;
-          const start = performance.now();
-          const tick = (now) => {
-            const p = Math.min((now - start) / duration, 1);
-            setDisplay(Math.round(value * (1 - Math.pow(1 - p, 3))));
-            if (p < 1) requestAnimationFrame(tick);
-          };
-          requestAnimationFrame(tick);
-        }
-      },
-      { threshold: 0.4 }
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
-  }, [value]);
-
-  return (
-    <span ref={ref}>
-      {display.toLocaleString("en-IN")}
-      {suffix}
-    </span>
-  );
-}
 
 export default function Home() {
   const { site } = useSite();
   const navigate = useNavigate();
   const h = site.homepage || {};
   const seo = site.seo || {};
+  const { scrollY } = useScroll();
+  const parallaxY = useTransform(scrollY, [0, 600], [0, -24]);
 
   return (
     <>
@@ -77,60 +41,49 @@ export default function Home() {
       />
 
       {/* ================= HERO ================= */}
-      <section className="relative overflow-hidden bg-paper pb-16 pt-[120px] sm:pb-20 lg:pt-[150px]">
+      <section className="relative overflow-hidden bg-cream pb-20 pt-[120px] sm:pb-28 lg:pt-[150px]">
         <div className="absolute inset-0 bg-hero-pattern" aria-hidden="true" />
-        <div className="absolute -right-40 top-40 h-[28rem] w-[28rem] rounded-full bg-sage blur-3xl" aria-hidden="true" />
-        <div className="absolute -left-24 bottom-0 h-80 w-80 rounded-full bg-sage2/60 blur-3xl" aria-hidden="true" />
+        <div className="absolute -right-32 top-24 h-[26rem] w-[26rem] rounded-full bg-olive/10 blur-3xl" aria-hidden="true" />
+        <div className="absolute -left-24 bottom-0 h-96 w-96 rounded-full bg-terracotta/10 blur-3xl" aria-hidden="true" />
 
         <div className="container-x relative z-10">
-          <div className="grid w-full items-center gap-16 lg:grid-cols-[1.1fr_0.9fr]">
+          <div className="grid w-full items-center gap-14 lg:grid-cols-[0.95fr_1.05fr]">
             <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
               {h.heroBadge && (
-                <span className="mb-7 inline-flex items-center gap-2 rounded-full border border-line bg-white/80 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-primary backdrop-blur">
+                <span className="mb-7 inline-flex items-center gap-2 rounded-full border border-ink/10 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-widest text-olive shadow-card">
                   <BadgeCheck size={15} /> {h.heroBadge}
                 </span>
               )}
-              <h1 className="text-ink font-heading text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl lg:text-[68px]">
-                {h.heroTitle || "Transform Your Health Through Personalized Nutrition"}
+              <h1 className="font-heading text-5xl font-semibold leading-[1.05] tracking-tight text-ink sm:text-6xl lg:text-[68px]">
+                {h.heroTitle || "Real food. Real plans. Real results—built around you."}
               </h1>
               <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">
-                {h.heroSubtitle || "Evidence-based nutrition plans tailored for your lifestyle, health goals, and medical conditions."}
+                {h.heroSubtitle || "Science-backed, personalized nutrition plans designed to improve your health without giving up the foods you love. Online and in-clinic consultations available."}
               </p>
-              <div className="mt-10 flex flex-wrap gap-4">
-                <Link to={h.ctaPrimary?.link || "/contact"} className="btn-primary">
-                  <CalendarCheck size={19} /> {h.ctaPrimary?.label || "Book Consultation"}
-                </Link>
-                <Link to={h.ctaSecondary?.link || "/services"} className="btn-outline">
-                  <ArrowRight size={19} /> {h.ctaSecondary?.label || "Explore Services"}
+              <div className="mt-10">
+                <Link to={h.ctaPrimary?.link || "/contact"} className="btn-terracotta">
+                  <CalendarCheck size={19} /> {h.ctaPrimary?.label || "Book a Consultation"}
                 </Link>
               </div>
 
-              <div className="mt-10 flex flex-wrap items-center gap-4">
+              <div className="mt-12 flex flex-wrap items-center gap-5">
                 <div className="flex -space-x-3">
                   {[11, 32, 13, 14, 15].map((n) => (
                     <img
                       key={n}
                       src={`https://i.pravatar.cc/96?img=${n}`}
                       alt="Happy client"
-                      className="h-11 w-11 rounded-full border-2 border-paper object-cover shadow-card"
+                      className="h-11 w-11 rounded-full border-2 border-cream object-cover shadow-card"
                       loading="lazy"
                     />
                   ))}
                 </div>
-                <p className="flex items-center gap-1.5 text-sm font-semibold text-ink">
-                  <Star size={16} className="fill-honey text-honey" /> 4.8 star google rating
-                </p>
-              </div>
-
-              <div className="mt-14 grid max-w-xl grid-cols-2 gap-8 sm:grid-cols-4">
-                {(h.stats || []).map((s) => (
-                  <div key={s.label} className="border-l-2 border-primary/25 pl-4">
-                    <p className="font-heading text-3xl font-semibold text-ink">
-                      <CountUp value={Number(s.value)} suffix={s.suffix} />
-                    </p>
-                    <p className="mt-1 text-xs font-medium text-muted">{s.label}</p>
-                  </div>
-                ))}
+                <div>
+                  <p className="flex items-center gap-1.5 text-sm font-semibold text-ink">
+                    <Star size={16} className="fill-honey text-honey" /> 4.8 Google Rating
+                  </p>
+                  <p className="mt-0.5 text-sm text-muted">500+ Happy Clients</p>
+                </div>
               </div>
             </motion.div>
 
@@ -138,38 +91,97 @@ export default function Home() {
               initial={{ opacity: 0, scale: 0.94 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.15 }}
-              className="relative mx-auto hidden w-full max-w-md lg:block"
+              className="relative mx-auto w-full max-w-md"
             >
-              {h.heroPortrait ? (
-                <div className="relative">
-                  <div className="absolute -inset-6 rounded-[200px_200px_40px_40px] bg-gradient-to-br from-sage via-sage2 to-lime/25 blur-2xl" aria-hidden="true" />
+              <motion.div style={{ y: parallaxY }} className="relative">
+                <div className="absolute -inset-5 rounded-[32px] bg-gradient-to-br from-olive/15 via-beige to-terracotta/15 blur-2xl" aria-hidden="true" />
+                {h.heroPortrait ? (
                   <img
                     src={h.heroPortrait}
-                    alt="Professional nutritionist"
-                    className="relative aspect-[4/5] w-full rounded-[180px_180px_22px_22px] object-cover shadow-lift"
+                    alt="Nutritionist preparing a healthy salad"
+                    className="relative aspect-[4/5] w-full rounded-[24px] object-cover shadow-lift"
+                    loading="lazy"
                   />
-                  <motion.div
-                    animate={{ y: [0, -12, 0] }}
-                    transition={{ repeat: Infinity, duration: 5 }}
-                    className="glass absolute -left-10 bottom-12 rounded-[18px] px-6 py-4 shadow-card"
-                  >
-                    <p className="font-heading text-2xl font-semibold text-primary"><CountUp value={Number(h.stats?.[0]?.value || 5000)} suffix={h.stats?.[0]?.suffix || "+"} /></p>
-                    <p className="text-xs text-muted">{h.stats?.[0]?.label || "Happy Clients"}</p>
-                  </motion.div>
-                  <motion.div
-                    animate={{ y: [0, 10, 0] }}
-                    transition={{ repeat: Infinity, duration: 6 }}
-                    className="glass absolute -right-8 top-12 rounded-[18px] px-6 py-4 shadow-card"
-                  >
-                    <p className="flex items-center gap-1 font-heading text-2xl font-semibold text-ink">4.8 <Star size={18} className="fill-honey text-honey" /></p>
-                    <p className="text-xs text-muted">Google Rating</p>
-                  </motion.div>
+                ) : (
+                  <div className="flex aspect-[4/5] w-full items-center justify-center rounded-[24px] border-2 border-dashed border-ink/20">
+                    <p className="text-muted">Nutritionist photo — manage from admin panel</p>
+                  </div>
+                )}
+
+                <motion.div
+                  animate={{ y: [0, -10, 0] }}
+                  transition={{ repeat: Infinity, duration: 5 }}
+                  className="float-card absolute -left-12 top-8 hidden w-44 p-4 lg:block"
+                >
+                  <p className="mb-2 flex items-center gap-1.5 text-xs font-bold text-ink"><PieChart size={13} className="text-terracotta" /> Macro Balance</p>
+                  <div className="flex items-center gap-3">
+                    <svg viewBox="0 0 100 100" className="h-16 w-16 -rotate-90">
+                      <circle cx="50" cy="50" r="34" fill="none" stroke="#EFE9E0" strokeWidth="11" />
+                      <circle cx="50" cy="50" r="34" fill="none" stroke="#6E8B5C" strokeWidth="11" strokeDasharray="85.4 213.6" />
+                      <circle cx="50" cy="50" r="34" fill="none" stroke="#C97858" strokeWidth="11" strokeDasharray="64.1 213.6" transform="rotate(144 50 50)" />
+                      <circle cx="50" cy="50" r="34" fill="none" stroke="#DFA63B" strokeWidth="11" strokeDasharray="64.1 213.6" transform="rotate(252 50 50)" />
+                    </svg>
+                    <div className="space-y-1 text-[10px] font-medium text-muted">
+                      <p className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-olive" />40% Carbs</p>
+                      <p className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-terracotta" />30% Protein</p>
+                      <p className="flex items-center gap-1.5"><span className="h-2 w-2 rounded-full bg-honey" />30% Healthy Fats</p>
+                    </div>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  animate={{ y: [0, 10, 0] }}
+                  transition={{ repeat: Infinity, duration: 6 }}
+                  className="float-card absolute -right-6 top-1/3 hidden items-center gap-3 px-5 py-4 lg:flex"
+                >
+                  <span className="flex h-11 w-11 items-center justify-center rounded-full bg-terracotta/10 text-terracotta"><Flame size={22} /></span>
+                  <div>
+                    <p className="font-heading text-xl font-bold text-ink">450</p>
+                    <p className="text-xs text-muted">Calories / meal</p>
+                  </div>
+                </motion.div>
+
+                <motion.div
+                  animate={{ y: [0, -8, 0] }}
+                  transition={{ repeat: Infinity, duration: 5.5, delay: 0.3 }}
+                  className="float-card absolute -left-10 bottom-28 hidden w-48 p-4 lg:block"
+                >
+                  <p className="mb-2 text-xs font-bold text-ink">Healthy Meal Checklist</p>
+                  <ul className="space-y-1.5">
+                    {["Balanced Meals", "Whole Foods", "Portion Control", "Healthy Habits"].map((c) => (
+                      <li key={c} className="flex items-center gap-1.5 text-[11px] font-medium text-muted">
+                        <CheckCircle2 size={13} className="text-olive" /> {c}
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+
+                <motion.div
+                  animate={{ y: [0, 8, 0] }}
+                  transition={{ repeat: Infinity, duration: 6, delay: 0.6 }}
+                  className="float-card absolute -right-4 bottom-8 hidden px-5 py-4 lg:block"
+                >
+                  <p className="mb-1 flex items-center gap-1.5 text-xs font-bold text-ink"><TrendingUp size={13} className="text-terracotta" /> Weekly Progress</p>
+                  <svg viewBox="0 0 120 40" className="h-10 w-28">
+                    <polyline points="0,32 18,28 36,30 54,22 72,24 90,14 108,10 120,6" fill="none" stroke="#6E8B5C" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                    <circle cx="120" cy="6" r="3" fill="#C97858" />
+                  </svg>
+                </motion.div>
+
+                <div className="absolute -right-14 top-1/2 hidden -translate-y-1/2 flex-col gap-3 xl:flex">
+                  {[
+                    { icon: Apple, label: "Nourish Your Body" },
+                    { icon: Zap, label: "Fuel Every Day" },
+                    { icon: Compass, label: "Plan with Purpose" },
+                    { icon: HeartPulse, label: "Thrive Every Day" },
+                  ].map(({ icon: Icon, label }) => (
+                    <div key={label} className="flex items-center gap-2 rounded-full bg-white px-4 py-2.5 shadow-card ring-1 ring-ink/5">
+                      <Icon size={15} className="text-olive" />
+                      <span className="text-xs font-semibold text-ink">{label}</span>
+                    </div>
+                  ))}
                 </div>
-              ) : (
-                <div className="flex aspect-[4/5] w-full items-center justify-center rounded-[180px_180px_22px_22px] border-2 border-dashed border-ink/20">
-                  <p className="text-muted">Nutritionist photo — manage from admin panel</p>
-                </div>
-              )}
+              </motion.div>
             </motion.div>
           </div>
         </div>

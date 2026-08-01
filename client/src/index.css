@@ -55,6 +55,17 @@ h1, h2, h3, h4, h5, h6 {
     @apply inline-flex items-center justify-center gap-2 rounded-full bg-honey px-6 py-3.5 font-body text-[15px] font-semibold text-white shadow-soft transition-all duration-200 hover:brightness-105 hover:-translate-y-0.5;
   }
 
+  .btn-terracotta {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-terracotta px-7 py-4 font-body text-[15px] font-semibold text-white transition-all duration-200 hover:bg-terracotta-dark hover:-translate-y-0.5 focus:outline-none focus-visible:ring-4 focus-visible:ring-terracotta/30;
+    box-shadow: 0 14px 28px -14px rgba(201, 120, 88, 0.55);
+  }
+  .btn-terracotta:hover { box-shadow: 0 18px 34px -16px rgba(201, 120, 88, 0.65); }
+
+  .float-card {
+    @apply rounded-[22px] border border-ink/5 bg-white;
+    box-shadow: 0 24px 48px -24px rgba(20, 35, 27, 0.28);
+  }
+
   .glass {
     @apply border border-ink/10 bg-white/80 backdrop-blur-xl;
   }

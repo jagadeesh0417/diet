@@ -346,13 +346,13 @@ const GENERAL = {
 };
 
 const HOMEPAGE = {
-  heroTitle: "Real food. Real plans. Real results— built around you",
+  heroTitle: "Real food. Real plans. Real results—built around you.",
   heroSubtitle:
-    "At GOLZ (Giggles of Livez), Dr. Sushma Appaiah designs science-backed, fully customized nutrition plans to prevent and manage health disorders — without removing the food you enjoy. Online and in-clinic consultations available by appointment.",
-  heroBadge: "Mysuru-based personalized nutrition care since 2015",
+    "Science-backed, personalized nutrition plans designed to improve your health without giving up the foods you love. Online and in-clinic consultations available.",
+  heroBadge: "Personalized Nutrition Care Since 2015",
   heroImage: img("photo-1490645935967-10de6ba17061"),
-  heroPortrait: img("photo-1559839734-2b71ea197ec2"),
-  ctaPrimary: { label: "Book a consultation", link: "/contact" },
+  heroPortrait: img("photo-1511690656952-81f3050d6cda"),
+  ctaPrimary: { label: "Book a Consultation", link: "/contact" },
   ctaSecondary: { label: "Explore Services", link: "/services" },
   stats: [
     { value: 19, suffix: "+", label: "Years of science-backed nutrition care" },

@@ -12,6 +12,16 @@ export default {
           light: "#E7EEE4",
           soft: "#D6E2D1",
         },
+        terracotta: {
+          DEFAULT: "#C97858",
+          dark: "#B5694A",
+        },
+        olive: {
+          DEFAULT: "#6E8B5C",
+          dark: "#5C7A4C",
+        },
+        beige: "#F7F4EF",
+        cream: "#FFFDF8",
         paper: "#F7F8F5",
         sage: "#E7EEE4",
         sage2: "#D6E2D1",
