@@ -77,13 +77,13 @@ export default function About() {
       />
 
       {/* ================= STORY ================= */}
-      <section className="py-[84px]">
-        <div className="container-x grid items-center gap-14 lg:grid-cols-[0.9fr_1.1fr]">
+      <section className="section-pad">
+        <div className="container-x grid items-center gap-12 lg:grid-cols-[0.9fr_1.1fr] lg:gap-16">
           <Reveal className="relative order-2 lg:order-1">
             <div className="absolute -left-5 top-5 h-40 w-40 rounded-3xl bg-sage/60" />
             <div className="absolute -bottom-6 -right-6 h-44 w-44 rounded-full bg-lime/15 blur-2xl" />
             {a.image && (
-              <img src={a.image} alt={a.name} className="relative z-10 aspect-[4/5] w-full rounded-[180px_180px_22px_22px] object-cover shadow-lift" loading="lazy" />
+              <img src={a.image} alt={a.name} className="relative z-10 h-[360px] w-full rounded-[180px_180px_22px_22px] object-cover shadow-lift sm:h-[500px] lg:h-[600px]" loading="lazy" />
             )}
             <div className="glass absolute -bottom-7 left-10 z-20 rounded-[18px] px-7 py-4 shadow-card">
               <p className="font-heading text-2xl font-semibold text-primary">{a.experienceYears || 19}+</p>
@@ -106,7 +106,7 @@ export default function About() {
       </section>
 
       {/* ================= WHAT SHE HELPS WITH ================= */}
-      <section className="bg-section-sage py-[84px]">
+      <section className="bg-section-sage section-pad">
         <div className="container-x">
           <SectionHeading
             eyebrow="What She Helps With"
@@ -141,7 +141,7 @@ export default function About() {
       </section>
 
       {/* ================= SPECIAL NEEDS ================= */}
-      <section className="relative overflow-hidden bg-primary py-[84px]">
+      <section className="relative overflow-hidden bg-primary section-pad">
         <div className="absolute -right-32 top-0 h-96 w-96 rounded-full bg-sage/10 blur-3xl" aria-hidden="true" />
         <div className="absolute -left-24 bottom-0 h-72 w-72 rounded-full bg-lime/10 blur-3xl" aria-hidden="true" />
         <div className="container-x relative z-10 grid items-center gap-12 lg:grid-cols-2">
@@ -176,7 +176,7 @@ export default function About() {
       </section>
 
       {/* ================= CREDENTIALS ================= */}
-      <section className="py-[84px]">
+      <section className="section-pad">
         <div className="container-x">
           <SectionHeading eyebrow="Credentials" title="Formally Trained, Practically Experienced" />
           <div className="grid gap-5 sm:grid-cols-2">
@@ -195,7 +195,7 @@ export default function About() {
       </section>
 
       {/* ================= RECOGNITION ================= */}
-      <section className="bg-section-sage py-[84px]">
+      <section className="bg-section-sage section-pad">
         <div className="container-x">
           <SectionHeading
             eyebrow="Recognition"
@@ -221,7 +221,7 @@ export default function About() {
       </section>
 
       {/* ================= BEYOND THE CLINIC ================= */}
-      <section className="py-[84px]">
+      <section className="section-pad">
         <div className="container-x grid items-center gap-14 lg:grid-cols-2">
           <Reveal>
             <SectionHeading
@@ -258,9 +258,9 @@ export default function About() {
       </section>
 
       {/* ================= STATS ================= */}
-      <section className="pb-24">
+      <section className="section-pad pt-0">
         <div className="container-x">
-          <Reveal className="grid grid-cols-2 gap-8 rounded-[18px] bg-primary p-10 shadow-lift lg:grid-cols-4">
+          <Reveal className="grid grid-cols-2 gap-6 rounded-[24px] bg-primary p-8 shadow-lift sm:gap-8 sm:p-10 lg:grid-cols-4">
             {(a.stats || []).map((s) => (
               <div key={s.label} className="text-center">
                 <p className="font-heading text-4xl font-semibold text-lime">

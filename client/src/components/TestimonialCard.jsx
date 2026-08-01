@@ -7,7 +7,7 @@ function TestimonialCard({ item }) {
   const initial = (name.trim()[0] || "G").toUpperCase();
 
   return (
-    <article className="relative flex h-full w-full max-w-[380px] flex-col rounded-[20px] border border-[#EAEAEA] bg-white p-7 shadow-soft transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-card">
+    <article className="relative flex h-full w-full max-w-[380px] flex-col rounded-[24px] border border-[#EAEAEA] bg-white p-7 shadow-soft transition-all duration-300 ease-out hover:-translate-y-2 hover:shadow-card">
       <Quote size={42} strokeWidth={1.4} className="mb-5 text-lime" aria-hidden="true" />
 
       <header className="flex items-center justify-between gap-4">

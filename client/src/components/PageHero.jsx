@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 
 export default function PageHero({ title, subtitle, breadcrumb, image }) {
   return (
-    <section className="relative overflow-hidden bg-primary pb-20 pt-36 sm:pt-40">
+    <section className="relative overflow-hidden bg-primary pb-16 pt-[104px] sm:pb-20 lg:pt-[116px]">
       {image && (
         <div className="absolute inset-0">
           <img src={image} alt="" className="h-full w-full object-cover opacity-20" loading="lazy" />

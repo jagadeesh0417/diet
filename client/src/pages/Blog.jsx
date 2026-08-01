@@ -54,7 +54,7 @@ export default function Blog() {
         image="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=1600&q=70"
       />
 
-      <section className="py-16">
+      <section className="section-pad">
         <div className="container-x">
           <div className="mb-10 flex flex-col items-center gap-5">
             <div className="relative w-full max-w-xl">

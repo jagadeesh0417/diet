@@ -7,7 +7,7 @@ function TestimonialsSection({ items = [] }) {
   if (!items.length) return null;
 
   return (
-    <section className="relative overflow-hidden bg-primary py-[84px]">
+    <section className="relative overflow-hidden bg-primary section-pad">
       <div
         className="pointer-events-none absolute inset-0"
         style={{ background: "radial-gradient(circle at 15% 20%, rgba(255,255,255,0.07) 0%, transparent 45%), radial-gradient(circle at 85% 80%, rgba(163,198,68,0.09) 0%, transparent 50%)" }}
@@ -25,7 +25,7 @@ function TestimonialsSection({ items = [] }) {
           title="Real People. Real Transformations."
           subtitle="Before and after journeys from clients who trusted the process."
         />
-        <ul className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <ul className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 lg:gap-8">
           {items.map((t, i) => (
             <Reveal key={t._id || i} delay={(i % 3) * 0.12} className="flex justify-center">
               <li className="w-full max-w-[380px]">

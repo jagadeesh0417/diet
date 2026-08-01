@@ -98,7 +98,7 @@ export default function Contact() {
       />
       <PageHero title="Contact Us" subtitle="Have a question or ready to begin? We'd love to hear from you." breadcrumb={["Contact"]} />
 
-      <section className="py-20">
+      <section className="section-pad">
         <div className="container-x">
           {/* Info cards */}
           <div className="mb-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">

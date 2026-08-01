@@ -88,7 +88,7 @@ export default function BlogPost() {
         </div>
       </section>
 
-      <section className="py-16">
+      <section className="section-pad">
         <div className="container-x max-w-4xl">
           {blog.cover && (
             <img src={blog.cover} alt={blog.title} className="-mt-20 mb-10 aspect-video w-full rounded-[2rem] object-cover shadow-lift ring-8 ring-white" loading="lazy" />
@@ -138,7 +138,7 @@ export default function BlogPost() {
       </section>
 
       {related.length > 0 && (
-        <section className="bg-section-sage py-20">
+        <section className="bg-section-sage section-pad">
           <div className="container-x">
             <h2 className="mb-10 text-center font-heading text-3xl font-bold text-charcoal">Related Articles</h2>
             <div className="grid gap-7 md:grid-cols-3">

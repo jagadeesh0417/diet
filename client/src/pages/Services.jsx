@@ -80,7 +80,7 @@ export default function Services() {
         />
         <PageHero title={active.title} subtitle={active.shortDesc} breadcrumb={["Services", active.title]} image={active.image} />
 
-        <section className="py-20">
+        <section className="section-pad pt-0">
           <div className="container-x grid gap-12 lg:grid-cols-[1fr_380px]">
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
               <div className="mb-10 flex items-center gap-4">
@@ -210,22 +210,22 @@ export default function Services() {
       />
 
       {/* ================= HERO ================= */}
-      <section className="relative overflow-hidden bg-paper pb-20 pt-[120px] lg:pt-[150px]">
+      <section className="relative overflow-hidden bg-paper pb-14 pt-[100px] sm:pb-16 lg:pt-[116px]">
         <div className="absolute inset-0 bg-hero-pattern" aria-hidden="true" />
         <div className="absolute -right-40 top-40 h-[26rem] w-[26rem] rounded-full bg-sage blur-3xl" aria-hidden="true" />
         <div className="absolute -left-24 bottom-0 h-80 w-80 rounded-full bg-sage2/60 blur-3xl" aria-hidden="true" />
         <div className="container-x relative z-10">
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="max-w-3xl">
-            <span className="mb-7 inline-flex items-center gap-2 rounded-full border border-line bg-white/80 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-primary backdrop-blur">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }} className="mx-auto max-w-3xl text-center lg:mx-0 lg:text-left">
+            <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-line bg-white/80 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-primary backdrop-blur">
               <BadgeCheck size={15} /> Services
             </span>
-            <h1 className="font-heading text-5xl font-semibold leading-[1.05] tracking-tight text-ink sm:text-6xl lg:text-[68px]">
+            <h1 className="text-[34px] font-bold leading-[1.1] tracking-tight text-ink sm:text-5xl lg:text-[64px]">
               Nutrition &amp; care for every stage of life
             </h1>
-            <p className="mt-6 max-w-2xl text-lg leading-relaxed text-muted">
+            <p className="mx-auto mt-5 max-w-[600px] text-base leading-relaxed text-muted sm:text-lg lg:mx-0">
               From weight and diabetes to pregnancy, children's health and special needs â€” every plan is built around your body, your goals and your food habits. No fad diets. No crash plans. Just science-backed nutrition you can actually live with.
             </p>
-            <Link to="/contact" className="btn-primary mt-10">
+            <Link to="/contact" className="btn-primary mt-8 min-w-[200px] lg:min-w-[220px]">
               <CalendarCheck size={19} /> Book a Consultation
             </Link>
           </motion.div>
@@ -233,7 +233,7 @@ export default function Services() {
       </section>
 
       {/* ================= STICKY SUB-NAV ================= */}
-      <nav className="sticky top-[70px] z-40 border-b border-ink/10 bg-[rgba(247,248,245,0.9)] backdrop-blur-[10px]">
+      <nav className="sticky top-[72px] z-40 border-b border-ink/10 bg-[rgba(247,248,245,0.9)] backdrop-blur-[10px]">
         <div className="container-x flex items-center gap-1 overflow-x-auto py-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
           {CATEGORIES.map((cat) => (
             <a
@@ -259,10 +259,10 @@ export default function Services() {
 
       {/* ================= CATEGORY SECTIONS ================= */}
       {!services ? (
-        <section className="py-[84px]"><PageLoader label="Loading servicesâ€¦" /></section>
+        <section className="section-pad"><PageLoader label="Loading servicesâ€¦" /></section>
       ) : (
         grouped.map((cat) => (
-          <section key={cat.id} id={cat.id} className="scroll-mt-[140px] py-[84px] odd:bg-paper even:bg-white">
+          <section key={cat.id} id={cat.id} className="scroll-mt-[128px] section-pad odd:bg-paper even:bg-white">
             <div className="container-x">
               <SectionHeading
                 center={false}
@@ -279,7 +279,7 @@ export default function Services() {
       )}
 
       {orphans.length > 0 && (
-        <section id="more-services" className="scroll-mt-[140px] py-[84px] odd:bg-paper even:bg-white">
+        <section id="more-services" className="scroll-mt-[128px] section-pad odd:bg-paper even:bg-white">
           <div className="container-x">
             <SectionHeading
               center={false}
@@ -305,7 +305,7 @@ export default function Services() {
       )}
 
       {/* ================= HOW IT WORKS ================= */}
-      <section className="bg-primary py-[84px]">
+      <section className="bg-primary section-pad">
         <div className="container-x">
           <SectionHeading
             light

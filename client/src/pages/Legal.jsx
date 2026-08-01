@@ -30,7 +30,7 @@ export default function Legal({ type }) {
     <>
       <SEO title={content.title} description={`${content.title} for GOLZ (Giggles of Livez).`} />
       <PageHero title={content.title} breadcrumb={[content.title]} />
-      <section className="py-20">
+      <section className="section-pad">
         <div className="container-x max-w-3xl">
           <div className="space-y-6">
             {content.text.map((p) => (

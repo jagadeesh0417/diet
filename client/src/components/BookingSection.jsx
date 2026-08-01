@@ -1,4 +1,4 @@
-import { memo } from "react";
+﻿import { memo } from "react";
 import { Link } from "react-router-dom";
 import { MapPin, Clock3, Phone, Mail, Calendar, Navigation, MessageCircle } from "lucide-react";
 import { useSite } from "../context/SiteContext";
@@ -24,7 +24,7 @@ function IconTile({ Icon }) {
 
 function InfoCard({ icon, title, badge, children, footer }) {
   return (
-    <div className="group flex h-full flex-col rounded-[20px] border border-line bg-white p-7 shadow-soft transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-card">
+    <div className="group flex h-full flex-col rounded-[24px] border border-line bg-white p-7 shadow-soft transition-all duration-300 ease-out hover:-translate-y-1 hover:shadow-card">
       <div className="flex items-start justify-between gap-3">
         <div className="flex items-center gap-3.5">
           <IconTile Icon={icon} />
@@ -71,7 +71,7 @@ function BookingSection() {
   const waLink = `https://wa.me/${whatsapp}?text=${encodeURIComponent("Hi! I'd like to book a nutrition consultation.")}`;
 
   return (
-    <section className="bg-white py-[84px]">
+    <section className="bg-white section-pad">
       <div className="container-x">
         <SectionHeading
           title="Book Your Consultation"

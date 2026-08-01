@@ -1,4 +1,4 @@
-import { useEffect, useState, useCallback } from "react";
+﻿import { useEffect, useState, useCallback } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ChevronRight, CalendarCheck } from "lucide-react";
@@ -88,7 +88,7 @@ export default function Gallery() {
               <ChevronRight size={14} />
               <span className="text-[#EEF3EA]/90">Gallery</span>
             </nav>
-            <h1 className="font-heading text-5xl font-semibold leading-tight text-[#EEF3EA] sm:text-6xl">Gallery</h1>
+            <h1 className="text-4xl font-bold leading-tight text-[#EEF3EA] sm:text-5xl">Gallery</h1>
             <p className="mt-5 max-w-xl text-lg leading-relaxed text-[#DBE6D5]/80">
               Explore healthy recipes, inspiring client transformations, workshops, seminars, and moments from our nutrition clinic.
             </p>
@@ -97,7 +97,7 @@ export default function Gallery() {
       </section>
 
       {/* ================= GALLERY ================= */}
-      <section className="bg-paper py-[84px]">
+      <section className="bg-paper section-pad">
         <div className="container-x">
           <motion.div
             initial={{ opacity: 0, y: 12 }}
@@ -194,29 +194,29 @@ export default function Gallery() {
       </section>
 
       {/* ================= MOMENTS FROM GOLZ ================= */}
-      <section className="bg-section-sage py-[84px]">
+      <section className="bg-section-sage section-pad">
         <div className="container-x">
           <Reveal className="mx-auto max-w-2xl text-center">
             <span className="mb-5 inline-flex items-center rounded-full border border-primary/30 bg-white/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-primary">
               Moments from GOLZ
             </span>
-            <h2 className="font-heading text-4xl font-semibold leading-tight tracking-tight text-ink sm:text-5xl">
+            <h2 className="text-3xl font-bold leading-tight tracking-tight text-ink sm:text-4xl">
               A glimpse inside our clinic
             </h2>
-            <p className="mt-6 text-base leading-[1.8] text-muted">
+            <p className="mx-auto mt-5 max-w-[600px] text-base leading-[1.8] text-muted sm:text-lg">
               From healthy cooking workshops and awareness seminars to real client transformations and everyday life at the clinic — a window into how science-backed nutrition comes alive.
             </p>
           </Reveal>
 
-          <div className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-12 grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
             {STATS.map((s, i) => (
               <Reveal key={s.label} delay={i * 0.08}>
-                <div className="flex h-full flex-col items-center rounded-[20px] border border-line bg-white p-8 text-center shadow-soft transition-all duration-300 hover:-translate-y-1.5 hover:shadow-lift">
+                <div className="flex min-h-[170px] flex-col items-center justify-center rounded-[24px] border border-line bg-white p-6 text-center shadow-soft transition-all duration-300 hover:-translate-y-1.5 hover:shadow-lift">
                   <span className="text-3xl" aria-hidden="true">{s.icon}</span>
-                  <p className="mt-4 font-heading text-5xl font-semibold tracking-tight text-primary">
+                  <p className="mt-3 font-heading text-4xl font-bold tracking-tight text-primary sm:text-5xl">
                     <Counter value={s.value} suffix={s.suffix} />
                   </p>
-                  <p className="mt-2 text-sm font-medium text-muted">{s.label}</p>
+                  <p className="mt-1.5 text-sm font-medium text-muted">{s.label}</p>
                 </div>
               </Reveal>
             ))}
@@ -225,7 +225,7 @@ export default function Gallery() {
       </section>
 
       {/* ================= CTA ================= */}
-      <section className="relative overflow-hidden bg-primary py-[84px]">
+      <section className="relative overflow-hidden bg-primary section-pad">
         <div className="pointer-events-none absolute inset-0" style={{ background: "radial-gradient(circle at 20% 20%, rgba(255,255,255,0.06) 0%, transparent 45%), radial-gradient(circle at 80% 85%, rgba(163,198,68,0.1) 0%, transparent 50%)" }} aria-hidden="true" />
         <div className="pointer-events-none absolute -left-24 top-10 h-64 w-64 rounded-full border border-white/10" aria-hidden="true" />
         <div className="pointer-events-none absolute -right-20 bottom-6 h-72 w-72 rounded-full border border-white/10" aria-hidden="true" />

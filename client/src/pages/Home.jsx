@@ -75,32 +75,37 @@ export default function Home() {
       />
 
       {/* ================= HERO ================= */}
-      <section className="relative overflow-hidden bg-paper pb-20 pt-[120px] sm:pb-28 lg:pt-[150px]">
+      <section className="relative overflow-hidden bg-paper pb-16 pt-[100px] sm:pb-20 lg:pt-[120px]">
         <div className="absolute inset-0 bg-hero-pattern" aria-hidden="true" />
         <div className="absolute -right-32 top-24 h-[26rem] w-[26rem] rounded-full bg-olive/10 blur-3xl" aria-hidden="true" />
         <div className="absolute -left-24 bottom-0 h-96 w-96 rounded-full bg-terracotta/10 blur-3xl" aria-hidden="true" />
 
         <div className="container-x relative z-10">
-          <div className="grid w-full items-center gap-14 lg:grid-cols-[0.95fr_1.05fr]">
-            <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.7 }}>
+          <div className="grid w-full items-center gap-10 lg:grid-cols-2 lg:gap-14">
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7 }}
+              className="text-center lg:text-left"
+            >
               {h.heroBadge && (
-                <span className="mb-7 inline-flex items-center gap-2 rounded-full border border-ink/10 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-widest text-olive shadow-card">
+                <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-ink/10 bg-white px-4 py-2 text-xs font-semibold uppercase tracking-widest text-olive shadow-card">
                   <BadgeCheck size={15} /> {h.heroBadge}
                 </span>
               )}
-              <h1 className="font-heading text-5xl font-semibold leading-[1.05] tracking-tight text-ink sm:text-6xl lg:text-[68px]">
+              <h1 className="mx-auto max-w-[640px] text-[34px] font-bold leading-[1.1] tracking-tight text-ink sm:text-5xl lg:mx-0 lg:text-[64px] xl:text-[68px]">
                 {h.heroTitle || "Real food. Real plans. Real resultsâ€”built around you."}
               </h1>
-              <p className="mt-6 max-w-xl text-lg leading-relaxed text-muted">
+              <p className="mx-auto mt-5 max-w-[600px] text-base leading-relaxed text-muted sm:text-lg lg:mx-0 lg:text-xl">
                 {h.heroSubtitle || "Science-backed, personalized nutrition plans designed to improve your health without giving up the foods you love. Online and in-clinic consultations available."}
               </p>
-              <div className="mt-10">
-                <Link to={h.ctaPrimary?.link || "/contact"} className="btn-terracotta">
+              <div className="mt-8 flex justify-center lg:justify-start">
+                <Link to={h.ctaPrimary?.link || "/contact"} className="btn-terracotta min-w-[200px] lg:min-w-[220px]">
                   <CalendarCheck size={19} /> {h.ctaPrimary?.label || "Book a Consultation"}
                 </Link>
               </div>
 
-              <div className="mt-12 flex flex-wrap items-center gap-5">
+              <div className="mt-9 flex flex-wrap items-center justify-center gap-5 lg:justify-start">
                 <div className="flex -space-x-3">
                   {[11, 32, 13, 14, 15].map((n) => (
                     <img
@@ -112,8 +117,8 @@ export default function Home() {
                     />
                   ))}
                 </div>
-                <div>
-                  <p className="flex items-center gap-1.5 text-sm font-semibold text-ink">
+                <div className="text-center lg:text-left">
+                  <p className="flex items-center justify-center gap-1.5 text-sm font-semibold text-ink lg:justify-start">
                     <Star size={16} className="fill-honey text-honey" /> 4.8 Google Rating
                   </p>
                   <p className="mt-0.5 text-sm text-muted">500+ Happy Clients</p>
@@ -125,7 +130,7 @@ export default function Home() {
               initial={{ opacity: 0, scale: 0.94 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ duration: 0.8, delay: 0.15 }}
-              className="relative mx-auto w-full max-w-md"
+              className="relative mx-auto w-full max-w-[380px] sm:max-w-[440px] lg:max-w-[480px]"
             >
               <motion.div style={{ y: parallaxY }} className="relative">
                 <div className="absolute -inset-5 rounded-[32px] bg-gradient-to-br from-olive/15 via-beige to-terracotta/15 blur-2xl" aria-hidden="true" />
@@ -138,8 +143,9 @@ export default function Home() {
                     <img
                       src={h.heroPortrait}
                       alt="Nutritionist preparing a healthy salad"
-                      className="w-full rounded-[180px_180px_22px_22px] object-cover shadow-lift"
-                      loading="lazy"
+                      className="aspect-[4/5] h-auto w-full rounded-[180px_180px_22px_22px] object-cover shadow-lift"
+                      loading="eager"
+                      fetchpriority="high"
                     />
                   ) : (
                     <div className="flex aspect-[4/5] w-full items-center justify-center rounded-[180px_180px_22px_22px] border-2 border-dashed border-ink/20">
@@ -154,16 +160,16 @@ export default function Home() {
       </section>
 
       {/* ================= STATISTICS ================= */}
-      <section className="bg-sageLight py-[84px]">
+      <section className="bg-sageLight section-pad">
         <div className="container-x">
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
             {(h.stats || []).map((s, i) => (
               <Reveal key={s.label} delay={i * 0.08}>
-                <div className="group rounded-[24px] border border-ink/5 bg-white p-8 text-center shadow-soft transition-all duration-300 hover:-translate-y-1.5 hover:shadow-lift">
-                  <p className="font-heading text-6xl font-semibold tracking-tight text-primary">
+                <div className="group flex min-h-[170px] flex-col items-center justify-center rounded-[24px] border border-ink/5 bg-white p-6 text-center shadow-soft transition-all duration-300 hover:-translate-y-1.5 hover:shadow-lift">
+                  <p className="font-heading text-4xl font-bold tracking-tight text-primary sm:text-5xl">
                     <CountUp value={Number(s.value)} suffix={s.suffix} />
                   </p>
-                  <p className="mx-auto mt-3 max-w-[220px] text-sm font-medium leading-snug text-muted">{s.label}</p>
+                  <p className="mx-auto mt-2.5 max-w-[200px] text-sm font-medium leading-snug text-muted">{s.label}</p>
                 </div>
               </Reveal>
             ))}
@@ -172,16 +178,16 @@ export default function Home() {
       </section>
 
       {/* ================= MEET THE FOUNDER ================= */}
-      <section className="bg-white py-[84px]">
-        <div className="container-x grid items-center gap-16 lg:grid-cols-2">
-          <Reveal className="relative order-first lg:order-none">
+      <section className="bg-white section-pad">
+        <div className="container-x grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+          <Reveal className="relative order-first mx-auto w-full max-w-[520px] lg:order-none lg:max-w-none">
             <div className="absolute -inset-4 rounded-[36px] bg-gradient-to-br from-sage via-sage2/60 to-transparent blur-xl" aria-hidden="true" />
             <motion.div animate={{ y: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 6 }} className="relative">
               {h.aboutPreview?.image && (
                 <img
                   src={h.aboutPreview.image}
                   alt="Dr. Sushma Appaiah"
-                  className="aspect-[4/5] w-full rounded-[28px] object-cover shadow-lift"
+                  className="h-[360px] w-full rounded-[28px] object-cover shadow-lift sm:h-[500px] lg:h-[600px]"
                   loading="lazy"
                 />
               )}
@@ -192,15 +198,15 @@ export default function Home() {
             <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-line bg-white px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-primary shadow-card">
               <BadgeCheck size={14} /> About the Founder
             </span>
-            <h2 className="font-heading text-4xl font-semibold leading-tight text-ink sm:text-5xl">
+            <h2 className="text-3xl font-bold leading-tight text-ink sm:text-4xl lg:text-[46px]">
               {h.aboutPreview?.title || "Meet Dr. Sushma Appaiah"}
             </h2>
-            <div className="mx-auto mt-5 max-w-xl space-y-4 text-base leading-relaxed text-muted lg:mx-0">
+            <div className="mx-auto mt-5 max-w-[600px] space-y-4 text-base leading-relaxed text-muted lg:mx-0 lg:text-lg">
               {(h.aboutPreview?.text || "Dr. Sushma Appaiah is the Founder of GOLZ (Giggles of Livez) and a distinguished nutrition scientist with 19 years of experience in clinical nutrition, corporate wellness, and health counselling.").split(/\n{2,}/).map((para) => (
                 <p key={para.slice(0, 24)}>{para}</p>
               ))}
             </div>
-            <ul className="mx-auto mt-8 grid max-w-xl gap-3 text-left sm:grid-cols-2 lg:mx-0">
+            <ul className="mx-auto mt-8 grid max-w-[600px] gap-3 text-left sm:grid-cols-2 lg:mx-0">
               {(h.aboutPreview?.list || [
                 "Clinical Nutrition Expert",
                 "Lifestyle Disease Management",
@@ -213,10 +219,10 @@ export default function Home() {
               ))}
             </ul>
             <div className="mt-9 flex flex-col items-center gap-4 sm:flex-row sm:justify-center lg:justify-start">
-              <Link to={h.aboutPreview?.buttonLink || "/about"} className="btn-primary w-full sm:w-auto">
+              <Link to={h.aboutPreview?.buttonLink || "/about"} className="btn-primary w-full sm:w-auto sm:min-w-[200px]">
                 {h.aboutPreview?.buttonLabel || "Know More"} <ArrowRight size={18} />
               </Link>
-              <Link to="/contact" className="btn-outline w-full sm:w-auto">
+              <Link to="/contact" className="btn-outline w-full sm:w-auto sm:min-w-[200px]">
                 Book Consultation <ArrowUpRight size={18} />
               </Link>
             </div>
@@ -225,33 +231,33 @@ export default function Home() {
       </section>
 
       {/* ================= SERVICES ================= */}
-      <section className="bg-white py-[84px]">
+      <section className="bg-white section-pad">
         <div className="container-x">
           <Reveal className="mx-auto max-w-[900px] text-center">
             <span className="mb-6 inline-flex items-center rounded-full border border-primary/30 bg-primary/5 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-primary">
               Services
             </span>
-            <h2 className="font-heading text-4xl font-semibold leading-tight tracking-tight text-ink sm:text-5xl">
+            <h2 className="text-3xl font-bold leading-tight tracking-tight text-ink sm:text-4xl lg:text-[46px]">
               Nutrition &amp; Care for Every Stage to Meet Your Goals &amp; Health Needs
             </h2>
-            <p className="mx-auto mt-6 max-w-[820px] text-base leading-[1.8] text-muted sm:text-[17px]">
+            <p className="mx-auto mt-5 max-w-[600px] text-base leading-[1.8] text-muted sm:text-lg">
               From weight management and diabetes care to pregnancy, children's nutrition, sports nutrition, oncology, and healthy aging, every nutrition plan is personalized to your body, goals, medical history, and food preferences.
             </p>
           </Reveal>
 
-          <div className="mt-16 grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
             {(site.services || []).map((s, i) => {
               const Icon = ICON_MAP.get(s.icon) || ICON_MAP.get("Sparkles");
               return (
                 <Reveal key={s._id} delay={(i % 3) * 0.08} className="h-full">
                   <Link
                     to={`/services/${s.slug}`}
-                    className="group flex min-h-[280px] flex-col rounded-[24px] border border-[#ECECEC] bg-white p-8 transition-all duration-300 ease-out hover:-translate-y-2 hover:border-transparent hover:shadow-lift"
+                    className="group flex h-full min-h-[240px] flex-col rounded-[24px] border border-[#ECECEC] bg-white p-7 transition-all duration-300 ease-out hover:-translate-y-2 hover:border-transparent hover:shadow-lift sm:p-8"
                   >
                     <span className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/5 text-primary transition-transform duration-300 ease-out group-hover:scale-110">
                       {Icon && <Icon size={26} />}
                     </span>
-                    <h3 className="font-heading text-2xl font-semibold leading-snug text-ink transition-colors group-hover:text-primary">
+                    <h3 className="text-xl font-bold leading-snug text-ink transition-colors group-hover:text-primary sm:text-2xl">
                       {s.title}
                     </h3>
                     <p className="mt-3 text-[15px] leading-[1.8] text-muted">{s.shortDesc}</p>
@@ -264,21 +270,21 @@ export default function Home() {
       </section>
 
       {/* ================= HOW IT WORKS ================= */}
-      <section className="bg-section-sage py-[84px]">
+      <section className="bg-section-sage section-pad">
         <div className="container-x">
           <Reveal className="mx-auto max-w-[820px] text-center">
             <span className="mb-6 inline-flex items-center rounded-full border border-primary/30 bg-white/80 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-primary">
               Steps
             </span>
-            <h2 className="font-heading text-4xl font-semibold leading-tight tracking-tight text-ink sm:text-5xl">
+            <h2 className="text-3xl font-bold leading-tight tracking-tight text-ink sm:text-4xl lg:text-[46px]">
               How It Works
             </h2>
-            <p className="mx-auto mt-6 max-w-[700px] text-base leading-[1.8] text-muted sm:text-[17px]">
+            <p className="mx-auto mt-5 max-w-[600px] text-base leading-[1.8] text-muted sm:text-lg">
               Precision nutrition, step by step â€” every plan is built on real data about your body and fine-tuned as you progress.
             </p>
           </Reveal>
 
-          <div className="mt-16 grid gap-12 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
+          <div className="mt-12 grid gap-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-8">
             {[
               {
                 no: "01",
@@ -303,11 +309,11 @@ export default function Home() {
             ].map((step, i) => (
               <Reveal key={step.no} delay={i * 0.08}>
                 <div className="relative h-full">
-                  <p className="font-heading text-6xl font-semibold leading-none text-primary/15 transition-colors duration-300 hover:text-primary/30">
+                  <p className="text-6xl font-bold leading-none text-primary/15 transition-colors duration-300 hover:text-primary/30">
                     {step.no}
                   </p>
                   <span className="mt-5 block h-px w-12 bg-lime" />
-                  <h3 className="mt-4 font-heading text-xl font-semibold leading-snug text-ink">{step.title}</h3>
+                  <h3 className="mt-4 text-xl font-bold leading-snug text-ink">{step.title}</h3>
                   <p className="mt-3 text-[15px] leading-[1.8] text-muted">{step.text}</p>
                 </div>
               </Reveal>
@@ -317,14 +323,14 @@ export default function Home() {
       </section>
 
       {/* ================= GALLERY ================= */}
-      <section className="py-[84px]">
+      <section className="section-pad">
         <div className="container-x">
           <SectionHeading
             eyebrow="Gallery"
             title="Moments From Our Journey"
             subtitle="Recipes, workshops, events and real client transformations."
           />
-          <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
             {site.gallery.slice(0, 8).map((g, i) => (
               <Reveal key={g._id} delay={(i % 4) * 0.06}>
                 <Link to="/gallery" className="group relative block overflow-hidden rounded-2xl" aria-label={`View ${g.caption || "gallery item"}`}>
@@ -343,14 +349,14 @@ export default function Home() {
               </Reveal>
             ))}
           </div>
-          <Reveal className="mt-12 text-center">
+          <Reveal className="mt-10 text-center">
             <Link to="/gallery" className="btn-primary"><Camera size={18} /> View Gallery</Link>
           </Reveal>
         </div>
       </section>
 
       {/* ================= TESTIMONIALS ================= */}
-      <Suspense fallback={<section className="bg-primary py-[84px]" aria-hidden="true" />}>
+      <Suspense fallback={<section className="bg-primary section-pad" aria-hidden="true" />}>
         <TestimonialsSection items={site.testimonials} />
       </Suspense>
 
@@ -358,7 +364,7 @@ export default function Home() {
       <BookingSection />
 
       {/* ================= CTA ================= */}
-      <section className="relative overflow-hidden py-[84px]">
+      <section className="relative overflow-hidden section-pad">
         {h.cta?.image && (
           <div className="absolute inset-0">
             <img src={h.cta.image} alt="" className="h-full w-full object-cover" loading="lazy" />
@@ -367,12 +373,12 @@ export default function Home() {
         )}
         <div className="container-x relative z-10 text-center">
           <Reveal>
-            <h2 className="mx-auto max-w-3xl text-3xl font-bold leading-tight text-white sm:text-5xl">
+            <h2 className="mx-auto max-w-3xl text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
               {h.cta?.title || "Ready to Start Your Health Journey?"}
             </h2>
-            <p className="mx-auto mt-5 max-w-xl text-lg text-white/80">{h.cta?.subtitle || "Book your consultation today."}</p>
+            <p className="mx-auto mt-5 max-w-[600px] text-base leading-relaxed text-white/80 sm:text-lg">{h.cta?.subtitle || "Book your consultation today."}</p>
             <div className="mt-9">
-              <button onClick={() => navigate(h.cta?.buttonLink || "/contact")} className="btn-lime">
+              <button onClick={() => navigate(h.cta?.buttonLink || "/contact")} className="btn-lime min-w-[200px] lg:min-w-[220px]">
                 {h.cta?.buttonLabel || "Book Now"} <ArrowRight size={18} />
               </button>
             </div>
