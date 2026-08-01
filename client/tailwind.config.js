@@ -38,6 +38,7 @@ export default {
       },
       fontFamily: {
         heading: ["Fraunces", "serif"],
+        display: ["Poppins", "sans-serif"],
         body: ["Inter", "sans-serif"],
       },
       boxShadow: {

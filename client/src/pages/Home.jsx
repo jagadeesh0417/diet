@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import {
   ArrowRight, CalendarCheck, ShieldCheck, ClipboardList, MonitorSmartphone, FlaskConical,
-  Star, ArrowUpRight, BadgeCheck, Camera, Check, MapPin, Clock, Phone,
+  Star, ArrowUpRight, BadgeCheck, Camera, Check,
 } from "lucide-react";
 import { useSite } from "../context/SiteContext";
 import SEO from "../components/SEO";
@@ -376,63 +376,76 @@ export default function Home() {
         <TestimonialsSection items={site.testimonials} />
       </Suspense>
 
-      {/* ================= LOCATION & CONTACT ================= */}
-      <section className="bg-section-sage py-24 sm:py-28">
+      {/* ================= BOOK APPOINTMENT ================= */}
+      <section className="py-16 sm:py-24">
         <div className="container-x">
-          <SectionHeading
-            eyebrow="Location & Contact"
-            title="How to book appointment"
-          />
-          <div className="grid gap-8 lg:grid-cols-2">
-            <Reveal className="h-full">
-              <div className="flex h-full flex-col rounded-[24px] border border-[#ECECEC] bg-white p-8 shadow-soft sm:p-10">
-                <span className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                  <MapPin size={26} />
+          <div className="mx-auto max-w-[1200px] rounded-[20px] bg-[#FAF8F5] px-6 py-16 shadow-[0_40px_80px_-40px_rgba(20,35,27,0.18)] sm:px-10 lg:px-20 lg:py-[100px]">
+            <div className="grid items-center gap-12 md:grid-cols-[55fr_45fr] md:gap-14 lg:grid-cols-2">
+              <Reveal>
+                <span className="inline-flex items-center gap-2 rounded-full border border-gray-200 bg-white px-4 py-2 text-sm font-medium text-ink">
+                  📍 Location &amp; Contact
                 </span>
-                <h3 className="font-heading text-2xl font-semibold text-ink">Clinic Locations</h3>
-                <address className="mt-6 space-y-5 not-italic">
-                  {[
-                    "@Kshema Healthcare, #338, Bogadi main road, Bogadi, Mysuru, Karnataka 570026",
-                    "#1286, 15A Cross, Roopanagar, Mysuru",
-                  ].map((line, i) => (
-                    <p key={line} className="flex items-start gap-3.5 text-[15px] leading-[1.7] text-muted">
-                      <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">
-                        {i + 1}
-                      </span>
-                      {line}
-                    </p>
-                  ))}
-                </address>
-              </div>
-            </Reveal>
+                <h2 className="mt-6 font-display text-[40px] font-bold leading-[1.1] text-[#111111] sm:text-[48px] lg:text-[56px]">
+                  How to Book Appointment
+                </h2>
 
-            <Reveal delay={0.1} className="h-full">
-              <div className="flex h-full flex-col rounded-[24px] border border-[#ECECEC] bg-white p-8 shadow-soft sm:p-10">
-                <span className="mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                  <Phone size={26} />
-                </span>
-                <h3 className="font-heading text-2xl font-semibold text-ink">Timings & Contact</h3>
-                <dl className="mt-6 space-y-5">
-                  <div className="flex items-center gap-3.5">
-                    <Clock size={20} className="shrink-0 text-primary" />
-                    <dt className="w-24 shrink-0 text-sm font-semibold text-ink">Timings</dt>
-                    <dd className="text-[15px] leading-[1.7] text-muted">10:30 am – 5:00 pm</dd>
+                <div className="mt-10 space-y-12">
+                  <div>
+                    <h3 className="font-display text-[28px] font-bold text-[#111111]">Clinic Location</h3>
+                    <div className="mt-4 space-y-4 text-lg leading-relaxed text-[#555555]">
+                      <p className="whitespace-pre-line">
+                        {`1. ${site.general?.address || "@Kshema Healthcare,\n#338, Bogadi Main Road,\nBogadi,\nMysuru,\nKarnataka – 570026"}`}
+                      </p>
+                      <p className="whitespace-pre-line">
+                        {`2. #1286,\n15A Cross,\nRoopanagar,\nMysuru`}
+                      </p>
+                    </div>
                   </div>
-                  <div className="flex items-center gap-3.5">
-                    <Phone size={20} className="shrink-0 text-primary" />
-                    <dt className="w-24 shrink-0 text-sm font-semibold text-ink">Contact</dt>
-                    <dd>
-                      <a
-                        href={`tel:${(site.general?.phone || "+91 934-267-4406").replace(/[^+\d]/g, "")}`}
-                        className="text-[15px] font-semibold text-primary underline-offset-4 transition hover:underline"
-                      >
-                        {site.general?.phone || "+91 934-267-4406"}
-                      </a>
-                    </dd>
+
+                  <div>
+                    <h3 className="font-display text-[28px] font-bold text-[#111111]">Timings</h3>
+                    <p className="mt-4 text-lg leading-relaxed text-[#555555]">10:30 AM – 5:00 PM</p>
                   </div>
-                </dl>
-              </div>
-            </Reveal>
+
+                  <div>
+                    <h3 className="font-display text-[28px] font-bold text-[#111111]">Contact</h3>
+                    <div className="mt-4 space-y-1 text-lg leading-relaxed text-[#555555]">
+                      <p>
+                        Phone:{" "}
+                        <a
+                          href={`tel:${(site.general?.phone || "+91 934-267-4406").replace(/[^+\d]/g, "")}`}
+                          className="font-semibold text-primary underline-offset-4 transition hover:underline"
+                        >
+                          {site.general?.phone || "+91 934-267-4406"}
+                        </a>
+                      </p>
+                      <p>
+                        Email:{" "}
+                        <a
+                          href={`mailto:${site.general?.email || "nutrigolz@gmail.com"}`}
+                          className="font-semibold text-primary underline-offset-4 transition hover:underline"
+                        >
+                          {site.general?.email || "nutrigolz@gmail.com"}
+                        </a>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </Reveal>
+
+              <Reveal delay={0.12}>
+                <div className="overflow-hidden rounded-[20px] shadow-soft transition-transform duration-300 ease-out hover:scale-[1.02]">
+                  <iframe
+                    src={site.general?.mapEmbed || "https://maps.google.com/maps?q=Bogadi%20Main%20Road%20Mysuru%20Karnataka%20570026&t=&z=14&ie=UTF8&iwloc=&output=embed"}
+                    title="GOLZ clinic location map"
+                    className="h-[350px] w-full border-0 md:h-[650px]"
+                    loading="lazy"
+                    allowFullScreen
+                    referrerPolicy="no-referrer-when-downgrade"
+                  />
+                </div>
+              </Reveal>
+            </div>
           </div>
         </div>
       </section>
