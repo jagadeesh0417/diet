@@ -92,7 +92,11 @@ export default function About() {
           </Reveal>
           <div className="order-1 lg:order-2">
             <SectionHeading center={false} eyebrow="The Story" title={a.name || "Your Nutritionist"} />
-            <p className="mt-5 text-base leading-relaxed text-ink/75">{a.story}</p>
+            <div className="mt-5 space-y-4 text-base leading-relaxed text-ink/75">
+              {(a.story || "").split(/\n{2,}/).map((para) => (
+                <p key={para.slice(0, 24)}>{para}</p>
+              ))}
+            </div>
             <p className="mt-6 rounded-[18px] border border-line bg-sage/50 p-6 text-[15px] leading-relaxed text-ink/75">
               <Quote size={20} className="mb-2 text-primary" />
               {a.approach}

@@ -286,9 +286,11 @@ export default function Home() {
             <h2 className="font-heading text-4xl font-semibold leading-tight text-ink sm:text-5xl">
               {h.aboutPreview?.title || "Meet Dr. Sushma Appaiah"}
             </h2>
-            <p className="mx-auto mt-5 max-w-xl text-base leading-relaxed text-muted lg:mx-0">
-              {h.aboutPreview?.text || "Dr. Sushma Appaiah is a certified clinical nutritionist with over 20 years of experience helping individuals and families achieve better health through sustainable nutrition. Her approach combines evidence-based science with personalized meal planning to create lasting lifestyle changes."}
-            </p>
+            <div className="mx-auto mt-5 max-w-xl space-y-4 text-base leading-relaxed text-muted lg:mx-0">
+              {(h.aboutPreview?.text || "Dr. Sushma Appaiah is the Founder of GOLZ (Giggles of Livez) and a distinguished nutrition scientist with 19 years of experience in clinical nutrition, corporate wellness, and health counselling.").split(/\n{2,}/).map((para) => (
+                <p key={para.slice(0, 24)}>{para}</p>
+              ))}
+            </div>
             <ul className="mx-auto mt-8 grid max-w-xl gap-3 text-left sm:grid-cols-2 lg:mx-0">
               {(h.aboutPreview?.list || [
                 "Clinical Nutrition Expert",
