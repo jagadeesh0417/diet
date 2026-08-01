@@ -25,7 +25,7 @@ const AVATARS = [
   "https://i.pravatar.cc/96?img=15",
 ];
 
-function CountUp({ value, suffix = "" }) {
+function CountUp({ value, suffix = "", compact = false }) {
   const [display, setDisplay] = useState(0);
   const ref = useRef(null);
   const started = useRef(false);
@@ -53,9 +53,11 @@ function CountUp({ value, suffix = "" }) {
     return () => obs.disconnect();
   }, [value]);
 
+  const shown = compact && value >= 1000 ? `${Math.round(display / 1000)}k` : display.toLocaleString("en-IN");
+
   return (
     <span ref={ref}>
-      {display.toLocaleString("en-IN")}
+      {shown}
       {suffix}
     </span>
   );
@@ -146,6 +148,17 @@ export default function Home() {
                     <span className="text-sm font-medium text-muted">Google Rating</span>
                   </p>
                 </div>
+              </div>
+
+              <div className="mt-12 grid max-w-xl grid-cols-2 gap-x-8 gap-y-8 sm:grid-cols-4">
+                {(h.stats || []).map((s) => (
+                  <div key={s.label} className="border-l-2 border-primary/25 pl-4">
+                    <p className="font-heading text-3xl font-semibold text-ink">
+                      <CountUp value={Number(s.value)} suffix={s.suffix || ""} compact={s.compact} />
+                    </p>
+                    <p className="mt-1 text-xs font-medium leading-snug text-muted">{s.label}</p>
+                  </div>
+                ))}
               </div>
             </motion.div>
 
