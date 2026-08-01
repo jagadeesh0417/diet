@@ -1,11 +1,18 @@
 ﻿import { memo, useCallback, useEffect, useMemo, useRef, useState } from "react";
-import { motion, useMotionValue, animate, useReducedMotion } from "framer-motion";
+import { motion, useMotionValue, useSpring, animate, useReducedMotion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import Reveal from "./Reveal";
+import Counter from "./Counter";
 import TestimonialCard from "./TestimonialCard";
 
-const GAP = 24;
-const AUTOPLAY_MS = 4500;
+const GAP = 32;
+const AUTOPLAY_MS = 6000;
+
+const TRUST_STATS = [
+  { value: 500, suffix: "+", label: "Happy Clients", decimals: 0 },
+  { value: 4.9, suffix: "/5", label: "Average Rating", decimals: 1 },
+  { value: 95, suffix: "%", label: "Goal Achievement", decimals: 0 },
+];
 
 function usePerPage() {
   const [perPage, setPerPage] = useState(() => {
@@ -29,6 +36,50 @@ function usePerPage() {
   }, []);
 
   return perPage;
+}
+
+function TiltCard({ children }) {
+  const ref = useRef(null);
+  const rx = useMotionValue(0);
+  const ry = useMotionValue(0);
+  const srx = useSpring(rx, { stiffness: 220, damping: 22, mass: 0.6 });
+  const sry = useSpring(ry, { stiffness: 220, damping: 22, mass: 0.6 });
+  const reduced = useReducedMotion();
+  const [canTilt, setCanTilt] = useState(false);
+
+  useEffect(() => {
+    const mq = window.matchMedia("(hover: hover) and (pointer: fine)");
+    setCanTilt(mq.matches);
+    const onChange = (e) => setCanTilt(e.matches);
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, []);
+
+  const onMove = (e) => {
+    if (!canTilt || reduced || !ref.current) return;
+    const r = ref.current.getBoundingClientRect();
+    const px = (e.clientX - r.left) / r.width - 0.5;
+    const py = (e.clientY - r.top) / r.height - 0.5;
+    ry.set(px * 5);
+    rx.set(-py * 5);
+  };
+
+  const onLeave = () => {
+    rx.set(0);
+    ry.set(0);
+  };
+
+  return (
+    <motion.div
+      ref={ref}
+      onMouseMove={onMove}
+      onMouseLeave={onLeave}
+      style={{ rotateX: srx, rotateY: sry, transformStyle: "preserve-3d" }}
+      className="h-full will-change-transform"
+    >
+      {children}
+    </motion.div>
+  );
 }
 
 function TestimonialsSection({ items = [] }) {
@@ -75,7 +126,7 @@ function TestimonialsSection({ items = [] }) {
       if (instant || reduced) {
         x.set(targetX);
       } else {
-        animate(x, targetX, { duration: 0.55, ease: [0.22, 1, 0.36, 1] });
+        animate(x, targetX, { duration: 0.6, ease: [0.22, 1, 0.36, 1] });
       }
       setPos(clamped);
     },
@@ -122,11 +173,11 @@ function TestimonialsSection({ items = [] }) {
   if (T === 0) return null;
 
   const arrowBase =
-    "flex items-center justify-center rounded-full border border-white/15 bg-white/[0.08] text-white backdrop-blur-xl transition-all duration-300 hover:scale-105 hover:bg-white/20 active:scale-95";
+    "flex items-center justify-center rounded-full border border-[#D4AF37]/40 bg-white/[0.06] text-[#F0C75E] backdrop-blur-xl transition-all duration-300 hover:scale-105 hover:bg-[#D4AF37]/20 hover:text-white active:scale-95";
 
   return (
     <section
-      className="relative overflow-hidden bg-gradient-to-b from-primary-darker via-[#12392A] to-primary section-pad"
+      className="relative overflow-hidden bg-gradient-to-b from-[#0B3D2E] via-[#14532D] to-[#1B4332] py-[80px] md:py-[100px] lg:py-[120px]"
       aria-roledescription="carousel"
       aria-label="Client success stories"
       onPointerEnter={() => setPaused(true)}
@@ -136,82 +187,109 @@ function TestimonialsSection({ items = [] }) {
         className="pointer-events-none absolute inset-0"
         style={{
           background:
-            "radial-gradient(circle at 12% 15%, rgba(163,198,68,0.12) 0%, transparent 45%), radial-gradient(circle at 88% 80%, rgba(255,255,255,0.06) 0%, transparent 40%)",
+            "radial-gradient(circle at 12% 12%, rgba(212,175,55,0.10) 0%, transparent 42%), radial-gradient(circle at 90% 20%, rgba(255,255,255,0.05) 0%, transparent 38%), radial-gradient(circle at 50% 100%, rgba(22,163,74,0.12) 0%, transparent 45%)",
         }}
         aria-hidden="true"
       />
-      <div className="pointer-events-none absolute -left-28 top-32 h-96 w-96 rounded-full bg-lime/[0.07] blur-3xl" aria-hidden="true" />
-      <div className="pointer-events-none absolute -right-24 bottom-20 h-[26rem] w-[26rem] rounded-full bg-white/[0.05] blur-3xl" aria-hidden="true" />
-      <div className="pointer-events-none absolute -right-10 top-24 h-64 w-64 rounded-full border border-white/10" aria-hidden="true" />
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.04]"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E\")",
-        }}
-        aria-hidden="true"
-      />
+      <div className="pointer-events-none absolute -left-32 top-1/3 h-[24rem] w-[24rem] rounded-full bg-[#D4AF37]/[0.07] blur-3xl" aria-hidden="true" />
+      <div className="pointer-events-none absolute -right-28 top-24 h-80 w-80 rounded-full bg-[#16A34A]/[0.08] blur-3xl" aria-hidden="true" />
+      <div className="pointer-events-none absolute -right-16 bottom-10 h-72 w-72 rounded-full border border-white/[0.06]" aria-hidden="true" />
 
       <div className="container-x relative z-10">
-        <Reveal className="mx-auto mb-12 max-w-2xl text-center sm:mb-14">
-          <span className="mb-5 inline-flex items-center gap-2.5 rounded-full border border-white/15 bg-white/[0.08] px-4 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-[#B9CFB0] backdrop-blur">
-            <span className="h-1.5 w-1.5 rounded-full bg-lime" aria-hidden="true" /> Success Stories
+        <Reveal className="mx-auto mb-14 max-w-3xl text-center">
+          <span className="mb-6 inline-flex items-center gap-2.5 rounded-full border border-[#D4AF37]/30 bg-[#D4AF37]/10 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-[#F0C75E]">
+            <span className="h-1.5 w-1.5 rounded-full bg-[#D4AF37]" aria-hidden="true" /> Success Stories
           </span>
-          <h2 className="text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-[46px]">
-            Real Transformations. <span className="text-lime">Real Results.</span>
+          <h2 className="text-[38px] font-bold leading-[1.1] text-white sm:text-[48px] lg:text-[56px]">
+            Real Transformations.{" "}
+            <span className="bg-gradient-to-r from-[#E6C05A] to-[#D4AF37] bg-clip-text text-transparent">Real Results.</span>
           </h2>
-          <p className="mx-auto mt-5 max-w-[600px] text-base leading-relaxed text-[#A9C0A0] sm:text-lg">
-            Read inspiring journeys from our clients who transformed their health with personalized nutrition plans.
+          <p className="mx-auto mt-6 max-w-[640px] text-lg leading-relaxed text-white/70 sm:text-xl">
+            Read inspiring journeys from our clients who transformed their health with personalized nutrition care.
           </p>
         </Reveal>
 
-        {carousel ? (
-          <div
-            ref={viewportRef}
-            className="relative overflow-hidden py-8 -my-8"
-            onFocus={() => setPaused(true)}
-            onBlur={() => setPaused(false)}
-          >
-            <motion.div
-              className="flex cursor-grab active:cursor-grabbing"
-              style={{ x, touchAction: "pan-y" }}
-              drag="x"
-              dragConstraints={{ left: -(maxPos * step + 160), right: 160 }}
-              dragElastic={0.1}
-              dragMomentum={false}
-              onDragStart={() => setDragging(true)}
-              onDragEnd={handleDragEnd}
-            >
-              {track.map((t, i) => (
-                <div
-                  key={i}
-                  className="h-auto shrink-0"
-                  style={{ width: step, paddingRight: i === track.length - 1 ? 0 : GAP }}
-                >
-                  <TestimonialCard item={t} />
-                </div>
-              ))}
-            </motion.div>
+        <div className="mx-auto mb-14 grid max-w-3xl grid-cols-1 gap-4 sm:grid-cols-3">
+          {TRUST_STATS.map((s, i) => (
+            <Reveal key={s.label} delay={i * 0.1}>
+              <div className="rounded-2xl border border-white/10 bg-white/[0.06] px-6 py-5 text-center backdrop-blur transition-all duration-300 hover:-translate-y-1 hover:border-[#D4AF37]/30">
+                <p className="font-heading text-3xl font-bold text-[#D4AF37]">
+                  <Counter value={s.value} suffix={s.suffix} decimals={s.decimals} />
+                </p>
+                <p className="mt-1 text-sm font-medium text-white/70">{s.label}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
 
-            <button onClick={prev} aria-label="Previous testimonials" className={`${arrowBase} absolute left-0 top-1/2 z-10 hidden -translate-y-1/2 p-3 sm:flex`}>
-              <ChevronLeft size={22} />
-            </button>
-            <button onClick={next} aria-label="Next testimonials" className={`${arrowBase} absolute right-0 top-1/2 z-10 hidden -translate-y-1/2 p-3 sm:flex`}>
-              <ChevronRight size={22} />
-            </button>
-          </div>
+        {carousel ? (
+          <motion.div
+            initial={{ opacity: 0, y: 32 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-60px" }}
+            transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+            className="relative"
+            onKeyDown={(e) => {
+              if (e.key === "ArrowLeft") { e.preventDefault(); prev(); }
+              if (e.key === "ArrowRight") { e.preventDefault(); next(); }
+            }}
+          >
+            <div className="pointer-events-none absolute inset-x-8 top-1/2 -translate-y-1/2">
+              <div className="absolute left-[8%] top-0 h-56 w-56 -translate-y-1/2 rounded-full bg-[#D4AF37]/[0.08] blur-3xl" aria-hidden="true" />
+              <div className="absolute right-[6%] bottom-0 h-64 w-64 translate-y-1/2 rounded-full bg-[#16A34A]/[0.1] blur-3xl" aria-hidden="true" />
+            </div>
+
+            <div
+              ref={viewportRef}
+              className="relative overflow-hidden py-8 -my-8"
+              onFocus={() => setPaused(true)}
+              onBlur={() => setPaused(false)}
+            >
+              <motion.div
+                className="flex cursor-grab active:cursor-grabbing"
+                style={{ x, touchAction: "pan-y" }}
+                drag="x"
+                dragConstraints={{ left: -(maxPos * step + 160), right: 160 }}
+                dragElastic={0.1}
+                dragMomentum={false}
+                onDragStart={() => setDragging(true)}
+                onDragEnd={handleDragEnd}
+              >
+                {track.map((t, i) => (
+                  <div
+                    key={i}
+                    className="h-auto shrink-0"
+                    style={{ width: step, paddingRight: i === track.length - 1 ? 0 : GAP }}
+                  >
+                    <TiltCard>
+                      <TestimonialCard item={t} />
+                    </TiltCard>
+                  </div>
+                ))}
+              </motion.div>
+
+              <button onClick={prev} aria-label="Previous testimonials" className={`${arrowBase} absolute left-0 top-1/2 z-10 hidden -translate-y-1/2 p-3 sm:flex`}>
+                <ChevronLeft size={22} />
+              </button>
+              <button onClick={next} aria-label="Next testimonials" className={`${arrowBase} absolute right-0 top-1/2 z-10 hidden -translate-y-1/2 p-3 sm:flex`}>
+                <ChevronRight size={22} />
+              </button>
+            </div>
+          </motion.div>
         ) : (
-          <div className="flex flex-wrap items-stretch justify-center gap-6">
+          <div className="flex flex-wrap items-stretch justify-center gap-8">
             {list.map((t) => (
-              <div key={t._id} className="w-full sm:w-[calc(50%-12px)] lg:w-[360px]">
-                <TestimonialCard item={t} />
+              <div key={t._id} className="w-full sm:w-[calc(50%-16px)] lg:w-[380px]">
+                <TiltCard>
+                  <TestimonialCard item={t} />
+                </TiltCard>
               </div>
             ))}
           </div>
         )}
 
         {carousel && (
-          <div className="mt-6 flex items-center justify-center gap-5">
+          <div className="mt-8 flex items-center justify-center gap-5">
             <button onClick={prev} aria-label="Previous testimonials" className={`${arrowBase} h-9 w-9 sm:hidden`}>
               <ChevronLeft size={18} />
             </button>
@@ -223,8 +301,8 @@ function TestimonialsSection({ items = [] }) {
                   aria-selected={i === pos % T}
                   aria-label={`Go to testimonial ${i + 1}`}
                   onClick={() => goTo(i)}
-                  className={`h-2.5 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-4 focus-visible:ring-lime/40 ${
-                    i === pos % T ? "w-8 bg-lime" : "w-2.5 bg-white/25 hover:bg-white/50"
+                  className={`h-2.5 rounded-full transition-all duration-300 focus:outline-none focus-visible:ring-4 focus-visible:ring-[#D4AF37]/40 ${
+                    i === pos % T ? "w-8 bg-[#D4AF37]" : "w-2.5 bg-white/25 hover:bg-white/50"
                   }`}
                 />
               ))}
