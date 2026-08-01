@@ -71,7 +71,7 @@ export default function About() {
       />
       <PageHero
         title={a.heroTitle || "About Dr. Sushma Appaiah"}
-        subtitle={`${a.name} â€” ${a.designation}`}
+        subtitle={`${a.name} — ${a.designation}`}
         breadcrumb={["About"]}
         image={a.image}
       />
@@ -111,7 +111,7 @@ export default function About() {
           <SectionHeading
             eyebrow="What She Helps With"
             title="A Practice Built Around You"
-            subtitle="From metabolic conditions to family nutrition, every area of her work follows the same principle â€” nutrition that is personal."
+            subtitle="From metabolic conditions to family nutrition, every area of her work follows the same principle — nutrition that is personal."
           />
           <div className="grid gap-6 lg:grid-cols-2">
             {(a.helpGroups || []).map((group, gi) => {
@@ -169,7 +169,7 @@ export default function About() {
                 {sn.stat?.label || "diet plans delivered for children with special needs"}
               </p>
               <p className="mt-8 text-xs uppercase tracking-widest text-[#9FB4A5]">Through institutions like</p>
-              <p className="mt-2 font-heading text-lg font-semibold text-[#EEF3EA]">AIISH, Mysore Â· Early-intervention school programs</p>
+              <p className="mt-2 font-heading text-lg font-semibold text-[#EEF3EA]">AIISH, Mysore · Early-intervention school programs</p>
             </div>
           </Reveal>
         </div>
@@ -231,9 +231,9 @@ export default function About() {
             />
             <p className="text-base leading-relaxed text-ink/75">{a.beyondClinic}</p>
             <div className="mt-8 flex flex-wrap items-center gap-2.5">
-              <span className="text-xs font-semibold uppercase tracking-widest text-muted">Life member â€”</span>
-              {(a.affiliations || "AFSTI Â· Indian Dietetics Association (IDA) Â· Indian Nutritional Medical Association (INMA)")
-                .split("Â·").map((af) => (
+              <span className="text-xs font-semibold uppercase tracking-widest text-muted">Life member —</span>
+              {(a.affiliations || "AFSTI · Indian Dietetics Association (IDA) · Indian Nutritional Medical Association (INMA)")
+                .split("·").map((af) => (
                   <span key={af} className="rounded-full border border-line bg-white px-4 py-2 text-sm font-medium text-ink/80">
                     {af.trim()}
                   </span>

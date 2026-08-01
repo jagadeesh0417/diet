@@ -56,6 +56,9 @@ export default function Home() {
   const seo = site.seo || {};
   const { scrollY } = useScroll();
   const parallaxY = useTransform(scrollY, [0, 600], [0, -24]);
+  const [heroSrc, setHeroSrc] = useState(
+    typeof h.heroPortrait === "string" && h.heroPortrait.trim() ? h.heroPortrait : "/hero-banner.png"
+  );
 
   return (
     <>
@@ -94,7 +97,7 @@ export default function Home() {
                 </span>
               )}
               <h1 className="mx-auto max-w-[640px] text-[34px] font-bold leading-[1.1] tracking-tight text-ink sm:text-5xl lg:mx-0 lg:text-[64px] xl:text-[68px]">
-                {h.heroTitle || "Real food. Real plans. Real resultsâ€”built around you."}
+                {h.heroTitle || "Real food. Real plans. Real results—built around you."}
               </h1>
               <p className="mx-auto mt-5 max-w-[600px] text-base leading-relaxed text-muted sm:text-lg lg:mx-0 lg:text-xl">
                 {h.heroSubtitle || "Science-backed, personalized nutrition plans designed to improve your health without giving up the foods you love. Online and in-clinic consultations available."}
@@ -139,19 +142,14 @@ export default function Home() {
                   transition={{ repeat: Infinity, duration: 5 }}
                   className="relative"
                 >
-                  {h.heroPortrait ? (
-                    <img
-                      src={h.heroPortrait}
-                      alt="Nutritionist preparing a healthy salad"
-                      className="aspect-[4/5] h-auto w-full rounded-[180px_180px_22px_22px] object-cover shadow-lift"
-                      loading="eager"
-                      fetchpriority="high"
-                    />
-                  ) : (
-                    <div className="flex aspect-[4/5] w-full items-center justify-center rounded-[180px_180px_22px_22px] border-2 border-dashed border-ink/20">
-                      <p className="text-muted">Nutritionist photo â€” manage from admin panel</p>
-                    </div>
-                  )}
+                  <img
+                    src={heroSrc}
+                    onError={() => setHeroSrc("/hero-banner.png")}
+                    alt="Nutritionist preparing a healthy salad"
+                    className="aspect-[4/5] h-auto w-full rounded-[180px_180px_22px_22px] object-cover shadow-lift"
+                    loading="eager"
+                    fetchpriority="high"
+                  />
                 </motion.div>
               </motion.div>
             </motion.div>
@@ -280,7 +278,7 @@ export default function Home() {
               How It Works
             </h2>
             <p className="mx-auto mt-5 max-w-[600px] text-base leading-[1.8] text-muted sm:text-lg">
-              Precision nutrition, step by step â€” every plan is built on real data about your body and fine-tuned as you progress.
+              Precision nutrition, step by step — every plan is built on real data about your body and fine-tuned as you progress.
             </p>
           </Reveal>
 
@@ -289,7 +287,7 @@ export default function Home() {
               {
                 no: "01",
                 title: "Book your appointment",
-                text: "Choose online or in-clinic. All consultations are by prior appointment â€” call or WhatsApp to reserve your slot.",
+                text: "Choose online or in-clinic. All consultations are by prior appointment — call or WhatsApp to reserve your slot.",
               },
               {
                 no: "02",
@@ -299,7 +297,7 @@ export default function Home() {
               {
                 no: "03",
                 title: "Get a personalized plan for you",
-                text: "Receive a precision diet plan built specially for you with your preferred foods along with exercise schedules â€” calibrated to your body, goals and health needs to prevent, manage and reverse disorders.",
+                text: "Receive a precision diet plan built specially for you with your preferred foods along with exercise schedules — calibrated to your body, goals and health needs to prevent, manage and reverse disorders.",
               },
               {
                 no: "04",
