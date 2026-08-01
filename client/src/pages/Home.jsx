@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, lazy, Suspense } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import {
@@ -9,8 +9,9 @@ import { useSite } from "../context/SiteContext";
 import SEO from "../components/SEO";
 import Reveal from "../components/Reveal";
 import SectionHeading from "../components/SectionHeading";
-import TestimonialSlider from "../components/TestimonialSlider";
 import { ICON_MAP } from "../utils/helpers";
+
+const TestimonialsSection = lazy(() => import("../components/TestimonialsSection"));
 
 const TRUST_ICONS = [ShieldCheck, ClipboardList, MonitorSmartphone, FlaskConical, Star];
 
@@ -371,17 +372,9 @@ export default function Home() {
       </section>
 
       {/* ================= TESTIMONIALS ================= */}
-      <section className="bg-primary py-24">
-        <div className="container-x">
-          <SectionHeading
-            light
-            eyebrow="Success Stories"
-            title="Real People. Real Transformations."
-            subtitle="Before and after journeys from clients who trusted the process."
-          />
-          <TestimonialSlider items={site.testimonials} />
-        </div>
-      </section>
+      <Suspense fallback={<section className="bg-primary py-24" aria-hidden="true" />}>
+        <TestimonialsSection items={site.testimonials} />
+      </Suspense>
 
       <section className="py-24">
         <div className="container-x grid items-center gap-16 lg:grid-cols-2">

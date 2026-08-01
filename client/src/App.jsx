@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import ScrollToTop from "./components/ScrollToTop";
-import WhatsAppButton from "./components/WhatsAppButton";
+import FloatingWhatsAppButton from "./components/FloatingWhatsAppButton";
 import PageLoader from "./components/PageLoader";
 import { loadIconMap } from "./utils/helpers";
 import { useSite } from "./context/SiteContext";
@@ -108,7 +108,7 @@ export default function App() {
         </Routes>
       </AnimatePresence>
       <Footer />
-      <WhatsAppButton />
+      <FloatingWhatsAppButton />
     </>
   );
 }
