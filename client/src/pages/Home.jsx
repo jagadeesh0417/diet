@@ -2,8 +2,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import {
-  ArrowRight, CalendarCheck, ShieldCheck, ClipboardList, MonitorSmartphone, FlaskConical,
-  Star, ArrowUpRight, BadgeCheck, Camera, Check,
+  ArrowRight, CalendarCheck, Star, ArrowUpRight, BadgeCheck, Camera, Check,
 } from "lucide-react";
 import { useSite } from "../context/SiteContext";
 import SEO from "../components/SEO";
@@ -12,8 +11,6 @@ import SectionHeading from "../components/SectionHeading";
 import { ICON_MAP } from "../utils/helpers";
 
 const TestimonialsSection = lazy(() => import("../components/TestimonialsSection"));
-
-const TRUST_ICONS = [ShieldCheck, ClipboardList, MonitorSmartphone, FlaskConical, Star];
 
 function CountUp({ value, suffix = "" }) {
   const [display, setDisplay] = useState(0);
@@ -153,26 +150,6 @@ export default function Home() {
             </motion.div>
           </div>
         </div>
-      </section>
-
-      {/* ================= TRUST ================= */}
-      <section className="relative -mt-14 z-20 container-x">
-        <Reveal className="card grid grid-cols-2 gap-6 rounded-3xl p-8 shadow-lift sm:grid-cols-3 lg:grid-cols-5">
-          {(h.trustItems || []).map((t, i) => {
-            const Icon = TRUST_ICONS[i % TRUST_ICONS.length];
-            return (
-              <motion.div key={t.title} whileHover={{ y: -6 }} className="group flex flex-col items-center gap-3 text-center">
-                <span className="flex h-14 w-14 items-center justify-center rounded-2xl bg-primary/10 text-primary transition group-hover:bg-primary group-hover:text-white">
-                  <Icon size={26} />
-                </span>
-                <div>
-                  <p className="font-heading text-sm font-semibold text-charcoal">âœ” {t.title}</p>
-                  <p className="mt-0.5 text-xs text-charcoal/50">{t.text}</p>
-                </div>
-              </motion.div>
-            );
-          })}
-        </Reveal>
       </section>
 
       {/* ================= STATISTICS ================= */}
