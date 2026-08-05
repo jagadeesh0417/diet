@@ -176,7 +176,7 @@ export default function Contact() {
                     {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>}
                   </div>
                   <div>
-                    <label htmlFor="cf-subject" className="label">{mode === "booking" ? "Program *" : "Subject"}</label>
+                    <label htmlFor="cf-subject" className="label">{mode === "booking" ? "Program *" : "Area of Concern"}</label>
                     {mode === "booking" ? (
                       <select
                         id="cf-subject"
@@ -190,7 +190,7 @@ export default function Contact() {
                         <option value="Other / Not sure">Other / Not sure yet</option>
                       </select>
                     ) : (
-                      <input id="cf-subject" className="input" placeholder="What's this about?" {...register("subject")} />
+                      <input id="cf-subject" className="input" placeholder="We are here to help you. Let us know how we can serve you" {...register("subject")} />
                     )}
                     {errors.service && <p className="mt-1 text-xs text-red-500">{errors.service.message}</p>}
                   </div>
