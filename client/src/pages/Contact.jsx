@@ -3,7 +3,7 @@ import { useSearchParams, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  MapPin, Phone, Mail, MessageCircle, Clock, ChevronDown, CheckCircle2, Send, CalendarCheck,
+  MapPin, Phone, Mail, MessageCircle, Clock, ChevronDown, CheckCircle2, CalendarCheck,
 } from "lucide-react";
 import api from "../api/client";
 import SEO from "../components/SEO";
@@ -41,7 +41,6 @@ export default function Contact() {
   const { site } = useSite();
   const g = site.general || {};
   const [params] = useSearchParams();
-  const [mode, setMode] = useState(params.get("service") ? "booking" : "message");
   const [openFaq, setOpenFaq] = useState(0);
   const [sent, setSent] = useState(null);
   const [error, setError] = useState(null);
@@ -59,29 +58,9 @@ export default function Contact() {
     setBusy(true);
     setError(null);
     try {
-      if (mode === "message") {
-        const whatsapp = g.whatsapp || "919342674406";
-        const text = [
-          "Hi GOLZ! New message from your website:",
-          "",
-          `Name: ${values.name}`,
-          `Phone: ${values.phone}`,
-          `Email: ${values.email}`,
-          values.subject ? `Subject: ${values.subject}` : "",
-          "",
-          values.message,
-        ]
-          .filter(Boolean)
-          .join("\n");
-        window.open(`https://wa.me/${whatsapp}?text=${encodeURIComponent(text)}`, "_blank", "noopener,noreferrer");
-        api.post("/public/contact", values).catch(() => {});
-        setSent("WhatsApp is opening with your message — just press send there and we'll get back to you shortly.");
-        reset({ service: "" });
-      } else {
-        const { data } = await api.post("/public/appointments", values);
-        setSent(data.message);
-        reset({ service: "" });
-      }
+      const { data } = await api.post("/public/appointments", values);
+      setSent(data.message);
+      reset({ service: "" });
     } catch (e) {
       setError(e.response?.data?.message || "Something went wrong. Please try again.");
     } finally {
@@ -92,11 +71,11 @@ export default function Contact() {
   return (
     <>
       <SEO
-        title="Contact"
-        description="Book a consultation or get in touch — phone, WhatsApp, email or visit the clinic in Mysuru."
-        keywords="contact nutritionist, book consultation, dietitian appointment"
+        title="Book Consultation"
+        description="Book a consultation with Dr. Sushma Appaiah — pick a program, date and preferred slot. Online and in-clinic consultations in Mysuru."
+        keywords="book consultation, nutritionist appointment, dietitian booking"
       />
-      <PageHero title="Contact Us" subtitle="Have a question or ready to begin? We'd love to hear from you." breadcrumb={["Contact"]} />
+      <PageHero title="Book Consultation" subtitle="Pick a program and your preferred slot — we'll confirm your consultation shortly." breadcrumb={["Book Consultation"]} />
 
       <section className="section-pad">
         <div className="container-x">
@@ -119,42 +98,17 @@ export default function Contact() {
           <div className="grid gap-12 lg:grid-cols-[1fr_1.1fr]">
             {/* Form */}
             <motion.div initial={{ opacity: 0, x: -24 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
-              <h2 className="mb-2 font-heading text-2xl font-bold text-charcoal">
-                {mode === "booking" ? "Book a Consultation" : "Send Us a Message"}
-              </h2>
+              <h2 className="mb-2 font-heading text-2xl font-bold text-charcoal">Book a Consultation</h2>
               <p className="mb-7 text-sm text-charcoal/55">
-                {mode === "booking"
-                  ? "Pick a program and your preferred slot — we'll confirm your consultation shortly."
-                  : "We usually reply within 24 hours on working days."}
+                Pick a program and your preferred slot — we'll confirm your consultation shortly.
               </p>
-
-              <div className="mb-6 grid grid-cols-2 gap-2 rounded-2xl bg-gray-100 p-1.5" role="tablist" aria-label="Form mode">
-                <button
-                  type="button"
-                  onClick={() => setMode("message")}
-                  role="tab"
-                  aria-selected={mode === "message"}
-                  className={`rounded-xl py-2.5 font-heading text-sm font-semibold transition ${mode === "message" ? "bg-white text-primary shadow-card" : "text-charcoal/55 hover:text-charcoal"}`}
-                >
-                  Send Message
-                </button>
-                <button
-                  type="button"
-                  onClick={() => setMode("booking")}
-                  role="tab"
-                  aria-selected={mode === "booking"}
-                  className={`rounded-xl py-2.5 font-heading text-sm font-semibold transition ${mode === "booking" ? "bg-white text-primary shadow-card" : "text-charcoal/55 hover:text-charcoal"}`}
-                >
-                  Book Consultation
-                </button>
-              </div>
 
               {sent ? (
                 <div className="card flex flex-col items-center gap-4 p-12 text-center">
                   <CheckCircle2 size={56} className="text-primary" />
-                  <h3 className="font-heading text-xl font-bold text-charcoal">Message Sent!</h3>
+                  <h3 className="font-heading text-xl font-bold text-charcoal">Request Received!</h3>
                   <p className="text-sm text-charcoal/60">{sent}</p>
-                  <button onClick={() => setSent(null)} className="btn-outline mt-2">Send Another</button>
+                  <button onClick={() => setSent(null)} className="btn-outline mt-2">Book Another</button>
                 </div>
               ) : (
                 <form onSubmit={handleSubmit(onSubmit)} className="card grid gap-5 p-8" noValidate>
@@ -176,59 +130,52 @@ export default function Contact() {
                     {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>}
                   </div>
                   <div>
-                    <label htmlFor="cf-subject" className="label">{mode === "booking" ? "Program *" : "Area of Concern"}</label>
-                    {mode === "booking" ? (
-                      <select
-                        id="cf-subject"
-                        className="input"
-                        {...register("service", { required: "Please select a program" })}
-                      >
-                        <option value="">Select a program…</option>
-                        {site.services.map((s) => (
-                          <option key={s._id} value={s.title}>{s.title}</option>
-                        ))}
-                        <option value="Other / Not sure">Other / Not sure yet</option>
-                      </select>
-                    ) : (
-                      <input id="cf-subject" className="input" placeholder="We are here to help you. Let us know how we can serve you" {...register("subject")} />
-                    )}
+                    <label htmlFor="cf-subject" className="label">Program *</label>
+                    <select
+                      id="cf-subject"
+                      className="input"
+                      {...register("service", { required: "Please select a program" })}
+                    >
+                      <option value="">Select a program…</option>
+                      {site.services.map((s) => (
+                        <option key={s._id} value={s.title}>{s.title}</option>
+                      ))}
+                      <option value="Other / Not sure">Other / Not sure yet</option>
+                    </select>
                     {errors.service && <p className="mt-1 text-xs text-red-500">{errors.service.message}</p>}
                   </div>
 
-                  {mode === "booking" && (
-                    <div className="grid gap-5 sm:grid-cols-2">
-                      <div>
-                        <label htmlFor="cf-date" className="label">Preferred Date *</label>
-                        <input id="cf-date" type="date" className="input" min={new Date().toISOString().slice(0, 10)} {...register("preferredDate", { required: "Pick a date" })} />
-                        {errors.preferredDate && <p className="mt-1 text-xs text-red-500">{errors.preferredDate.message}</p>}
-                      </div>
-                      <div>
-                        <label htmlFor="cf-time" className="label">Preferred Time *</label>
-                        <select id="cf-time" className="input" {...register("preferredTime", { required: "Pick a slot" })}>
-                          <option value="">Select a slot…</option>
-                          <option>Morning (9 AM – 12 PM)</option>
-                          <option>Afternoon (12 PM – 4 PM)</option>
-                          <option>Evening (4 PM – 7 PM)</option>
-                        </select>
-                        {errors.preferredTime && <p className="mt-1 text-xs text-red-500">{errors.preferredTime.message}</p>}
-                      </div>
+                  <div className="grid gap-5 sm:grid-cols-2">
+                    <div>
+                      <label htmlFor="cf-date" className="label">Preferred Date *</label>
+                      <input id="cf-date" type="date" className="input" min={new Date().toISOString().slice(0, 10)} {...register("preferredDate", { required: "Pick a date" })} />
+                      {errors.preferredDate && <p className="mt-1 text-xs text-red-500">{errors.preferredDate.message}</p>}
                     </div>
-                  )}
+                    <div>
+                      <label htmlFor="cf-time" className="label">Preferred Time *</label>
+                      <select id="cf-time" className="input" {...register("preferredTime", { required: "Pick a slot" })}>
+                        <option value="">Select a slot…</option>
+                        <option>Morning (9 AM – 12 PM)</option>
+                        <option>Afternoon (12 PM – 4 PM)</option>
+                        <option>Evening (4 PM – 7 PM)</option>
+                      </select>
+                      {errors.preferredTime && <p className="mt-1 text-xs text-red-500">{errors.preferredTime.message}</p>}
+                    </div>
+                  </div>
 
                   <div>
-                    <label htmlFor="cf-message" className="label">Message {mode === "booking" ? "(optional)" : "*"}</label>
+                    <label htmlFor="cf-message" className="label">Message (optional)</label>
                     <textarea
                       id="cf-message"
-                      rows={mode === "booking" ? 3 : 4}
+                      rows={3}
                       className="input resize-none"
-                      placeholder={mode === "booking" ? "Any health concerns or goals to share…" : "Tell us about your goals…"}
-                      {...register("message", mode === "booking" ? {} : { required: "Message is required", minLength: { value: 10, message: "Please write at least 10 characters" } })}
+                      placeholder="Any health concerns or goals to share…"
+                      {...register("message")}
                     />
-                    {errors.message && <p className="mt-1 text-xs text-red-500">{errors.message.message}</p>}
                   </div>
                   {error && <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-600">{error}</p>}
                   <button type="submit" disabled={busy} className="btn-primary w-full disabled:opacity-60">
-                    {busy ? <ButtonSpinner /> : <>{mode === "booking" ? <><CalendarCheck size={17} /> Request Consultation</> : <><MessageCircle size={17} /> Send via WhatsApp</>}</>}
+                    {busy ? <ButtonSpinner /> : <><CalendarCheck size={17} /> Request Consultation</>}
                   </button>
                 </form>
               )}
@@ -275,7 +222,7 @@ export default function Contact() {
           </div>
 
           <p className="mt-10 text-center text-sm text-charcoal/50">
-            Prefer to book a full consultation?{" "}
+            Not sure which program fits?{" "}
             <Link to="/services" className="font-semibold text-primary underline underline-offset-2">Browse our programs</Link>
           </p>
         </div>

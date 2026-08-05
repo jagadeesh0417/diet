@@ -10,7 +10,7 @@ const NAV = [
   { label: "Services", to: "/services" },
   { label: "Gallery", to: "/gallery" },
   { label: "Blog", to: "/blog" },
-  { label: "Contact", to: "/contact" },
+  { label: "Book Consultation", to: "/contact" },
 ];
 
 export default function Header() {
