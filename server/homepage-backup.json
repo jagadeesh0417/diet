@@ -1,0 +1,111 @@
+{
+  "heroTitle": "Real food. Real plans. Real results—built around you.",
+  "heroSubtitle": "Science-backed, personalized nutrition plans designed to improve your health without giving up the foods you love. Online and in-clinic consultations available.",
+  "heroBadge": "Personalized Nutrition Care Since 2015",
+  "heroImage": "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=1200&q=70",
+  "heroPortrait": "/hero-banner.png",
+  "ctaPrimary": {
+    "label": "Book a Consultation",
+    "link": "/contact"
+  },
+  "ctaSecondary": {
+    "label": "Explore Services",
+    "link": "/services"
+  },
+  "stats": [
+    {
+      "value": 20,
+      "suffix": "+",
+      "label": "Years of science-backed nutrition care"
+    },
+    {
+      "value": 15000,
+      "suffix": "+",
+      "label": "Nutrition & wellness programs completed"
+    },
+    {
+      "value": 5000,
+      "suffix": "+",
+      "label": "Personalized diet plans delivered"
+    },
+    {
+      "value": 3000,
+      "suffix": "+",
+      "label": "Specialized diet plans for children"
+    }
+  ],
+  "trustItems": [
+    {
+      "title": "Certified Nutrition Expert",
+      "text": "Ph.D. — CSIR-CFTRI, Mysuru"
+    },
+    {
+      "title": "Personalized Plans",
+      "text": "Every plan built around your body & goals"
+    },
+    {
+      "title": "Online & In-Clinic",
+      "text": "Consult from home or visit us in Mysuru"
+    },
+    {
+      "title": "Science-Based Nutrition",
+      "text": "Every recommendation is evidence-backed"
+    },
+    {
+      "title": "Continuous Support",
+      "text": "We stay with you until results stick"
+    }
+  ],
+  "aboutPreview": {
+    "title": "Meet Dr. Sushma Appaiah",
+    "text": "Dr. Sushma Appaiah is the Founder of GOLZ (Giggles of Livez) and a distinguished nutrition scientist with 19 years of experience in clinical nutrition, corporate wellness, and health counselling.\n\nShe holds a Ph.D. in Food Science & Technology from CSIR-CFTRI, Mysore, and an M.Sc. in Food & Nutrition (2nd Rank) from the University of Mysore.\n\nOver the years, she has helped clients across 13 countries achieve sustainable health through evidence-based nutrition and personalized care.\n\nA recipient of the DST Women Scientist Award and recognized as the Most Innovative Nutrition Counsellor of the Year, Dr. Sushma is known for developing innovative food formulations for special children and translating scientific research into practical nutrition solutions.\n\nHer areas of expertise include reversing diabetes, PCOD (recently termed as PMOS), thyroid disorders, pregnancy nutrition, sports nutrition, autism and special child nutrition, and nutrigenomics, empowering individuals and families to build healthier lives through personalized nutrition.",
+    "image": "/doctor-portrait.png",
+    "buttonLabel": "Know More",
+    "buttonLink": "/about",
+    "list": [
+      "Clinical Nutrition Expert",
+      "Lifestyle Disease Management",
+      "Personalized Diet Plans",
+      "Child & Women's Nutrition Specialist"
+    ]
+  },
+  "whyChooseUs": [
+    {
+      "icon": "Utensils",
+      "title": "Personalized Meal Plans",
+      "text": "Custom plans for your body type, lifestyle and food preferences."
+    },
+    {
+      "icon": "FlaskConical",
+      "title": "Evidence-Based Guidance",
+      "text": "Protocols grounded in clinical research, not trends."
+    },
+    {
+      "icon": "HeartHandshake",
+      "title": "Special-Child Expertise",
+      "text": "Proven plans for autism, ADHD and specially-abled children."
+    },
+    {
+      "icon": "Wallet",
+      "title": "Affordable Packages",
+      "text": "Premium care at prices designed for every budget."
+    },
+    {
+      "icon": "RefreshCcw",
+      "title": "Regular Follow-Ups",
+      "text": "Structured check-ins keep you on track week after week."
+    },
+    {
+      "icon": "TrendingUp",
+      "title": "Long-Term Results",
+      "text": "Habits that last — so results stay, for good."
+    }
+  ],
+  "cta": {
+    "title": "Ready to Start Your Health Journey?",
+    "subtitle": "Book your consultation today and get a plan designed around you.",
+    "buttonLabel": "Book Now",
+    "buttonLink": "/contact",
+    "image": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1200&q=70"
+  }
+}

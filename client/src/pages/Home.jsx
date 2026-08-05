@@ -200,18 +200,14 @@ export default function Home() {
               {h.aboutPreview?.title || "Meet Dr. Sushma Appaiah"}
             </h2>
             <div className="mx-auto mt-5 max-w-[600px] space-y-4 text-base leading-relaxed text-muted lg:mx-0 lg:text-lg">
-              {(h.aboutPreview?.text || "Dr. Sushma Appaiah is the Founder of GOLZ (Giggles of Livez) and a distinguished nutrition scientist with 19 years of experience in clinical nutrition, corporate wellness, and health counselling.").split(/\n{2,}/).map((para, i) =>
-                [1, 2, 4].includes(i) ? (
-                  <p key={para.slice(0, 24)} className="flex items-start gap-2.5 text-left">
-                    <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-lime text-ink">
-                      <Check size={14} />
-                    </span>
-                    <span>{para}</span>
-                  </p>
-                ) : (
-                  <p key={para.slice(0, 24)}>{para}</p>
-                )
-              )}
+              {(h.aboutPreview?.text || "Dr. Sushma Appaiah is the Founder of GOLZ (Giggles of Livez) and a distinguished nutrition scientist with 19 years of experience in clinical nutrition, corporate wellness, and health counselling.").split(/\n{2,}/).map((para) => (
+                <p key={para.slice(0, 24)} className="flex items-start gap-2.5 text-left">
+                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-lime text-ink">
+                    <Check size={14} />
+                  </span>
+                  <span>{para}</span>
+                </p>
+              ))}
             </div>
             <ul className="mx-auto mt-8 grid max-w-[600px] gap-3 text-left sm:grid-cols-2 lg:mx-0">
               {(h.aboutPreview?.list || [
