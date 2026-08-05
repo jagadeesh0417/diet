@@ -305,7 +305,7 @@ export default function Home() {
               },
               {
                 no: "03",
-                title: "Get a personalized plan for you",
+                title: "Get a personalized diet plan for you",
                 text: "Receive a precision diet plan built specially for you with your preferred foods along with exercise schedules — calibrated to your body, goals and health needs to prevent, manage and reverse disorders.",
               },
               {
