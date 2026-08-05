@@ -300,7 +300,7 @@ export default function Home() {
               },
               {
                 no: "02",
-                title: "Understand where you stand",
+                title: "Understand your nutritional profile",
                 text: "We map your health, habits and goals with a scientific BCA (Body Composition Analysis), and medical checkups where needed, for a precise picture of your body.",
               },
               {
