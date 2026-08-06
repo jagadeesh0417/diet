@@ -3,13 +3,11 @@ import { useSearchParams, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { motion, AnimatePresence } from "framer-motion";
 import {
-  MapPin, Phone, Mail, MessageCircle, Clock, ChevronDown, CheckCircle2, CalendarCheck,
+  MapPin, Phone, Mail, MessageCircle, Clock, ChevronDown, CalendarCheck,
 } from "lucide-react";
-import api from "../api/client";
 import SEO from "../components/SEO";
 import PageHero from "../components/PageHero";
 import { useSite } from "../context/SiteContext";
-import { ButtonSpinner } from "../components/PageLoader";
 
 const FAQS = [
   { q: "How do online consultations work?", a: "After booking, you receive a link to a video call at your chosen slot. You'll get a questionnaire and diet diary link beforehand, and your plan is delivered within 48 hours of the session." },
@@ -42,9 +40,6 @@ export default function Contact() {
   const g = site.general || {};
   const [params] = useSearchParams();
   const [openFaq, setOpenFaq] = useState(0);
-  const [sent, setSent] = useState(null);
-  const [error, setError] = useState(null);
-  const [busy, setBusy] = useState(false);
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm({
     defaultValues: { service: params.get("service") || "" },
@@ -54,18 +49,20 @@ export default function Contact() {
     if (params.get("service")) reset({ service: params.get("service") });
   }, [params, reset]);
 
-  const onSubmit = async (values) => {
-    setBusy(true);
-    setError(null);
-    try {
-      const { data } = await api.post("/public/appointments", values);
-      setSent(data.message);
-      reset({ service: "" });
-    } catch (e) {
-      setError(e.response?.data?.message || "Something went wrong. Please try again.");
-    } finally {
-      setBusy(false);
-    }
+  const onSubmit = (values) => {
+    const lines = [
+      "New consultation request",
+      "",
+      `Name: ${values.name}`,
+      `Phone: ${values.phone}`,
+      `Email: ${values.email}`,
+      `Area of Concern: ${values.service}`,
+      `Preferred Date: ${values.preferredDate}`,
+      `Preferred Time: ${values.preferredTime}`,
+    ];
+    if (values.message) lines.push(`Message: ${values.message}`);
+    window.open(`https://wa.me/${g.whatsapp}?text=${encodeURIComponent(lines.join("\n"))}`, "_blank");
+    reset({ service: "" });
   };
 
   return (
@@ -100,18 +97,10 @@ export default function Contact() {
             <motion.div initial={{ opacity: 0, x: -24 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.5 }}>
               <h2 className="mb-2 font-heading text-2xl font-bold text-charcoal">Book a Consultation</h2>
               <p className="mb-7 text-sm text-charcoal/55">
-                Pick a program and your preferred slot — we'll confirm your consultation shortly.
+                Fill in your details below — on submit, they open in WhatsApp for us to confirm your consultation.
               </p>
 
-              {sent ? (
-                <div className="card flex flex-col items-center gap-4 p-12 text-center">
-                  <CheckCircle2 size={56} className="text-primary" />
-                  <h3 className="font-heading text-xl font-bold text-charcoal">Request Received!</h3>
-                  <p className="text-sm text-charcoal/60">{sent}</p>
-                  <button onClick={() => setSent(null)} className="btn-outline mt-2">Book Another</button>
-                </div>
-              ) : (
-                <form onSubmit={handleSubmit(onSubmit)} className="card grid gap-5 p-8" noValidate>
+              <form onSubmit={handleSubmit(onSubmit)} className="card grid gap-5 p-8" noValidate>
                   <div className="grid gap-5 sm:grid-cols-2">
                     <div>
                       <label htmlFor="cf-name" className="label">Name *</label>
@@ -130,13 +119,13 @@ export default function Contact() {
                     {errors.email && <p className="mt-1 text-xs text-red-500">{errors.email.message}</p>}
                   </div>
                   <div>
-                    <label htmlFor="cf-subject" className="label">Program *</label>
+                    <label htmlFor="cf-subject" className="label">Area of Concern *</label>
                     <select
                       id="cf-subject"
                       className="input"
-                      {...register("service", { required: "Please select a program" })}
+                      {...register("service", { required: "Please select an area of concern" })}
                     >
-                      <option value="">Select a program…</option>
+                      <option value="">Select an area of concern…</option>
                       {site.services.map((s) => (
                         <option key={s._id} value={s.title}>{s.title}</option>
                       ))}
@@ -173,12 +162,11 @@ export default function Contact() {
                       {...register("message")}
                     />
                   </div>
-                  {error && <p className="rounded-xl bg-red-50 px-4 py-3 text-sm text-red-600">{error}</p>}
-                  <button type="submit" disabled={busy} className="btn-primary w-full disabled:opacity-60">
-                    {busy ? <ButtonSpinner /> : <><CalendarCheck size={17} /> Request Consultation</>}
+                  <button type="submit" className="btn-primary w-full">
+                    <MessageCircle size={17} /> Send on WhatsApp
                   </button>
+                  <p className="text-center text-xs text-charcoal/50">WhatsApp opens with your details pre-filled — just press send.</p>
                 </form>
-              )}
             </motion.div>
 
             {/* Info column */}
@@ -195,6 +183,10 @@ export default function Contact() {
                       <span className={`font-semibold ${w.hours === "Closed" ? "text-accent" : "text-primary"}`}>{w.hours}</span>
                     </p>
                   ))}
+                  <p className="flex justify-between py-3.5 text-sm">
+                    <span className="text-charcoal/70">Govt Holidays</span>
+                    <span className="font-semibold text-accent">Closed</span>
+                  </p>
                 </div>
               </div>
 
