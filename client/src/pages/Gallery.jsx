@@ -1,4 +1,4 @@
-﻿import { useEffect, useState, useCallback } from "react";
+﻿import { useEffect, useState, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { ChevronDown, ChevronRight, CalendarCheck } from "lucide-react";
@@ -28,6 +28,7 @@ export default function Gallery() {
   const { site } = useSite();
   const [items, setItems] = useState([]);
   const [category, setCategory] = useState("All");
+  const [sections, setSections] = useState([]);
   const [categories, setCategories] = useState(["All"]);
   const [page, setPage] = useState(1);
   const [pages, setPages] = useState(1);
@@ -48,6 +49,7 @@ export default function Gallery() {
   }, []);
 
   useEffect(() => {
+    api.get("/public/gallery/sections").then(({ data }) => setSections(data));
     api.get("/public/gallery/categories").then(({ data }) => setCategories(["All", ...data]));
   }, []);
 
@@ -56,8 +58,90 @@ export default function Gallery() {
     load(category, 1);
   }, [category, load]);
 
+  const sectionByName = useMemo(() => Object.fromEntries(sections.map((s) => [s.name, s])), [sections]);
+
+  const chipList = useMemo(() => {
+    const withItems = sections.filter((s) => s.count > 0);
+    if (withItems.length) return ["All", ...withItems.map((s) => s.name)];
+    return categories;
+  }, [sections, categories]);
+
+  const grouped = useMemo(() => {
+    const map = new Map();
+    for (const it of items) {
+      if (!map.has(it.category)) map.set(it.category, []);
+      map.get(it.category).push(it);
+    }
+    const known = sections.map((s) => s.name);
+    return [...map.entries()].sort((a, b) => {
+      const ia = known.indexOf(a[0]);
+      const ib = known.indexOf(b[0]);
+      return (ia === -1 ? known.length : ia) - (ib === -1 ? known.length : ib);
+    });
+  }, [items, sections]);
+
   const open = (i) => setLightbox({ items, index: i });
   const navigate = useCallback((index) => setLightbox((lb) => (lb ? { ...lb, index } : lb)), []);
+
+  const renderGrid = (list) => (
+    <motion.div layout className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <AnimatePresence mode="popLayout">
+        {list.map((item, i) => (
+          <motion.button
+            key={item._id}
+            layout
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.96 }}
+            transition={{ duration: 0.4, delay: (i % 6) * 0.05, ease: [0.21, 0.65, 0.36, 1] }}
+            onClick={() => open(i)}
+            className="group relative cursor-pointer overflow-hidden rounded-[20px] bg-white text-left shadow-soft transition-shadow duration-300 hover:shadow-lift focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/30"
+            aria-label={`Open ${item.type === "video" ? "video" : "image"}: ${item.caption || item.alt || item.category}`}
+          >
+            <div className="relative aspect-[4/3] overflow-hidden">
+              {item.type === "video" ? (
+                <>
+                  <video src={item.url} muted className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
+                  <PlayBadge />
+                </>
+              ) : (
+                <LazyImage
+                  src={item.url}
+                  alt={item.alt || item.caption || "Gallery image"}
+                  className="h-full w-full"
+                  imgClassName="transition-transform duration-700 ease-out group-hover:scale-110"
+                />
+              )}
+
+              <span className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/15 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+
+              <span className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-primary shadow-card backdrop-blur">
+                {item.category}
+              </span>
+
+              <span className="absolute inset-x-0 bottom-0 translate-y-3 p-5 text-white opacity-0 transition-all duration-300 ease-out group-hover:translate-y-0 group-hover:opacity-100">
+                <span className="block font-heading text-lg font-semibold leading-snug">{item.caption || item.alt || "GOLZ moment"}</span>
+                <span className="mt-1 block text-xs font-medium text-white/70">GOLZ · {item.category}</span>
+              </span>
+            </div>
+          </motion.button>
+        ))}
+      </AnimatePresence>
+    </motion.div>
+  );
+
+  const sectionHeader = (sec) => {
+    if (!sec || (!sec.title || sec.title === sec.name) && !sec.description && !sec.cover) return null;
+    return (
+      <div className="mb-7 flex items-center gap-4">
+        {sec.cover && <img src={sec.cover} alt="" className="h-16 w-24 shrink-0 rounded-2xl object-cover shadow-soft" loading="lazy" />}
+        <div>
+          <h2 className="font-heading text-2xl font-bold tracking-tight text-ink">{sec.title || sec.name}</h2>
+          {sec.description && <p className="mt-1 max-w-2xl text-sm leading-relaxed text-muted sm:text-base">{sec.description}</p>}
+        </div>
+      </div>
+    );
+  };
 
   return (
     <>
@@ -108,7 +192,7 @@ export default function Gallery() {
             role="tablist"
             aria-label="Gallery categories"
           >
-            {categories.map((c) => (
+            {chipList.map((c) => (
               <button
                 key={c}
                 onClick={() => setCategory(c)}
@@ -128,51 +212,20 @@ export default function Gallery() {
 
           {loading && page === 1 ? (
             <PageLoader label="Loading gallery…" />
+          ) : category === "All" ? (
+            <div className="space-y-16">
+              {grouped.map(([cat, list]) => (
+                <div key={cat}>
+                  {sectionHeader(sectionByName[cat])}
+                  {renderGrid(list)}
+                </div>
+              ))}
+            </div>
           ) : (
-            <motion.div layout className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              <AnimatePresence mode="popLayout">
-                {items.map((item, i) => (
-                  <motion.button
-                    key={item._id}
-                    layout
-                    initial={{ opacity: 0, y: 24 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.96 }}
-                    transition={{ duration: 0.4, delay: (i % 6) * 0.05, ease: [0.21, 0.65, 0.36, 1] }}
-                    onClick={() => open(i)}
-                    className="group relative cursor-pointer overflow-hidden rounded-[20px] bg-white text-left shadow-soft transition-shadow duration-300 hover:shadow-lift focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/30"
-                    aria-label={`Open ${item.type === "video" ? "video" : "image"}: ${item.caption || item.alt || item.category}`}
-                  >
-                    <div className="relative aspect-[4/3] overflow-hidden">
-                      {item.type === "video" ? (
-                        <>
-                          <video src={item.url} muted className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
-                          <PlayBadge />
-                        </>
-                      ) : (
-                        <LazyImage
-                          src={item.url}
-                          alt={item.alt || item.caption || "Gallery image"}
-                          className="h-full w-full"
-                          imgClassName="transition-transform duration-700 ease-out group-hover:scale-110"
-                        />
-                      )}
-
-                      <span className="absolute inset-0 bg-gradient-to-t from-ink/85 via-ink/15 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-                      <span className="absolute left-4 top-4 rounded-full bg-white/90 px-3 py-1 text-xs font-semibold text-primary shadow-card backdrop-blur">
-                        {item.category}
-                      </span>
-
-                      <span className="absolute inset-x-0 bottom-0 translate-y-3 p-5 text-white opacity-0 transition-all duration-300 ease-out group-hover:translate-y-0 group-hover:opacity-100">
-                        <span className="block font-heading text-lg font-semibold leading-snug">{item.caption || item.alt || "GOLZ moment"}</span>
-                        <span className="mt-1 block text-xs font-medium text-white/70">GOLZ · {item.category}</span>
-                      </span>
-                    </div>
-                  </motion.button>
-                ))}
-              </AnimatePresence>
-            </motion.div>
+            <div>
+              {sectionHeader(sectionByName[category])}
+              {renderGrid(items)}
+            </div>
           )}
 
           {page < pages && (
@@ -188,7 +241,7 @@ export default function Gallery() {
           )}
 
           {!loading && items.length === 0 && (
-            <p className="py-20 text-center text-charcoal/50">No media in this category yet — check back soon.</p>
+            <p className="py-20 text-center text-charcoal/50">No media here yet — check back soon.</p>
           )}
         </div>
       </section>

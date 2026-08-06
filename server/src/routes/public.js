@@ -3,6 +3,7 @@ import rateLimit from "express-rate-limit";
 import Service from "../models/Service.js";
 import Blog from "../models/Blog.js";
 import GalleryItem from "../models/GalleryItem.js";
+import GallerySection from "../models/GallerySection.js";
 import Testimonial from "../models/Testimonial.js";
 import ContactMessage from "../models/ContactMessage.js";
 import Appointment from "../models/Appointment.js";
@@ -69,6 +70,23 @@ router.get("/gallery", async (req, res) => {
 
 router.get("/gallery/categories", async (_req, res) => {
   res.json(await GalleryItem.distinct("category", { published: true }));
+});
+
+router.get("/gallery/sections", async (_req, res) => {
+  let sections = await GallerySection.find().sort({ order: 1, createdAt: 1 });
+  if (sections.length === 0) {
+    const cats = await GalleryItem.distinct("category", { published: true });
+    if (cats.length) {
+      await GallerySection.insertMany(cats.map((c, i) => ({ name: c, title: c, order: i + 1, published: true })));
+      sections = await GallerySection.find().sort({ order: 1, createdAt: 1 });
+    }
+  }
+  const counts = await GalleryItem.aggregate([
+    { $match: { published: true } },
+    { $group: { _id: "$category", n: { $sum: 1 } } },
+  ]);
+  const map = Object.fromEntries(counts.map((c) => [c._id, c.n]));
+  res.json(sections.map((s) => ({ ...s.toObject(), count: map[s.name] || 0 })));
 });
 
 router.get("/blogs", async (req, res) => {

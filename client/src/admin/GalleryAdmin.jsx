@@ -1,14 +1,19 @@
 import { useEffect, useRef, useState } from "react";
-import { Upload, Trash2, Star, Eye, EyeOff, Pencil, CheckSquare, Square, Filter } from "lucide-react";
+import {
+  Upload, Trash2, Star, Eye, EyeOff, Pencil, CheckSquare, Square, Filter,
+  LayoutGrid, Plus, ChevronUp, ChevronDown, Save, X,
+} from "lucide-react";
 import api from "../api/client";
 import SEO from "../components/SEO";
 import PageLoader from "../components/PageLoader";
 import { Modal, ConfirmDialog, Toast, Field, Toggle, EmptyState } from "./AdminUI";
 import { formatDate } from "../utils/helpers";
 
+const EMPTY_SECTION = { name: "", title: "", description: "", cover: "", published: true };
+
 export default function GalleryAdmin() {
   const [items, setItems] = useState(null);
-  const [categories, setCategories] = useState(["General"]);
+  const [sections, setSections] = useState([]);
   const [filter, setFilter] = useState("All");
   const [selected, setSelected] = useState([]);
   const [editing, setEditing] = useState(null);
@@ -17,12 +22,21 @@ export default function GalleryAdmin() {
   const [toast, setToast] = useState(null);
   const [dragIndex, setDragIndex] = useState(null);
   const [uploading, setUploading] = useState(0);
+  const [uploadSection, setUploadSection] = useState("General");
+  const [sectionModal, setSectionModal] = useState(null);
+  const [deletingSection, setDeletingSection] = useState(null);
   const fileRef = useRef(null);
 
   const load = () => api.get("/admin/gallery").then(({ data }) => { setItems(data); setSelected([]); });
+  const loadSections = () =>
+    api.get("/admin/gallery/sections").then(({ data }) => {
+      setSections(data);
+      setUploadSection((cur) => (data.some((s) => s.name === cur) ? cur : (data[0]?.name ?? "General")));
+    });
+
   useEffect(() => {
     load();
-    api.get("/admin/gallery/categories").then(({ data }) => setCategories([...data]));
+    loadSections();
   }, []);
 
   useEffect(() => {
@@ -42,7 +56,7 @@ export default function GalleryAdmin() {
     for (const file of files) {
       const form = new FormData();
       form.append("file", file);
-      form.append("category", "General");
+      form.append("category", uploadSection);
       try {
         await api.post("/admin/gallery/upload", form);
       } catch { /* skip failed file */ }
@@ -50,7 +64,7 @@ export default function GalleryAdmin() {
     }
     showToast("Upload complete");
     load();
-    api.get("/admin/gallery/categories").then(({ data }) => setCategories([...data]));
+    loadSections();
   };
 
   const toggle = async (item, field) => {
@@ -63,6 +77,39 @@ export default function GalleryAdmin() {
     await api.post("/admin/gallery/reorder", { ids: next.map((g) => g._id) });
   };
 
+  const moveSection = async (index, dir) => {
+    const next = [...sections];
+    const target = index + dir;
+    if (target < 0 || target >= next.length) return;
+    [next[index], next[target]] = [next[target], next[index]];
+    setSections(next);
+    await api.post("/admin/gallery/sections/reorder", { ids: next.map((s) => s._id) }).catch(() => {});
+  };
+
+  const toggleSection = async (s) => {
+    await api.put(`/admin/gallery/sections/${s._id}`, { published: !s.published });
+    loadSections();
+  };
+
+  const saveSection = async () => {
+    if (!sectionModal.name.trim()) return showToast("Section name is required", "error");
+    try {
+      if (sectionModal._id) {
+        await api.put(`/admin/gallery/sections/${sectionModal._id}`, sectionModal);
+        showToast("Section updated");
+      } else {
+        await api.post("/admin/gallery/sections", sectionModal);
+        showToast("Section added");
+      }
+      setSectionModal(null);
+      loadSections();
+      load();
+    } catch (e) {
+      showToast(e.response?.data?.message || "Save failed", "error");
+    }
+  };
+
+  const chips = sections.length ? sections.map((s) => s.name) : [];
   const visible = (items || []).filter((g) => filter === "All" || g.category === filter);
 
   return (
@@ -71,7 +118,7 @@ export default function GalleryAdmin() {
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <div className="flex flex-wrap items-center gap-2">
           <Filter size={16} className="text-charcoal/40" />
-          {["All", ...categories].map((c) => (
+          {["All", ...chips].map((c) => (
             <button key={c} onClick={() => setFilter(c)} className={`chip ${filter === c ? "chip-active" : ""}`}>{c}</button>
           ))}
         </div>
@@ -81,18 +128,67 @@ export default function GalleryAdmin() {
               <Trash2 size={15} /> Delete ({selected.length})
             </button>
           )}
+          <select
+            value={uploadSection}
+            onChange={(e) => setUploadSection(e.target.value)}
+            className="input !w-auto !py-2.5 !text-sm"
+            aria-label="Upload to section"
+            title="Section to upload into"
+          >
+            {sections.length ? sections.map((s) => <option key={s._id} value={s.name}>{s.name}</option>) : <option value="General">General</option>}
+          </select>
           <button onClick={() => fileRef.current?.click()} disabled={uploading > 0} className="btn-primary !px-5 !py-2.5 !text-sm disabled:opacity-60">
-            <Upload size={16} /> {uploading > 0 ? `Uploading ${uploading}…` : "Upload Images / Videos"}
+            <Upload size={16} /> {uploading > 0 ? `Uploading ${uploading}…` : `Upload to ${uploadSection}`}
           </button>
           <input ref={fileRef} type="file" multiple accept="image/*,video/*" className="hidden"
             onChange={(e) => { const files = Array.from(e.target.files || []); if (files.length) uploadFiles(files); e.target.value = ""; }} />
         </div>
       </div>
 
+      {/* Sections manager */}
+      <div className="card mb-6 p-5">
+        <div className="mb-4 flex flex-wrap items-center justify-between gap-3">
+          <h3 className="flex items-center gap-2 font-heading text-base font-bold text-charcoal">
+            <LayoutGrid size={17} className="text-primary" /> Gallery Sections
+          </h3>
+          <button onClick={() => setSectionModal({ ...EMPTY_SECTION })} className="btn-primary !px-4 !py-2 !text-sm">
+            <Plus size={15} /> Add Section
+          </button>
+        </div>
+        {sections.length === 0 ? (
+          <p className="text-sm text-charcoal/50">No sections yet — add one to organise your gallery. Images can live in any section (or &quot;General&quot;).</p>
+        ) : (
+          <div className="space-y-2">
+            {sections.map((s, i) => (
+              <div key={s._id} className={`flex flex-wrap items-center gap-3 rounded-2xl border p-3 ${s.published ? "border-gray-100 bg-white" : "border-dashed border-charcoal/20 bg-charcoal/[0.03] opacity-70"}`}>
+                {s.cover ? (
+                  <img src={s.cover} alt="" className="h-10 w-14 shrink-0 rounded-lg object-cover" />
+                ) : (
+                  <span className="flex h-10 w-14 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-xs font-bold text-primary">{s.name.slice(0, 2).toUpperCase()}</span>
+                )}
+                <div className="min-w-0 flex-1">
+                  <p className="truncate text-sm font-semibold text-charcoal">{s.title || s.name}</p>
+                  <p className="text-xs text-charcoal/45">{s.count} media {!s.published && "• hidden"}</p>
+                </div>
+                <div className="flex items-center gap-1">
+                  <button onClick={() => moveSection(i, -1)} disabled={i === 0} className="rounded-lg bg-gray-100 p-1.5 text-charcoal/60 transition hover:bg-primary hover:text-white disabled:opacity-30" aria-label="Move up"><ChevronUp size={14} /></button>
+                  <button onClick={() => moveSection(i, 1)} disabled={i === sections.length - 1} className="rounded-lg bg-gray-100 p-1.5 text-charcoal/60 transition hover:bg-primary hover:text-white disabled:opacity-30" aria-label="Move down"><ChevronDown size={14} /></button>
+                  <button onClick={() => toggleSection(s)} className="rounded-lg bg-gray-100 p-1.5 text-charcoal/60 transition hover:bg-primary hover:text-white" aria-label="Show/hide section">
+                    {s.published ? <Eye size={14} /> : <EyeOff size={14} />}
+                  </button>
+                  <button onClick={() => setSectionModal({ ...s })} className="rounded-lg bg-gray-100 p-1.5 text-charcoal/60 transition hover:bg-primary hover:text-white" aria-label="Edit section"><Pencil size={14} /></button>
+                  <button onClick={() => setDeletingSection(s)} className="rounded-lg bg-red-50 p-1.5 text-red-500 transition hover:bg-red-500 hover:text-white" aria-label="Delete section"><Trash2 size={14} /></button>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+
       {!items ? (
         <PageLoader />
       ) : visible.length === 0 ? (
-        <EmptyState text="No media in this category. Upload images or videos to get started." />
+        <EmptyState text="No media in this section. Upload images or videos to get started." />
       ) : (
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {visible.map((g, i) => (
@@ -153,7 +249,7 @@ export default function GalleryAdmin() {
         <p className="mt-4 text-center text-xs text-charcoal/40">Tip: drag tiles to reorder • {items.length} total items • Hover a tile for actions</p>
       )}
 
-      {/* Edit modal */}
+      {/* Edit item modal */}
       <Modal open={!!editing} onClose={() => setEditing(null)} title="Edit media details">
         {editing && (
           <div className="space-y-5">
@@ -162,9 +258,10 @@ export default function GalleryAdmin() {
                 ? <video src={editing.url} controls className="h-32 w-48 shrink-0 rounded-xl object-cover" />
                 : <img src={editing.url} alt="" className="h-32 w-48 shrink-0 rounded-xl object-cover" />}
               <div className="flex-1 space-y-4">
-                <Field label="Category">
-                  <input className="input" list="cat-list" value={editing.category} onChange={(e) => setEditing({ ...editing, category: e.target.value })} />
-                  <datalist id="cat-list">{categories.map((c) => <option key={c} value={c} />)}</datalist>
+                <Field label="Section">
+                  <select className="input" value={editing.category} onChange={(e) => setEditing({ ...editing, category: e.target.value })}>
+                    {sections.length ? sections.map((s) => <option key={s._id} value={s.name}>{s.title || s.name}</option>) : <option>{editing.category}</option>}
+                  </select>
                 </Field>
                 <div className="flex gap-6">
                   <label className="flex items-center gap-2.5 text-sm font-medium text-charcoal/75">
@@ -183,6 +280,33 @@ export default function GalleryAdmin() {
               <input className="input" value={editing.alt} onChange={(e) => setEditing({ ...editing, alt: e.target.value })} />
             </Field>
             <p className="text-xs text-charcoal/40">Uploaded {formatDate(editing.createdAt)} — changes save automatically.</p>
+          </div>
+        )}
+      </Modal>
+
+      {/* Section add/edit modal */}
+      <Modal open={!!sectionModal} onClose={() => setSectionModal(null)} title={sectionModal?._id ? "Edit section" : "Add section"}>
+        {sectionModal && (
+          <div className="space-y-5">
+            <Field label="Name *" hint="Matches the tag shown on each image">
+              <input className="input" value={sectionModal.name} onChange={(e) => setSectionModal({ ...sectionModal, name: e.target.value })} placeholder="e.g. Workshops" />
+            </Field>
+            <Field label="Title shown on gallery page" hint="Leave empty to use the name">
+              <input className="input" value={sectionModal.title} onChange={(e) => setSectionModal({ ...sectionModal, title: e.target.value })} placeholder={sectionModal.name || "e.g. Cooking Workshops"} />
+            </Field>
+            <Field label="Description" hint="Shown under the section title on the gallery page">
+              <textarea className="input resize-none" rows={3} value={sectionModal.description} onChange={(e) => setSectionModal({ ...sectionModal, description: e.target.value })} placeholder="Short intro for this section…" />
+            </Field>
+            <Field label="Cover image URL" hint="Optional — shown as a thumbnail in the admin and the gallery header">
+              <input className="input" value={sectionModal.cover} onChange={(e) => setSectionModal({ ...sectionModal, cover: e.target.value })} placeholder="https://…" />
+            </Field>
+            <label className="flex items-center gap-2.5 text-sm font-medium text-charcoal/75">
+              <Toggle checked={sectionModal.published} onChange={(published) => setSectionModal({ ...sectionModal, published })} label="Visible on site" /> Visible on site
+            </label>
+            <div className="flex justify-end gap-2.5">
+              <button onClick={() => setSectionModal(null)} className="btn-outline !px-5 !py-2.5 !text-sm"><X size={15} /> Cancel</button>
+              <button onClick={saveSection} className="btn-primary !px-5 !py-2.5 !text-sm"><Save size={15} /> Save Section</button>
+            </div>
           </div>
         )}
       </Modal>
@@ -209,6 +333,19 @@ export default function GalleryAdmin() {
           setBulkDelete(false);
           load();
           showToast(`${selected.length} items deleted`);
+        }}
+      />
+      <ConfirmDialog
+        open={!!deletingSection}
+        onClose={() => setDeletingSection(null)}
+        title={`Delete section "${deletingSection?.name}"?`}
+        text="Its media will be moved to the General section. Nothing is deleted."
+        onConfirm={async () => {
+          await api.delete(`/admin/gallery/sections/${deletingSection._id}`);
+          setDeletingSection(null);
+          loadSections();
+          load();
+          showToast("Section deleted");
         }}
       />
       <Toast message={toast?.message} type={toast?.type} onClose={() => setToast(null)} />
