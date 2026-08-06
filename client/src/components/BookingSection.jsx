@@ -126,6 +126,10 @@ function BookingSection() {
                     <p className="font-semibold text-ink">Sunday</p>
                     <p className="font-semibold text-limeDark">Closed</p>
                   </div>
+                  <div className="flex items-center justify-between">
+                    <p className="font-semibold text-ink">Govt Holidays</p>
+                    <p className="font-semibold text-limeDark">Closed</p>
+                  </div>
                 </div>
               </div>
 

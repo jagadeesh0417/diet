@@ -72,6 +72,9 @@ export default function Footer() {
                 <span>{w.day}</span><span className={w.hours === "Closed" ? "text-lime" : ""}>{w.hours}</span>
               </p>
             ))}
+            <p className="flex justify-between py-0.5 text-xs text-[#A9C0A0]/90">
+              <span>Govt Holidays</span><span className="text-lime">Closed</span>
+            </p>
           </div>
         </div>
       </div>
