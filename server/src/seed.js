@@ -516,8 +516,8 @@ export async function seedIfEmpty({ force = RESET } = {}) {
 
   await User.create({
     name: "Admin",
-    email: "admin@nutrix.com",
-    password: await bcrypt.hash("Admin@123", 10),
+    email: "nutrigolz@gmail.com",
+    password: await bcrypt.hash("Admin1234", 10),
     role: "admin",
   });
 

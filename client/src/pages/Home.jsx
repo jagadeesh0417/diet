@@ -1,5 +1,5 @@
 ﻿import { useEffect, useRef, useState, lazy, Suspense } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import {
   ArrowRight, CalendarCheck, Star, ArrowUpRight, BadgeCheck, Camera, Check,
@@ -51,7 +51,6 @@ function CountUp({ value, suffix = "" }) {
 
 export default function Home() {
   const { site } = useSite();
-  const navigate = useNavigate();
   const h = site.homepage || {};
   const seo = site.seo || {};
   const { scrollY } = useScroll();
@@ -365,29 +364,6 @@ export default function Home() {
 
       {/* ================= BOOK CONSULTATION ================= */}
       <BookingSection />
-
-      {/* ================= CTA ================= */}
-      <section className="relative overflow-hidden section-pad">
-        {h.cta?.image && (
-          <div className="absolute inset-0">
-            <img src={h.cta.image} alt="" className="h-full w-full object-cover" loading="lazy" />
-            <div className="absolute inset-0 bg-gradient-to-r from-primary-darker/95 via-primary/85 to-primary/70" />
-          </div>
-        )}
-        <div className="container-x relative z-10 text-center">
-          <Reveal>
-            <h2 className="mx-auto max-w-3xl text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-5xl">
-              {h.cta?.title || "Ready to Start Your Health Journey?"}
-            </h2>
-            <p className="mx-auto mt-5 max-w-[600px] text-base leading-relaxed text-white/80 sm:text-lg">{h.cta?.subtitle || "Book your consultation today."}</p>
-            <div className="mt-9">
-              <button onClick={() => navigate(h.cta?.buttonLink || "/contact")} className="btn-lime min-w-[200px] lg:min-w-[220px]">
-                {h.cta?.buttonLabel || "Book Now"} <ArrowRight size={18} />
-              </button>
-            </div>
-          </Reveal>
-        </div>
-      </section>
     </>
   );
 }
