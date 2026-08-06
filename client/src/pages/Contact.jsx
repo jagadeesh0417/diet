@@ -1,45 +1,18 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
-  MapPin, Phone, Mail, MessageCircle, Clock, ChevronDown, CalendarCheck,
+  MapPin, Phone, Mail, MessageCircle, Clock, CalendarCheck,
 } from "lucide-react";
 import SEO from "../components/SEO";
 import PageHero from "../components/PageHero";
 import { useSite } from "../context/SiteContext";
 
-const FAQS = [
-  { q: "How do online consultations work?", a: "After booking, you receive a link to a video call at your chosen slot. You'll get a questionnaire and diet diary link beforehand, and your plan is delivered within 48 hours of the session." },
-  { q: "Do you provide diet plans for medical conditions?", a: "Yes. We specialise in medical nutrition therapy for diabetes, PCOS, thyroid, hypertension, cholesterol, fatty liver and more — always coordinated with your treating doctor." },
-  { q: "How much does a consultation cost?", a: "Prices vary by program and start from our standard consultation fee. Your exact package is confirmed during booking — there are no hidden charges." },
-  { q: "Can I get support between sessions?", a: "Absolutely. Every program includes WhatsApp support and scheduled follow-up calls to keep you on track." },
-  { q: "Do you offer offline consultations?", a: "Yes, we're based in Mysuru — at Kshema Healthcare, Bogadi and at our Roopanagar clinic. Offline consultations are available by appointment between 10:30 AM and 5:00 PM." },
-];
-
-function FaqItem({ q, a, open, onToggle }) {
-  return (
-    <div className="card overflow-hidden">
-      <button onClick={onToggle} className="flex w-full items-center justify-between gap-4 p-5 text-left" aria-expanded={open}>
-        <span className="font-heading text-sm font-semibold text-charcoal sm:text-base">{q}</span>
-        <ChevronDown size={18} className={`shrink-0 text-primary transition-transform ${open ? "rotate-180" : ""}`} />
-      </button>
-      <AnimatePresence initial={false}>
-        {open && (
-          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.25 }}>
-            <p className="px-5 pb-5 text-sm leading-relaxed text-charcoal/65">{a}</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
-
 export default function Contact() {
   const { site } = useSite();
   const g = site.general || {};
   const [params] = useSearchParams();
-  const [openFaq, setOpenFaq] = useState(0);
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm({
     defaultValues: { service: params.get("service") || "" },
@@ -192,18 +165,11 @@ export default function Contact() {
 
               {g.mapEmbed && (
                 <div className="mb-8 overflow-hidden rounded-3xl shadow-card">
-                  <iframe src={g.mapEmbed} title="Clinic location" loading="lazy" referrerPolicy="no-referrer-when-downgrade" className="h-72 w-full border-0" />
+                  <iframe src={g.mapEmbed} title="Clinic location" loading="lazy" referrerPolicy="no-referrer-when-downgrade" className="h-[490px] w-full border-0" />
                 </div>
               )}
 
-              <h3 className="mb-4 font-heading text-xl font-bold text-charcoal">Frequently Asked Questions</h3>
-              <div className="space-y-3">
-                {FAQS.map((f, i) => (
-                  <FaqItem key={f.q} q={f.q} a={f.a} open={openFaq === i} onToggle={() => setOpenFaq(openFaq === i ? -1 : i)} />
-                ))}
-              </div>
-
-              <div className="mt-8 rounded-3xl bg-gradient-to-br from-primary to-primary-dark p-7 text-white shadow-lift">
+              <div className="rounded-3xl bg-gradient-to-br from-primary to-primary-dark p-7 text-white shadow-lift">
                 <h3 className="mb-2 font-heading text-lg font-bold">Prefer WhatsApp?</h3>
                 <p className="mb-4 text-sm text-white/80">Message us anytime — we'll get back to you within working hours.</p>
                 <a href={`https://wa.me/${g.whatsapp}`} target="_blank" rel="noopener noreferrer" className="btn-gold !bg-white !text-primary">
