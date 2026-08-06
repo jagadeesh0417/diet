@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import {
   ArrowRight, CalendarCheck, Star, ArrowUpRight, BadgeCheck, Camera, Check,
+  Leaf, GraduationCap, HeartPulse, Baby, Sparkles,
 } from "lucide-react";
 import { useSite } from "../context/SiteContext";
 import SEO from "../components/SEO";
@@ -175,51 +176,82 @@ export default function Home() {
       </section>
 
       {/* ================= MEET THE FOUNDER ================= */}
-      <section className="bg-white section-pad">
-        <div className="container-x grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+      <section className="overflow-hidden bg-white section-pad">
+        <div className="container-x grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
+          {/* Portrait */}
           <Reveal className="relative order-first mx-auto w-full max-w-[520px] lg:order-none lg:max-w-none">
             <div className="absolute -inset-4 rounded-[36px] bg-gradient-to-br from-sage via-sage2/60 to-transparent blur-xl" aria-hidden="true" />
-            <motion.div animate={{ y: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 6 }} className="relative">
-              {h.aboutPreview?.image && (
-                <img
-                  src={h.aboutPreview.image}
-                  alt="Dr. Sushma Appaiah"
-                  className="h-[360px] w-full rounded-[28px] object-cover shadow-lift sm:h-[500px] lg:h-[600px]"
-                  loading="lazy"
-                />
-              )}
-            </motion.div>
+            <div className="relative rounded-[32px] border border-[#E7EBE3] bg-white p-3 shadow-[0_24px_70px_rgba(20,40,30,0.14)]">
+              <motion.div animate={{ y: [0, -8, 0] }} transition={{ repeat: Infinity, duration: 6 }} className="relative">
+                {h.aboutPreview?.image && (
+                  <img
+                    src={h.aboutPreview.image}
+                    alt="Dr. Sushma Appaiah"
+                    className="h-[380px] w-full rounded-[24px] object-cover sm:h-[480px] lg:h-[560px]"
+                    loading="lazy"
+                  />
+                )}
+              </motion.div>
+            </div>
+
+            <div className="absolute -bottom-6 left-5 z-20 flex items-center gap-3 rounded-2xl border border-[#ECEFEA] bg-white px-5 py-4 shadow-[0_16px_40px_rgba(20,40,30,0.16)]">
+              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-primary/10 text-primary">
+                <GraduationCap size={22} />
+              </span>
+              <div>
+                <p className="font-heading text-2xl font-bold leading-none text-ink">{site.about?.experienceYears || 19}+</p>
+                <p className="mt-1 text-xs font-medium text-muted">Years of Experience</p>
+              </div>
+            </div>
+
+            <div className="absolute -right-3 top-7 z-20 flex items-center gap-2 rounded-full border border-[#ECEFEA] bg-white px-4 py-2.5 shadow-[0_16px_40px_rgba(20,40,30,0.16)] sm:-right-6">
+              <Sparkles size={16} className="text-limeDark" />
+              <p className="text-sm font-semibold text-ink">
+                {(site.about?.specialNeeds?.stat?.value || 3000).toLocaleString("en-IN")}
+                {site.about?.specialNeeds?.stat?.suffix || "+"} Diet Plans
+              </p>
+            </div>
           </Reveal>
 
+          {/* Founder story */}
           <Reveal delay={0.1} className="text-center lg:text-left">
-            <span className="mb-5 inline-flex items-center gap-2 rounded-full border border-line bg-white px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-primary shadow-card">
-              <BadgeCheck size={14} /> About the Founder
+            <span className="mb-5 inline-flex items-center gap-2 rounded-full bg-primary px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-white shadow-soft">
+              <Leaf size={14} /> About the Founder
             </span>
             <h2 className="text-3xl font-bold leading-tight text-ink sm:text-4xl lg:text-[46px]">
               {h.aboutPreview?.title || "Meet Dr. Sushma Appaiah"}
             </h2>
-            <div className="mx-auto mt-5 max-w-[600px] space-y-4 text-base leading-relaxed text-muted lg:mx-0 lg:text-lg">
+            <p className="mx-auto mt-3 max-w-[560px] text-sm font-semibold uppercase tracking-[0.2em] text-primary lg:mx-0">
+              {site.about?.designation || "Founder — Clinical Nutritionist & Wellness Counsellor"}
+            </p>
+
+            <div className="mx-auto mt-7 max-w-[640px] space-y-4 rounded-[24px] border border-[#ECEFEA] bg-[#F8FAF7] p-6 text-left sm:p-8 lg:mx-0">
               {(h.aboutPreview?.text || "Dr. Sushma Appaiah is the Founder of GOLZ (Giggles of Livez) and a distinguished nutrition scientist with 19 years of experience in clinical nutrition, corporate wellness, and health counselling.").split(/\n{2,}/).map((para) => (
-                <p key={para.slice(0, 24)} className="flex items-start gap-2.5 text-left">
-                  <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-lime text-ink">
-                    <Check size={14} />
+                <p key={para.slice(0, 24)} className="flex items-start gap-3 text-[15px] leading-[1.8] text-ink/80">
+                  <span className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-lime text-ink shadow-[0_4px_12px_rgba(163,198,68,0.5)]">
+                    <Check size={13} strokeWidth={3} />
                   </span>
                   <span>{para}</span>
                 </p>
               ))}
             </div>
-            <ul className="mx-auto mt-8 grid max-w-[600px] gap-3 text-left sm:grid-cols-2 lg:mx-0">
-              {(h.aboutPreview?.list || [
-                "Clinical Nutrition Expert",
-                "Lifestyle Disease Management",
-                "Personalized Diet Plans",
-                "Child & Women's Nutrition Specialist",
-              ]).map((item) => (
-                <li key={item} className="flex items-center gap-2.5 text-sm font-semibold text-ink">
-                  <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-lime text-ink"><Check size={14} /></span> {item}
-                </li>
+
+            <div className="mx-auto mt-7 grid max-w-[640px] grid-cols-1 gap-3 text-left sm:grid-cols-2 lg:mx-0">
+              {[
+                { Icon: GraduationCap, label: "Clinical Nutrition Expert" },
+                { Icon: HeartPulse, label: "Lifestyle Disease Management" },
+                { Icon: Sparkles, label: "Personalized Diet Plans" },
+                { Icon: Baby, label: "Child & Women's Nutrition" },
+              ].map(({ Icon, label }) => (
+                <div key={label} className="flex items-center gap-3 rounded-2xl border border-[#ECEFEA] bg-white p-4 shadow-soft transition-all duration-300 hover:-translate-y-0.5 hover:shadow-lift">
+                  <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-lime/15 text-limeDark">
+                    <Icon size={19} />
+                  </span>
+                  <p className="text-sm font-semibold leading-snug text-ink">{label}</p>
+                </div>
               ))}
-            </ul>
+            </div>
+
             <div className="mt-9 flex flex-col items-center gap-4 sm:flex-row sm:justify-center lg:justify-start">
               <Link to={h.aboutPreview?.buttonLink || "/about"} className="btn-primary w-full sm:w-auto sm:min-w-[200px]">
                 {h.aboutPreview?.buttonLabel || "Know More"} <ArrowRight size={18} />
