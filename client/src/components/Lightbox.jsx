@@ -68,11 +68,22 @@ export default function Lightbox({ items, index, onClose, onNavigate }) {
               />
             )}
             <button onClick={next} className="absolute right-2 z-10 rounded-full bg-white/10 p-3 text-white backdrop-blur transition hover:scale-110 hover:bg-white/25 sm:right-6" aria-label="Next"><ChevronRight size={22} /></button>
-            <span className="absolute bottom-7 left-1/2 flex -translate-x-1/2 items-center gap-2 whitespace-nowrap rounded-full bg-white/10 px-4 py-1.5 text-sm text-white/80 backdrop-blur">
-              <span>{index + 1} / {items.length}</span>
-              {item.category && <span className="text-white/40">·</span>}
-              {item.category && <span>{item.category}</span>}
-            </span>
+
+            <div className="absolute inset-x-0 bottom-6 flex flex-col items-center gap-3 px-6">
+              <span className="flex items-center gap-2 whitespace-nowrap rounded-full bg-white/10 px-4 py-1.5 text-sm text-white/80 backdrop-blur">
+                <span>{index + 1} / {items.length}</span>
+                {item.category && <span className="text-white/40">·</span>}
+                {item.category && <span>{item.category}</span>}
+              </span>
+              {(item.caption || item.alt || item.description) && (
+                <div className="max-w-2xl rounded-2xl bg-ink/60 px-6 py-4 text-center backdrop-blur-md">
+                  {(item.caption || item.alt) && (
+                    <p className="font-heading text-lg font-semibold leading-snug text-white">{item.caption || item.alt}</p>
+                  )}
+                  {item.description && <p className="mt-1.5 text-sm leading-relaxed text-white/75">{item.description}</p>}
+                </div>
+              )}
+            </div>
           </div>
         </motion.div>
       )}

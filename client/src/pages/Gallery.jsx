@@ -80,10 +80,15 @@ export default function Gallery() {
     });
   }, [items, sections]);
 
-  const open = (i) => setLightbox({ items, index: i });
+  const open = useCallback(async (cat, index = 0) => {
+    try {
+      const { data } = await api.get("/public/gallery", { params: { category: cat, limit: 1000 } });
+      setLightbox({ items: data.items, index: Math.min(index, Math.max(data.items.length - 1, 0)) });
+    } catch { /* noop */ }
+  }, []);
   const navigate = useCallback((index) => setLightbox((lb) => (lb ? { ...lb, index } : lb)), []);
 
-  const renderGrid = (list) => (
+  const renderGrid = (list, onOpen) => (
     <motion.div layout className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
       <AnimatePresence mode="popLayout">
         {list.map((item, i) => (
@@ -94,7 +99,7 @@ export default function Gallery() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96 }}
             transition={{ duration: 0.4, delay: (i % 6) * 0.05, ease: [0.21, 0.65, 0.36, 1] }}
-            onClick={() => open(i)}
+            onClick={() => onOpen(i)}
             className="group relative cursor-pointer overflow-hidden rounded-[20px] bg-white text-left shadow-soft transition-shadow duration-300 hover:shadow-lift focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/30"
             aria-label={`Open ${item.type === "video" ? "video" : "image"}: ${item.caption || item.alt || item.category}`}
           >
@@ -130,16 +135,23 @@ export default function Gallery() {
     </motion.div>
   );
 
-  const sectionHeader = (sec) => {
+  const sectionHeader = (sec, onOpen) => {
     if (!sec || (!sec.title || sec.title === sec.name) && !sec.description && !sec.cover) return null;
     return (
-      <div className="mb-7 flex items-center gap-4">
+      <button
+        onClick={onOpen}
+        className="group mb-7 flex w-full cursor-pointer items-center gap-4 rounded-2xl text-left focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/30"
+        aria-label={`Open ${sec.title || sec.name}`}
+      >
         {sec.cover && <img src={sec.cover} alt="" className="h-16 w-24 shrink-0 rounded-2xl object-cover shadow-soft" loading="lazy" />}
-        <div>
-          <h2 className="font-heading text-2xl font-bold tracking-tight text-ink">{sec.title || sec.name}</h2>
+        <div className="min-w-0 flex-1">
+          <h2 className="font-heading text-2xl font-bold tracking-tight text-ink transition-colors group-hover:text-primary">{sec.title || sec.name}</h2>
           {sec.description && <p className="mt-1 max-w-2xl text-sm leading-relaxed text-muted sm:text-base">{sec.description}</p>}
         </div>
-      </div>
+        <span className="shrink-0 rounded-full border border-primary/25 bg-white px-4 py-2 text-sm font-semibold text-primary transition-all duration-300 group-hover:border-primary group-hover:bg-primary group-hover:text-white">
+          View all ({sec.count}) <ChevronRight size={14} className="inline transition-transform duration-300 group-hover:translate-x-0.5" />
+        </span>
+      </button>
     );
   };
 
@@ -216,15 +228,25 @@ export default function Gallery() {
             <div className="space-y-16">
               {grouped.map(([cat, list]) => (
                 <div key={cat}>
-                  {sectionHeader(sectionByName[cat])}
-                  {renderGrid(list)}
+                  {sectionHeader(sectionByName[cat], () => open(cat, 0))}
+                  {renderGrid(list.slice(0, 4), (i) => open(cat, i))}
+                  {list.length > 4 && (
+                    <div className="mt-7 text-center">
+                      <button
+                        onClick={() => open(cat, 0)}
+                        className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-primary/25 bg-white px-6 py-3 text-sm font-semibold text-primary shadow-soft transition-all duration-300 hover:border-primary hover:bg-primary hover:text-white focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/30"
+                      >
+                        View all {list.length} {list.length === 1 ? "photo" : "photos"} <ChevronDown size={16} />
+                      </button>
+                    </div>
+                  )}
                 </div>
               ))}
             </div>
           ) : (
             <div>
-              {sectionHeader(sectionByName[category])}
-              {renderGrid(items)}
+              {sectionHeader(sectionByName[category], () => open(category, 0))}
+              {renderGrid(items, (i) => open(category, i))}
             </div>
           )}
 

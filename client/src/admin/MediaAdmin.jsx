@@ -40,7 +40,8 @@ export default function MediaAdmin() {
   };
 
   const copyUrl = async (url) => {
-    try { await navigator.clipboard.writeText(`${window.location.origin}${url}`); setCopied(url); setTimeout(() => setCopied(null), 1600); } catch { /* noop */ }
+    const full = /^https?:\/\//.test(url) ? url : `${window.location.origin}${url}`;
+    try { await navigator.clipboard.writeText(full); setCopied(url); setTimeout(() => setCopied(null), 1600); } catch { /* noop */ }
   };
 
   const visible = (files || []).filter((f) => !search || f.name.toLowerCase().includes(search.toLowerCase()));
@@ -142,7 +143,7 @@ export default function MediaAdmin() {
               const newName = e.target.newName.value.trim();
               if (!newName) return;
               try {
-                await api.put("/admin/media/rename", { name: renaming.name, newName });
+                await api.put("/admin/media/rename", { name: renaming.name, newName, url: renaming.url });
                 setRenaming(null);
                 showToast("File renamed");
                 load();
@@ -196,7 +197,7 @@ export default function MediaAdmin() {
         title="Delete this file?"
         text="The file will be removed from the library. Items referencing it on the site may break."
         onConfirm={async () => {
-          await api.delete("/admin/media", { data: { name: deleting.name } });
+          await api.delete("/admin/media", { data: { name: deleting.name, url: deleting.url } });
           setDeleting(null);
           showToast("File deleted");
           load();

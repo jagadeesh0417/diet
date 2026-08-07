@@ -1,6 +1,6 @@
-﻿import { useEffect, useRef, useState, lazy, Suspense } from "react";
+﻿import { useEffect, useRef, useState, useCallback, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import {
   ArrowRight, CalendarCheck, Star, ArrowUpRight, BadgeCheck, Camera,
   Leaf, GraduationCap, Sparkles,
@@ -10,6 +10,7 @@ import SEO from "../components/SEO";
 import Reveal from "../components/Reveal";
 import SectionHeading from "../components/SectionHeading";
 import BookingSection from "../components/BookingSection";
+import Lightbox, { PlayBadge } from "../components/Lightbox";
 import { ICON_MAP } from "../utils/helpers";
 
 const TestimonialsSection = lazy(() => import("../components/TestimonialsSection"));
@@ -59,6 +60,8 @@ export default function Home() {
   const [heroSrc, setHeroSrc] = useState(
     typeof h.heroPortrait === "string" && h.heroPortrait.trim() ? h.heroPortrait : "/hero-banner.png"
   );
+  const [lightbox, setLightbox] = useState(null);
+  const navigateLightbox = useCallback((index) => setLightbox((lb) => (lb ? { ...lb, index } : lb)), []);
 
   return (
     <>
@@ -362,9 +365,16 @@ export default function Home() {
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
             {site.gallery.slice(0, 8).map((g, i) => (
               <Reveal key={g._id} delay={(i % 4) * 0.06}>
-                <Link to="/gallery" className="group relative block overflow-hidden rounded-2xl" aria-label={`View ${g.caption || "gallery item"}`}>
+                <button
+                  onClick={() => setLightbox({ items: site.gallery, index: i })}
+                  className="group relative block w-full cursor-pointer overflow-hidden rounded-2xl text-left focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/30"
+                  aria-label={`Open ${g.caption || g.alt || "gallery item"}`}
+                >
                   {g.type === "video" ? (
-                    <video src={g.url} muted className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                    <>
+                      <video src={g.url} muted className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                      <PlayBadge />
+                    </>
                   ) : (
                     <img src={g.url} alt={g.alt || g.caption} loading="lazy" className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-110" />
                   )}
@@ -374,7 +384,7 @@ export default function Home() {
                       {g.caption}
                     </span>
                   )}
-                </Link>
+                </button>
               </Reveal>
             ))}
           </div>
@@ -391,6 +401,10 @@ export default function Home() {
 
       {/* ================= BOOK CONSULTATION ================= */}
       <BookingSection />
+
+      <AnimatePresence>
+        {lightbox && <Lightbox items={lightbox.items} index={lightbox.index} onClose={() => setLightbox(null)} onNavigate={navigateLightbox} />}
+      </AnimatePresence>
     </>
   );
 }

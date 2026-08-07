@@ -3,6 +3,7 @@ import path from "path";
 import fs from "fs";
 import os from "os";
 import { fileURLToPath } from "url";
+import { put } from "@vercel/blob";
 import { uploadToCloudinary, isCloudinaryConfigured } from "../config/cloudinary.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -12,6 +13,10 @@ export const UPLOAD_DIR = process.env.VERCEL
   : path.join(__dirname, "..", "..", "uploads");
 
 if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+
+export const BLOB_PREFIX = "golz";
+
+export const isBlobConfigured = () => !!process.env.BLOB_READ_WRITE_TOKEN;
 
 const storage = multer.diskStorage({
   destination: (_req, _file, cb) => cb(null, UPLOAD_DIR),
@@ -32,18 +37,38 @@ export const upload = multer({
   limits: { fileSize: 150 * 1024 * 1024 }, // 150 MB
 });
 
+function blobName(folder, file) {
+  const safe = (folder || "misc").replace(/[^a-z0-9/_-]/gi, "").replace(/\/+/g, "/");
+  return `${BLOB_PREFIX}/${safe}/${path.basename(file.path)}`;
+}
+
 /**
- * Processes an uploaded file — pushes to Cloudinary when configured.
- * Returns { url, thumb, localPath }. Caller must handle local cleanup.
+ * Processes an uploaded file — pushes to Vercel Blob (permanent, serverless-safe),
+ * falling back to Cloudinary, then local storage. Returns { url, thumb, storage }.
  */
 export async function processUpload(file, folder = "golz") {
   const localPath = file.path;
-  const cloud = await uploadToCloudinary(localPath, { folder, resourceType: file.mimetype.startsWith("video") ? "video" : "image" });
+  const isVideo = /^video\//.test(file.mimetype);
+
+  if (isBlobConfigured()) {
+    try {
+      const data = fs.readFileSync(localPath);
+      const blob = await put(blobName(folder, file), data, {
+        access: "public",
+        contentType: file.mimetype,
+      });
+      fs.unlink(localPath, () => {});
+      return { url: blob.url, thumb: isVideo ? "" : blob.url, storage: "blob", pathname: blob.pathname };
+    } catch (err) {
+      console.error("[upload] Blob upload failed, falling back:", err.message);
+    }
+  }
+
+  const cloud = await uploadToCloudinary(localPath, { folder, resourceType: isVideo ? "video" : "image" });
   if (cloud) {
     fs.unlink(localPath, () => {});
-    return { url: cloud.url, thumb: cloud.thumb };
+    return { url: cloud.url, thumb: cloud.thumb, storage: "cloudinary" };
   }
-  const isVideo = /^video\//.test(file.mimetype);
   const url = `/uploads/${path.basename(localPath)}`;
-  return { url, thumb: isVideo ? "" : url };
+  return { url, thumb: isVideo ? "" : url, storage: "local" };
 }

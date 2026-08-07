@@ -6,10 +6,10 @@ import {
 import api from "../api/client";
 import SEO from "../components/SEO";
 import PageLoader from "../components/PageLoader";
-import { Modal, ConfirmDialog, Toast, Field, Toggle, EmptyState, UploadInput } from "./AdminUI";
+import { Modal, ConfirmDialog, Toast, Field, Toggle, EmptyState } from "./AdminUI";
 import { formatDate } from "../utils/helpers";
 
-const EMPTY_SECTION = { name: "", title: "", description: "", cover: "", published: true };
+const EMPTY_SECTION = { name: "", title: "", description: "", published: true };
 
 export default function GalleryAdmin() {
   const [items, setItems] = useState(null);
@@ -273,8 +273,11 @@ export default function GalleryAdmin() {
                 </div>
               </div>
             </div>
-            <Field label="Caption">
+            <Field label="Caption" hint="Shown as the image name when it opens">
               <input className="input" value={editing.caption} onChange={(e) => setEditing({ ...editing, caption: e.target.value })} />
+            </Field>
+            <Field label="Description" hint="Shown under the name when the image opens">
+              <textarea className="input resize-none" rows={3} value={editing.description} onChange={(e) => setEditing({ ...editing, description: e.target.value })} placeholder="Describe this photo or video…" />
             </Field>
             <Field label="SEO alt text">
               <input className="input" value={editing.alt} onChange={(e) => setEditing({ ...editing, alt: e.target.value })} />
@@ -296,9 +299,6 @@ export default function GalleryAdmin() {
             </Field>
             <Field label="Description" hint="Shown under the section title on the gallery page">
               <textarea className="input resize-none" rows={3} value={sectionModal.description} onChange={(e) => setSectionModal({ ...sectionModal, description: e.target.value })} placeholder="Short intro for this section…" />
-            </Field>
-            <Field label="Cover image" hint="Optional — shown as a thumbnail in the admin and the gallery header">
-              <UploadInput value={sectionModal.cover} onChange={(cover) => setSectionModal({ ...sectionModal, cover })} folder="golz/sections" />
             </Field>
             <label className="flex items-center gap-2.5 text-sm font-medium text-charcoal/75">
               <Toggle checked={sectionModal.published} onChange={(published) => setSectionModal({ ...sectionModal, published })} label="Visible on site" /> Visible on site

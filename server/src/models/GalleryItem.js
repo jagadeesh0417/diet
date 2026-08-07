@@ -7,6 +7,7 @@ const schema = new mongoose.Schema(
     thumb: { type: String, default: "" },
     category: { type: String, default: "General" },
     caption: { type: String, default: "" },
+    description: { type: String, default: "" },
     alt: { type: String, default: "" },
     order: { type: Number, default: 0 },
     featured: { type: Boolean, default: false },

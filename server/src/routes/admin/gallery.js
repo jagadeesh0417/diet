@@ -146,6 +146,7 @@ router.post("/upload", async (req, res) => {
       thumb,
       category: req.body.category || "General",
       caption: req.body.caption || "",
+      description: req.body.description || "",
       alt: req.body.alt || "",
       order: (maxOrder?.order ?? 0) + 1,
       published: true,
