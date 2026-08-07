@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform } from "framer-motion";
 import {
-  ArrowRight, CalendarCheck, Star, ArrowUpRight, BadgeCheck, Camera, Check,
+  ArrowRight, CalendarCheck, Star, ArrowUpRight, BadgeCheck, Camera,
   Leaf, GraduationCap, Sparkles,
 } from "lucide-react";
 import { useSite } from "../context/SiteContext";
@@ -176,64 +176,53 @@ export default function Home() {
       </section>
 
       {/* ================= MEET THE FOUNDER ================= */}
-      <section className="relative overflow-hidden bg-[#0E1C14] section-pad">
-        <div className="pointer-events-none absolute -left-32 top-1/4 h-[420px] w-[420px] rounded-full bg-honey/10 blur-[120px]" aria-hidden="true" />
-        <div className="pointer-events-none absolute -right-40 -bottom-44 h-[520px] w-[520px] rounded-full bg-primary/50 blur-[130px]" aria-hidden="true" />
-        <div
-          className="pointer-events-none absolute inset-0 opacity-[0.05]"
-          style={{ backgroundImage: "radial-gradient(rgba(255,255,255,0.7) 1px, transparent 1px)", backgroundSize: "28px 28px" }}
-          aria-hidden="true"
-        />
-
-        <div className="container-x relative grid items-center gap-16 lg:grid-cols-2 lg:gap-24">
+      <section className="relative overflow-hidden bg-primary section-pad">
+        <div className="absolute -right-32 top-0 h-96 w-96 rounded-full bg-sage/10 blur-3xl" aria-hidden="true" />
+        <div className="absolute -left-24 bottom-0 h-72 w-72 rounded-full bg-lime/10 blur-3xl" aria-hidden="true" />
+        <div className="container-x relative z-10 grid items-center gap-14 lg:grid-cols-2 lg:gap-20">
           {/* Founder story */}
           <Reveal className="order-2 text-center lg:order-none lg:text-left">
-            <span className="mb-6 inline-flex items-center gap-2 rounded-full border border-honey/50 bg-honey/10 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-honey">
+            <span className="mb-6 inline-flex items-center gap-2 rounded-full bg-lime px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-ink">
               <Leaf size={14} /> About the Founder
             </span>
-            <h2 className="text-3xl font-bold leading-tight text-white sm:text-4xl lg:text-[46px]">
+            <h2 className="font-heading text-4xl font-semibold leading-tight text-[#EEF3EA] lg:text-[46px]">
               {h.aboutPreview?.title || "Meet Dr. Sushma Appaiah"}
             </h2>
-            <p className="mt-4 text-sm font-semibold uppercase tracking-[0.2em] text-honey">
+            <p className="mt-3 text-sm font-semibold uppercase tracking-[0.2em] text-lime">
               {site.about?.designation || "Founder — Clinical Nutritionist & Wellness Counsellor"}
             </p>
 
-            <div className="mx-auto mt-8 max-w-[620px] space-y-4 text-left lg:mx-0">
+            <div className="mx-auto mt-6 max-w-[620px] space-y-4 text-[15px] leading-[1.85] text-[#DBE6D5]/90 lg:mx-0">
               {(h.aboutPreview?.text || "Dr. Sushma Appaiah is the Founder of GOLZ (Giggles of Livez) and a distinguished nutrition scientist with 19 years of experience in clinical nutrition, corporate wellness, and health counselling.").split(/\n{2,}/).map((para) => (
-                <p key={para.slice(0, 24)} className="flex items-start gap-3 text-[15px] leading-[1.85] text-white/70">
-                  <span className="mt-1 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-honey text-[#0E1C14]">
-                    <Check size={13} strokeWidth={3} />
-                  </span>
-                  <span>{para}</span>
-                </p>
+                <p key={para.slice(0, 24)}>{para}</p>
               ))}
             </div>
 
-            <div className="mx-auto mt-10 grid max-w-[620px] grid-cols-3 divide-x divide-white/10 rounded-2xl border border-white/10 bg-white/[0.04] py-6 backdrop-blur-sm lg:mx-0">
+            <div className="mx-auto mt-9 grid max-w-[620px] grid-cols-3 divide-x divide-white/10 rounded-[18px] border border-white/15 bg-white/5 py-6 lg:mx-0">
               {[
                 { value: site.about?.experienceYears || 19, suffix: "+", label: "Years of Experience" },
                 { value: site.about?.specialNeeds?.stat?.value || 3000, suffix: site.about?.specialNeeds?.stat?.suffix || "+", label: "Diet Plans Crafted" },
                 { value: 500, suffix: "+", label: "Happy Clients" },
               ].map((s) => (
                 <div key={s.label} className="px-2 text-center sm:px-4">
-                  <p className="font-heading text-2xl font-bold text-honey sm:text-[32px]">
+                  <p className="font-heading text-2xl font-semibold text-lime sm:text-4xl">
                     <CountUp value={s.value} suffix={s.suffix} />
                   </p>
-                  <p className="mt-1.5 text-[11px] font-medium uppercase tracking-wider text-white/55 sm:text-xs">{s.label}</p>
+                  <p className="mt-1.5 text-[11px] font-medium uppercase tracking-wider text-[#A9C0A0] sm:text-xs">{s.label}</p>
                 </div>
               ))}
             </div>
 
-            <div className="mt-10 flex flex-col items-center gap-4 sm:flex-row sm:justify-center lg:justify-start">
+            <div className="mt-9 flex flex-col items-center gap-4 sm:flex-row sm:justify-center lg:justify-start">
               <Link
                 to={h.aboutPreview?.buttonLink || "/about"}
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-honey px-8 py-3.5 text-sm font-bold text-[#0E1C14] shadow-[0_12px_30px_rgba(223,166,59,0.35)] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#EAB34E] sm:w-auto"
+                className="btn-gold w-full !bg-lime !text-ink hover:!bg-limeDark sm:w-auto sm:min-w-[200px]"
               >
                 {h.aboutPreview?.buttonLabel || "Know More"} <ArrowRight size={18} />
               </Link>
               <Link
                 to="/contact"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/25 px-8 py-3.5 text-sm font-bold text-white transition-all duration-300 hover:border-honey hover:text-honey sm:w-auto"
+                className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-white/25 px-8 py-3.5 text-sm font-bold text-[#EEF3EA] transition-all duration-300 hover:border-lime hover:text-lime sm:w-auto sm:min-w-[200px]"
               >
                 Book Consultation <ArrowUpRight size={18} />
               </Link>
@@ -241,37 +230,31 @@ export default function Home() {
           </Reveal>
 
           {/* Portrait */}
-          <Reveal delay={0.1} className="relative order-1 mx-auto w-full max-w-[420px] lg:order-none lg:max-w-none">
-            <div className="absolute left-1/2 top-1/2 h-[100%] w-[100%] -translate-x-1/2 -translate-y-1/2 rounded-full bg-honey/15 blur-[90px]" aria-hidden="true" />
-            <motion.div animate={{ y: [0, -10, 0] }} transition={{ repeat: Infinity, duration: 6 }} className="relative">
-              <div className="mx-auto w-[86%] rounded-t-[999px] rounded-b-[36px] bg-gradient-to-b from-honey via-honey/50 to-honey/10 p-[3px]">
-                {h.aboutPreview?.image ? (
-                  <img
-                    src={h.aboutPreview.image}
-                    alt="Dr. Sushma Appaiah"
-                    className="aspect-[3/4] w-full rounded-t-[999px] rounded-b-[34px] object-cover object-top"
-                    loading="lazy"
-                  />
-                ) : (
-                  <div className="aspect-[3/4] w-full rounded-t-[999px] rounded-b-[34px] bg-primary-dark" />
-                )}
+          <Reveal delay={0.15} className="relative order-1 mx-auto w-full max-w-[420px] lg:order-none lg:max-w-none">
+            <div className="absolute -top-2 left-1/2 z-20 -translate-x-1/2 whitespace-nowrap rounded-full bg-lime px-4 py-2 text-ink shadow-[0_16px_40px_rgba(0,0,0,0.35)]">
+              <p className="flex items-center gap-2 text-sm font-bold"><Sparkles size={15} /> GOLZ · Founder</p>
+            </div>
+            <motion.div animate={{ y: [0, -8, 0] }} transition={{ repeat: Infinity, duration: 6 }} className="relative rounded-[180px_180px_22px_22px] border border-white/15 bg-white/5 p-6 sm:p-8">
+              {h.aboutPreview?.image ? (
+                <img
+                  src={h.aboutPreview.image}
+                  alt="Dr. Sushma Appaiah"
+                  className="aspect-[3/4] w-full rounded-[150px_150px_16px_16px] object-cover object-top"
+                  loading="lazy"
+                />
+              ) : (
+                <div className="aspect-[3/4] w-full rounded-[150px_150px_16px_16px] bg-white/10" />
+              )}
+              <div className="mt-6 flex items-center justify-center gap-3">
+                <span className="flex h-11 w-11 items-center justify-center rounded-[14px] bg-lime/15 text-lime">
+                  <GraduationCap size={22} />
+                </span>
+                <div className="text-left">
+                  <p className="font-heading text-xl font-bold leading-none text-lime">{site.about?.experienceYears || 19}+</p>
+                  <p className="mt-1 text-xs font-medium text-[#A9C0A0]">Years of Experience</p>
+                </div>
               </div>
             </motion.div>
-
-            <div className="absolute -right-2 top-16 z-20 flex items-center gap-3 rounded-2xl border border-honey/30 bg-[#12241A] px-5 py-4 shadow-[0_20px_50px_rgba(0,0,0,0.45)] sm:right-0">
-              <span className="flex h-11 w-11 items-center justify-center rounded-xl bg-honey/15 text-honey">
-                <GraduationCap size={22} />
-              </span>
-              <div>
-                <p className="font-heading text-xl font-bold leading-none text-honey">{site.about?.experienceYears || 19}+</p>
-                <p className="mt-1 text-xs font-medium text-white/60">Years of Experience</p>
-              </div>
-            </div>
-
-            <div className="absolute -left-3 bottom-14 z-20 flex items-center gap-2 rounded-full bg-honey px-4 py-2.5 text-[#0E1C14] shadow-[0_16px_40px_rgba(223,166,59,0.4)] sm:-left-6">
-              <Sparkles size={16} />
-              <p className="text-sm font-bold">GOLZ · Founder</p>
-            </div>
           </Reveal>
         </div>
       </section>

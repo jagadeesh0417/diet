@@ -84,7 +84,7 @@ function BookingSection() {
           subtitle="Book an appointment at the location most convenient for you."
         />
 
-        <div className="grid items-start gap-10 lg:grid-cols-[2fr_3fr] lg:gap-14">
+        <div className="grid items-start gap-10 lg:grid-cols-[2fr_3fr] lg:items-stretch lg:gap-14">
           {/* ---- Information panel ---- */}
           <Reveal className="order-2 lg:order-1">
             <div className="rounded-[28px] border border-[#ECEFEA] bg-white p-8 shadow-[0_20px_60px_rgba(0,0,0,0.08)] sm:p-10">
@@ -148,7 +148,7 @@ function BookingSection() {
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true, margin: "-60px" }}
               transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
-              className="relative h-[380px] overflow-hidden rounded-[24px] shadow-[0_20px_60px_rgba(0,0,0,0.08)] sm:h-[460px] lg:h-[600px]"
+              className="relative h-[380px] overflow-hidden rounded-[24px] shadow-[0_20px_60px_rgba(0,0,0,0.08)] sm:h-[460px] lg:h-full"
             >
               <iframe
                 src={g.mapEmbed || FALLBACK_MAP}
