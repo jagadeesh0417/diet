@@ -60,6 +60,8 @@ export default function Gallery() {
 
   const sectionByName = useMemo(() => Object.fromEntries(sections.map((s) => [s.name, s])), [sections]);
 
+  const secInfo = useCallback((cat, list) => sectionByName[cat] || { name: cat, title: cat, description: "", cover: "", count: list.length }, [sectionByName]);
+
   const chipList = useMemo(() => {
     const withItems = sections.filter((s) => s.count > 0);
     if (withItems.length) return ["All", ...withItems.map((s) => s.name)];
@@ -230,7 +232,7 @@ export default function Gallery() {
             <div className="space-y-16">
               {grouped.map(([cat, list]) => (
                 <div key={cat}>
-                  {sectionHeader(sectionByName[cat], () => open(cat, 0))}
+                  {sectionHeader(secInfo(cat, list), () => open(cat, 0))}
                   {renderGrid(list.slice(0, 4), (i) => open(cat, i))}
                   {list.length > 4 && (
                     <div className="mt-7 text-center">
@@ -247,7 +249,7 @@ export default function Gallery() {
             </div>
           ) : (
             <div>
-              {sectionHeader(sectionByName[category], () => open(category, 0), { showPill: false })}
+              {sectionHeader(secInfo(category, items), () => open(category, 0), { showPill: false })}
               {renderGrid(items, (i) => open(category, i))}
             </div>
           )}
