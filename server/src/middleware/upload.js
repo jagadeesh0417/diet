@@ -38,8 +38,11 @@ export const upload = multer({
 });
 
 function blobName(folder, file) {
-  const safe = (folder || "misc").replace(/[^a-z0-9/_-]/gi, "").replace(/\/+/g, "/");
-  return `${BLOB_PREFIX}/${safe}/${path.basename(file.path)}`;
+  const clean = String(folder || "misc")
+    .replace(new RegExp(`^${BLOB_PREFIX}/?`), "")
+    .replace(/[^a-z0-9/_-]/gi, "")
+    .replace(/\/+/g, "/");
+  return `${BLOB_PREFIX}/${clean}/${path.basename(file.path)}`;
 }
 
 /**
