@@ -36,10 +36,10 @@ export default function Gallery() {
   const [loading, setLoading] = useState(true);
   const [lightbox, setLightbox] = useState(null);
 
-  const load = useCallback(async (cat, pg) => {
+  const load = useCallback(async (cat, pg, lim = PAGE_SIZE) => {
     setLoading(true);
     try {
-      const { data } = await api.get("/public/gallery", { params: { category: cat, page: pg, limit: PAGE_SIZE } });
+      const { data } = await api.get("/public/gallery", { params: { category: cat, page: pg, limit: lim } });
       setItems((prev) => (pg === 1 ? data.items : [...prev, ...data.items]));
       setPages(data.pages);
       setTotal(data.total);
@@ -55,7 +55,7 @@ export default function Gallery() {
 
   useEffect(() => {
     setPage(1);
-    load(category, 1);
+    load(category, 1, category === "All" ? 1000 : PAGE_SIZE);
   }, [category, load]);
 
   const sectionByName = useMemo(() => Object.fromEntries(sections.map((s) => [s.name, s])), [sections]);
@@ -135,8 +135,8 @@ export default function Gallery() {
     </motion.div>
   );
 
-  const sectionHeader = (sec, onOpen) => {
-    if (!sec || (!sec.title || sec.title === sec.name) && !sec.description && !sec.cover) return null;
+  const sectionHeader = (sec, onOpen, { showPill = true } = {}) => {
+    if (!sec) return null;
     return (
       <button
         onClick={onOpen}
@@ -148,9 +148,11 @@ export default function Gallery() {
           <h2 className="font-heading text-2xl font-bold tracking-tight text-ink transition-colors group-hover:text-primary">{sec.title || sec.name}</h2>
           {sec.description && <p className="mt-1 max-w-2xl text-sm leading-relaxed text-muted sm:text-base">{sec.description}</p>}
         </div>
-        <span className="shrink-0 rounded-full border border-primary/25 bg-white px-4 py-2 text-sm font-semibold text-primary transition-all duration-300 group-hover:border-primary group-hover:bg-primary group-hover:text-white">
-          View all ({sec.count}) <ChevronRight size={14} className="inline transition-transform duration-300 group-hover:translate-x-0.5" />
-        </span>
+        {showPill && (
+          <span className="shrink-0 rounded-full border border-primary/25 bg-white px-4 py-2 text-sm font-semibold text-primary transition-all duration-300 group-hover:border-primary group-hover:bg-primary group-hover:text-white">
+            View all ({sec.count}) <ChevronRight size={14} className="inline transition-transform duration-300 group-hover:translate-x-0.5" />
+          </span>
+        )}
       </button>
     );
   };
@@ -245,12 +247,12 @@ export default function Gallery() {
             </div>
           ) : (
             <div>
-              {sectionHeader(sectionByName[category], () => open(category, 0))}
+              {sectionHeader(sectionByName[category], () => open(category, 0), { showPill: false })}
               {renderGrid(items, (i) => open(category, i))}
             </div>
           )}
 
-          {page < pages && (
+          {category !== "All" && page < pages && (
             <div className="mt-14 text-center">
               <button
                 onClick={() => { const next = page + 1; setPage(next); load(category, next); }}
