@@ -91,31 +91,31 @@ export default function Gallery() {
   const navigate = useCallback((index) => setLightbox((lb) => (lb ? { ...lb, index } : lb)), []);
 
   const renderGrid = (list, onOpen) => (
-    <motion.div layout className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      <AnimatePresence mode="popLayout">
+    <motion.div className="columns-1 gap-6 sm:columns-2 lg:columns-3">
+      <AnimatePresence>
         {list.map((item, i) => (
           <motion.button
             key={item._id}
-            layout
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96 }}
             transition={{ duration: 0.4, delay: (i % 6) * 0.05, ease: [0.21, 0.65, 0.36, 1] }}
             onClick={() => onOpen(i)}
-            className="group relative cursor-pointer overflow-hidden rounded-[20px] bg-white text-left shadow-soft transition-shadow duration-300 hover:shadow-lift focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/30"
+            className="group relative mb-6 w-full cursor-pointer overflow-hidden rounded-[20px] break-inside-avoid bg-white text-left shadow-soft transition-shadow duration-300 hover:shadow-lift focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/30"
             aria-label={`Open ${item.type === "video" ? "video" : "image"}: ${item.caption || item.alt || item.category}`}
           >
-            <div className="relative aspect-[4/3] overflow-hidden">
+            <div className="relative overflow-hidden">
               {item.type === "video" ? (
                 <>
-                  <video src={item.url} muted className="h-full w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
+                  <video src={item.url} muted className="aspect-[4/3] w-full object-cover transition-transform duration-700 ease-out group-hover:scale-110" />
                   <PlayBadge />
                 </>
               ) : (
                 <LazyImage
                   src={item.url}
                   alt={item.alt || item.caption || "Gallery image"}
-                  className="h-full w-full"
+                  natural
+                  className="w-full"
                   imgClassName="transition-transform duration-700 ease-out group-hover:scale-110"
                 />
               )}

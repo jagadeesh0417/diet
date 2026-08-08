@@ -74,11 +74,11 @@ export default function MediaAdmin() {
               <h2 className="mb-3 flex items-center gap-2 font-heading text-sm font-semibold text-charcoal/60">
                 <FileImage size={15} className="text-primary" /> Images ({images.length})
               </h2>
-              <div className="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+              <div className="mb-8 columns-2 gap-4 sm:columns-3 lg:columns-4 xl:columns-5">
                 {images.map((f) => (
-                  <div key={f.name} className="group relative overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-card">
+                  <div key={f.name} className="group relative mb-4 break-inside-avoid overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-card">
                     <button onClick={() => setPreview(f)} className="block w-full" aria-label={`Preview ${f.name}`}>
-                      <img src={f.url} alt={f.name} className="aspect-video w-full object-cover" loading="lazy" />
+                      <img src={f.url} alt={f.name} className="h-auto w-full object-contain" loading="lazy" />
                     </button>
                     <div className="absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-charcoal/85 to-transparent p-2 opacity-0 transition group-hover:opacity-100">
                       <button onClick={() => copyUrl(f.url)} className="rounded-lg bg-white/15 p-1.5 text-white hover:bg-primary" title="Copy URL" aria-label="Copy URL">

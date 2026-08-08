@@ -362,9 +362,9 @@ export default function Home() {
             title="Moments From Our Journey"
             subtitle="Recipes, workshops, events and real client transformations."
           />
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4">
+          <div className="columns-2 gap-3 sm:columns-3 sm:gap-4 lg:columns-4">
             {site.gallery.slice(0, 8).map((g, i) => (
-              <Reveal key={g._id} delay={(i % 4) * 0.06}>
+              <Reveal key={g._id} delay={(i % 4) * 0.06} className="mb-3 break-inside-avoid sm:mb-4">
                 <button
                   onClick={() => setLightbox({ items: site.gallery, index: i })}
                   className="group relative block w-full cursor-pointer overflow-hidden rounded-2xl text-left focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/30"
@@ -376,7 +376,7 @@ export default function Home() {
                       <PlayBadge />
                     </>
                   ) : (
-                    <img src={g.url} alt={g.alt || g.caption} loading="lazy" className="aspect-[4/3] w-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                    <img src={g.url} alt={g.alt || g.caption} loading="lazy" className="h-auto w-full object-contain transition-transform duration-500 group-hover:scale-110" />
                   )}
                   <span className="absolute inset-0 bg-gradient-to-t from-charcoal/70 to-transparent opacity-0 transition group-hover:opacity-100" />
                   {g.caption && (

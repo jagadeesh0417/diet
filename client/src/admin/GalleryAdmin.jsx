@@ -190,7 +190,7 @@ export default function GalleryAdmin() {
       ) : visible.length === 0 ? (
         <EmptyState text="No media in this section. Upload images or videos to get started." />
       ) : (
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        <div className="columns-2 gap-4 sm:columns-3 lg:columns-4 xl:columns-5">
           {visible.map((g, i) => (
             <div
               key={g._id}
@@ -205,12 +205,12 @@ export default function GalleryAdmin() {
                 reorder(next.map((x) => x));
                 setDragIndex(null);
               }}
-              className={`group relative overflow-hidden rounded-2xl shadow-card ${dragIndex === i ? "opacity-50 ring-2 ring-primary" : ""} ${selected.includes(g._id) ? "ring-2 ring-primary" : ""}`}
+              className={`group relative mb-4 break-inside-avoid overflow-hidden rounded-2xl shadow-card ${dragIndex === i ? "opacity-50 ring-2 ring-primary" : ""} ${selected.includes(g._id) ? "ring-2 ring-primary" : ""}`}
             >
               {g.type === "video" ? (
                 <video src={g.url} muted className="aspect-square w-full object-cover" />
               ) : (
-                <img src={g.url} alt={g.alt} className="aspect-square w-full object-cover" loading="lazy" />
+                <img src={g.url} alt={g.alt} className="h-auto w-full object-contain" loading="lazy" />
               )}
               <span className="absolute left-2 top-2 rounded-md bg-charcoal/70 px-2 py-0.5 text-[10px] font-semibold text-white">{g.category}</span>
               <button
