@@ -113,14 +113,14 @@ export default function Home() {
 
               <div className="mt-9 flex flex-wrap items-center justify-center gap-5 lg:justify-start">
                 <div className="flex -space-x-3">
-                  {[11, 32, 13, 14, 15].map((n) => (
-                    <img
-                      key={n}
-                      src={`https://i.pravatar.cc/96?img=${n}`}
-                      alt="Happy client"
-                      className="h-11 w-11 rounded-full border-2 border-cream object-cover shadow-card"
-                      loading="lazy"
-                    />
+                  {["bg-primary", "bg-olive", "bg-honey", "bg-sage", "bg-terracotta"].map((c) => (
+                    <span
+                      key={c}
+                      className={`flex h-11 w-11 items-center justify-center rounded-full border-2 border-cream ${c} text-white shadow-card`}
+                      aria-hidden="true"
+                    >
+                      <Leaf size={16} />
+                    </span>
                   ))}
                 </div>
                 <div className="text-center lg:text-left">

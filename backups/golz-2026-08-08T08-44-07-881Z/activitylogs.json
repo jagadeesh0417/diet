@@ -1,0 +1,765 @@
+[
+  {
+    "_id": "6a749d3a7d904a44796c2b50",
+    "user": "Admin",
+    "action": "Login",
+    "details": "Admin signed in",
+    "createdAt": "2026-08-06T14:42:02.251Z",
+    "updatedAt": "2026-08-06T14:42:02.251Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a74a0a7dbd228b4db4446b5",
+    "user": "Admin",
+    "action": "Login",
+    "details": "Admin signed in",
+    "createdAt": "2026-08-06T14:56:39.682Z",
+    "updatedAt": "2026-08-06T14:56:39.682Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75cb4d406aa8719b848547",
+    "user": "Admin",
+    "action": "Login",
+    "details": "Admin signed in",
+    "createdAt": "2026-08-07T12:10:53.203Z",
+    "updatedAt": "2026-08-07T12:10:53.203Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75d288cb283aff58695c88",
+    "user": "Admin",
+    "action": "Login",
+    "details": "Admin signed in",
+    "createdAt": "2026-08-07T12:41:44.287Z",
+    "updatedAt": "2026-08-07T12:41:44.287Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75d298cb283aff58695c9e",
+    "user": "Admin",
+    "action": "Gallery section deleted",
+    "details": "Deleted \"Workshops\", items moved to General",
+    "createdAt": "2026-08-07T12:42:00.384Z",
+    "updatedAt": "2026-08-07T12:42:00.384Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75d29ccb283aff58695cab",
+    "user": "Admin",
+    "action": "Gallery section deleted",
+    "details": "Deleted \"Seminars\", items moved to General",
+    "createdAt": "2026-08-07T12:42:04.814Z",
+    "updatedAt": "2026-08-07T12:42:04.814Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75d2a3cb283aff58695cb2",
+    "user": "Admin",
+    "action": "Gallery section deleted",
+    "details": "Deleted \"Client Transformations\", items moved to General",
+    "createdAt": "2026-08-07T12:42:11.042Z",
+    "updatedAt": "2026-08-07T12:42:11.042Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75d2a7cb283aff58695cb9",
+    "user": "Admin",
+    "action": "Gallery section deleted",
+    "details": "Deleted \"Clinic Photos\", items moved to General",
+    "createdAt": "2026-08-07T12:42:15.610Z",
+    "updatedAt": "2026-08-07T12:42:15.610Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75d2accb283aff58695cc0",
+    "user": "Admin",
+    "action": "Gallery section deleted",
+    "details": "Deleted \"Events\", items moved to General",
+    "createdAt": "2026-08-07T12:42:20.781Z",
+    "updatedAt": "2026-08-07T12:42:20.781Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75d2b1cb283aff58695cc8",
+    "user": "Admin",
+    "action": "Gallery section deleted",
+    "details": "Deleted \"Healthy Recipes\", items moved to General",
+    "createdAt": "2026-08-07T12:42:25.017Z",
+    "updatedAt": "2026-08-07T12:42:25.017Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75d550c279e2b272fd4950",
+    "user": "Admin",
+    "action": "Login",
+    "details": "Admin signed in",
+    "createdAt": "2026-08-07T12:53:36.591Z",
+    "updatedAt": "2026-08-07T12:53:36.591Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75d57a85dc07e32c42f81c",
+    "user": "Admin",
+    "action": "Gallery section added",
+    "details": "Added section \"RECOGNITION BY IISF 2020 -- NEWSPAPER\"",
+    "createdAt": "2026-08-07T12:54:18.328Z",
+    "updatedAt": "2026-08-07T12:54:18.328Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75d5aec279e2b272fd496c",
+    "user": "Admin",
+    "action": "Gallery section added",
+    "details": "Added section \"Nov 2020 --- SIG-PHN Pan India (IDA)\"",
+    "createdAt": "2026-08-07T12:55:10.932Z",
+    "updatedAt": "2026-08-07T12:55:10.932Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75d613c279e2b272fd4977",
+    "user": "Admin",
+    "action": "Gallery sections reordered",
+    "details": "Changed section order",
+    "createdAt": "2026-08-07T12:56:51.524Z",
+    "updatedAt": "2026-08-07T12:56:51.524Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75d61cc279e2b272fd497c",
+    "user": "Admin",
+    "action": "Gallery section updated",
+    "details": "Updated \"Nov 2020 --- SIG-PHN Pan India (IDA)\"",
+    "createdAt": "2026-08-07T12:57:00.345Z",
+    "updatedAt": "2026-08-07T12:57:00.345Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75d64985dc07e32c42f836",
+    "user": "Admin",
+    "action": "Media upload",
+    "details": "Uploaded WhatsApp Image 2026-08-07 at 6.08.46 PM.jpeg",
+    "createdAt": "2026-08-07T12:57:45.242Z",
+    "updatedAt": "2026-08-07T12:57:45.242Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75d64c85dc07e32c42f839",
+    "user": "Admin",
+    "action": "Media upload",
+    "details": "Uploaded WhatsApp Image 2026-08-07 at 6.08.31 PM.jpeg",
+    "createdAt": "2026-08-07T12:57:48.637Z",
+    "updatedAt": "2026-08-07T12:57:48.637Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75d65585dc07e32c42f83c",
+    "user": "Admin",
+    "action": "Media upload",
+    "details": "Uploaded WhatsApp Image 2026-08-07 at 6.08.21 PM.jpeg",
+    "createdAt": "2026-08-07T12:57:57.107Z",
+    "updatedAt": "2026-08-07T12:57:57.107Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75d65985dc07e32c42f83f",
+    "user": "Admin",
+    "action": "Media upload",
+    "details": "Uploaded WhatsApp Image 2026-08-07 at 6.08.05 PM.jpeg",
+    "createdAt": "2026-08-07T12:58:01.730Z",
+    "updatedAt": "2026-08-07T12:58:01.730Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75d65e85dc07e32c42f842",
+    "user": "Admin",
+    "action": "Media upload",
+    "details": "Uploaded WhatsApp Image 2026-08-07 at 6.07.30 PM.jpeg",
+    "createdAt": "2026-08-07T12:58:06.756Z",
+    "updatedAt": "2026-08-07T12:58:06.756Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75d66185dc07e32c42f845",
+    "user": "Admin",
+    "action": "Media upload",
+    "details": "Uploaded WhatsApp Image 2026-08-07 at 6.07.13 PM.jpeg",
+    "createdAt": "2026-08-07T12:58:09.859Z",
+    "updatedAt": "2026-08-07T12:58:09.859Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75d67485dc07e32c42f848",
+    "user": "Admin",
+    "action": "Media upload",
+    "details": "Uploaded WhatsApp Image 2026-08-07 at 6.06.52 PM.jpeg",
+    "createdAt": "2026-08-07T12:58:28.020Z",
+    "updatedAt": "2026-08-07T12:58:28.020Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75d67c85dc07e32c42f84b",
+    "user": "Admin",
+    "action": "Media upload",
+    "details": "Uploaded WhatsApp Image 2026-08-07 at 6.06.39 PM.jpeg",
+    "createdAt": "2026-08-07T12:58:36.326Z",
+    "updatedAt": "2026-08-07T12:58:36.326Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75de547d090c676ecf29c5",
+    "user": "Admin",
+    "action": "Login",
+    "details": "Admin signed in",
+    "createdAt": "2026-08-07T13:32:04.460Z",
+    "updatedAt": "2026-08-07T13:32:04.460Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75ded62f1567a73d0fdcc4",
+    "user": "Admin",
+    "action": "Login",
+    "details": "Admin signed in",
+    "createdAt": "2026-08-07T13:34:14.229Z",
+    "updatedAt": "2026-08-07T13:34:14.229Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75ded82f1567a73d0fdccc",
+    "user": "Admin",
+    "action": "Gallery upload",
+    "details": "Uploaded image",
+    "createdAt": "2026-08-07T13:34:16.137Z",
+    "updatedAt": "2026-08-07T13:34:16.137Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75def92f1567a73d0fdcd1",
+    "user": "Admin",
+    "action": "Gallery item deleted",
+    "details": "Deleted image",
+    "createdAt": "2026-08-07T13:34:49.616Z",
+    "updatedAt": "2026-08-07T13:34:49.616Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75df786e407a3419a2ffd5",
+    "user": "Admin",
+    "action": "Gallery upload",
+    "details": "Uploaded image",
+    "createdAt": "2026-08-07T13:36:56.845Z",
+    "updatedAt": "2026-08-07T13:36:56.845Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75df8ef9b400fa909f8664",
+    "user": "Admin",
+    "action": "Gallery item updated",
+    "details": "Updated image",
+    "createdAt": "2026-08-07T13:37:18.472Z",
+    "updatedAt": "2026-08-07T13:37:18.472Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75dfb0f9b400fa909f8670",
+    "user": "Admin",
+    "action": "Gallery item deleted",
+    "details": "Deleted image",
+    "createdAt": "2026-08-07T13:37:52.758Z",
+    "updatedAt": "2026-08-07T13:37:52.758Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75e03ea828d5668ed4b42a",
+    "user": "Admin",
+    "action": "Gallery upload",
+    "details": "Uploaded image",
+    "createdAt": "2026-08-07T13:40:14.429Z",
+    "updatedAt": "2026-08-07T13:40:14.429Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75e03fa828d5668ed4b42f",
+    "user": "Admin",
+    "action": "Gallery item updated",
+    "details": "Updated image",
+    "createdAt": "2026-08-07T13:40:15.806Z",
+    "updatedAt": "2026-08-07T13:40:15.806Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75e05850cea9e53feaf6a2",
+    "user": "Admin",
+    "action": "Gallery item updated",
+    "details": "Updated image",
+    "createdAt": "2026-08-07T13:40:40.457Z",
+    "updatedAt": "2026-08-07T13:40:40.457Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75e06c3bac0cd773912249",
+    "user": "Admin",
+    "action": "Gallery item deleted",
+    "details": "Deleted image",
+    "createdAt": "2026-08-07T13:41:00.419Z",
+    "updatedAt": "2026-08-07T13:41:00.419Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75e512b2a4448fab4b6d90",
+    "user": "Admin",
+    "action": "Gallery section added",
+    "details": "Added section \"Verify Section\"",
+    "createdAt": "2026-08-07T14:00:50.250Z",
+    "updatedAt": "2026-08-07T14:00:50.250Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75e515b2a4448fab4b6d98",
+    "user": "Admin",
+    "action": "Gallery upload",
+    "details": "Uploaded image",
+    "createdAt": "2026-08-07T14:00:53.914Z",
+    "updatedAt": "2026-08-07T14:00:53.914Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75e517b2a4448fab4b6d9e",
+    "user": "Admin",
+    "action": "Gallery upload",
+    "details": "Uploaded image",
+    "createdAt": "2026-08-07T14:00:55.707Z",
+    "updatedAt": "2026-08-07T14:00:55.707Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75e519b2a4448fab4b6da4",
+    "user": "Admin",
+    "action": "Gallery upload",
+    "details": "Uploaded image",
+    "createdAt": "2026-08-07T14:00:57.097Z",
+    "updatedAt": "2026-08-07T14:00:57.097Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75e51bb2a4448fab4b6daa",
+    "user": "Admin",
+    "action": "Gallery upload",
+    "details": "Uploaded image",
+    "createdAt": "2026-08-07T14:00:59.142Z",
+    "updatedAt": "2026-08-07T14:00:59.142Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75e51cb2a4448fab4b6db1",
+    "user": "Admin",
+    "action": "Gallery upload",
+    "details": "Uploaded image",
+    "createdAt": "2026-08-07T14:01:00.888Z",
+    "updatedAt": "2026-08-07T14:01:00.888Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75e53e0230c6071920be64",
+    "user": "Admin",
+    "action": "Gallery section deleted",
+    "details": "Deleted \"Verify Section\", items moved to General",
+    "createdAt": "2026-08-07T14:01:34.062Z",
+    "updatedAt": "2026-08-07T14:01:34.062Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75e5550230c6071920be6a",
+    "user": "Admin",
+    "action": "Gallery item deleted",
+    "details": "Deleted image",
+    "createdAt": "2026-08-07T14:01:57.119Z",
+    "updatedAt": "2026-08-07T14:01:57.119Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75e5560230c6071920be6e",
+    "user": "Admin",
+    "action": "Gallery item deleted",
+    "details": "Deleted image",
+    "createdAt": "2026-08-07T14:01:58.284Z",
+    "updatedAt": "2026-08-07T14:01:58.284Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75e5570230c6071920be72",
+    "user": "Admin",
+    "action": "Gallery item deleted",
+    "details": "Deleted image",
+    "createdAt": "2026-08-07T14:01:59.532Z",
+    "updatedAt": "2026-08-07T14:01:59.532Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75e5580230c6071920be77",
+    "user": "Admin",
+    "action": "Gallery item deleted",
+    "details": "Deleted image",
+    "createdAt": "2026-08-07T14:02:00.708Z",
+    "updatedAt": "2026-08-07T14:02:00.708Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a75e55a0230c6071920be7b",
+    "user": "Admin",
+    "action": "Gallery item deleted",
+    "details": "Deleted image",
+    "createdAt": "2026-08-07T14:02:02.059Z",
+    "updatedAt": "2026-08-07T14:02:02.059Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76e45d1a93f8712fb6952b",
+    "user": "Admin",
+    "action": "Login",
+    "details": "Admin signed in",
+    "createdAt": "2026-08-08T08:10:05.896Z",
+    "updatedAt": "2026-08-08T08:10:05.896Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76e4861a93f8712fb69547",
+    "user": "Admin",
+    "action": "Media upload",
+    "details": "Uploaded WhatsApp Image 2026-08-07 at 10.57.24 PM.jpeg",
+    "createdAt": "2026-08-08T08:10:46.087Z",
+    "updatedAt": "2026-08-08T08:10:46.087Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76e4891a93f8712fb6954a",
+    "user": "Admin",
+    "action": "Media upload",
+    "details": "Uploaded WhatsApp Image 2026-08-07 at 6.08.46 PM.jpeg",
+    "createdAt": "2026-08-08T08:10:49.000Z",
+    "updatedAt": "2026-08-08T08:10:49.000Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76e48a1a93f8712fb6954d",
+    "user": "Admin",
+    "action": "Media upload",
+    "details": "Uploaded WhatsApp Image 2026-08-07 at 6.08.31 PM.jpeg",
+    "createdAt": "2026-08-08T08:10:50.614Z",
+    "updatedAt": "2026-08-08T08:10:50.614Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76e48d1a93f8712fb69550",
+    "user": "Admin",
+    "action": "Media upload",
+    "details": "Uploaded WhatsApp Image 2026-08-07 at 6.08.21 PM.jpeg",
+    "createdAt": "2026-08-08T08:10:53.252Z",
+    "updatedAt": "2026-08-08T08:10:53.252Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76e4901a93f8712fb69553",
+    "user": "Admin",
+    "action": "Media upload",
+    "details": "Uploaded WhatsApp Image 2026-08-07 at 6.08.05 PM.jpeg",
+    "createdAt": "2026-08-08T08:10:56.051Z",
+    "updatedAt": "2026-08-08T08:10:56.051Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76e4921a93f8712fb69556",
+    "user": "Admin",
+    "action": "Media upload",
+    "details": "Uploaded WhatsApp Image 2026-08-07 at 6.07.30 PM.jpeg",
+    "createdAt": "2026-08-08T08:10:58.899Z",
+    "updatedAt": "2026-08-08T08:10:58.899Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76e4941a93f8712fb6955a",
+    "user": "Admin",
+    "action": "Media upload",
+    "details": "Uploaded WhatsApp Image 2026-08-07 at 6.07.13 PM.jpeg",
+    "createdAt": "2026-08-08T08:11:00.245Z",
+    "updatedAt": "2026-08-08T08:11:00.245Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76e4971a93f8712fb6955d",
+    "user": "Admin",
+    "action": "Media upload",
+    "details": "Uploaded WhatsApp Image 2026-08-07 at 6.06.52 PM.jpeg",
+    "createdAt": "2026-08-08T08:11:03.569Z",
+    "updatedAt": "2026-08-08T08:11:03.569Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76e4991a93f8712fb69560",
+    "user": "Admin",
+    "action": "Media upload",
+    "details": "Uploaded WhatsApp Image 2026-08-07 at 6.06.39 PM.jpeg",
+    "createdAt": "2026-08-08T08:11:05.487Z",
+    "updatedAt": "2026-08-08T08:11:05.487Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76e49c1a93f8712fb69563",
+    "user": "Admin",
+    "action": "Media upload",
+    "details": "Uploaded WhatsApp Image 2026-08-07 at 6.06.27 PM.jpeg",
+    "createdAt": "2026-08-08T08:11:08.393Z",
+    "updatedAt": "2026-08-08T08:11:08.393Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76e49f1a93f8712fb69566",
+    "user": "Admin",
+    "action": "Media upload",
+    "details": "Uploaded WhatsApp Image 2026-08-07 at 6.05.45 PM.jpeg",
+    "createdAt": "2026-08-08T08:11:11.116Z",
+    "updatedAt": "2026-08-08T08:11:11.116Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76e4a01a93f8712fb69569",
+    "user": "Admin",
+    "action": "Media upload",
+    "details": "Uploaded WhatsApp Image 2026-08-07 at 6.05.30 PM.jpeg",
+    "createdAt": "2026-08-08T08:11:12.453Z",
+    "updatedAt": "2026-08-08T08:11:12.453Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76e4a31a93f8712fb6956c",
+    "user": "Admin",
+    "action": "Media upload",
+    "details": "Uploaded WhatsApp Image 2026-08-07 at 6.05.16 PM.jpeg",
+    "createdAt": "2026-08-08T08:11:15.603Z",
+    "updatedAt": "2026-08-08T08:11:15.603Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76e4aed62f347ef4fef092",
+    "user": "Admin",
+    "action": "Media deleted",
+    "details": "Deleted 1786176646084-954607988.jpeg",
+    "createdAt": "2026-08-08T08:11:26.391Z",
+    "updatedAt": "2026-08-08T08:11:26.391Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76e4b299d8efb433c36ef8",
+    "user": "Admin",
+    "action": "Media deleted",
+    "details": "Deleted 1786176646084-954607988.jpeg",
+    "createdAt": "2026-08-08T08:11:30.084Z",
+    "updatedAt": "2026-08-08T08:11:30.084Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76e4b499d8efb433c36f00",
+    "user": "Admin",
+    "action": "Media deleted",
+    "details": "Deleted 1786176646084-954607988.jpeg",
+    "createdAt": "2026-08-08T08:11:32.049Z",
+    "updatedAt": "2026-08-08T08:11:32.049Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76e4b4d62f347ef4fef09e",
+    "user": "Admin",
+    "action": "Media deleted",
+    "details": "Deleted 1786176646084-954607988.jpeg",
+    "createdAt": "2026-08-08T08:11:32.763Z",
+    "updatedAt": "2026-08-08T08:11:32.763Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76e4c299d8efb433c36f0a",
+    "user": "Admin",
+    "action": "Media upload",
+    "details": "Uploaded WhatsApp Image 2026-08-07 at 6.08.31 PM.jpeg",
+    "createdAt": "2026-08-08T08:11:46.957Z",
+    "updatedAt": "2026-08-08T08:11:46.957Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76e4c599d8efb433c36f0d",
+    "user": "Admin",
+    "action": "Media upload",
+    "details": "Uploaded WhatsApp Image 2026-08-07 at 6.08.21 PM.jpeg",
+    "createdAt": "2026-08-08T08:11:49.640Z",
+    "updatedAt": "2026-08-08T08:11:49.640Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76e4c899d8efb433c36f10",
+    "user": "Admin",
+    "action": "Media upload",
+    "details": "Uploaded WhatsApp Image 2026-08-07 at 6.08.05 PM.jpeg",
+    "createdAt": "2026-08-08T08:11:52.056Z",
+    "updatedAt": "2026-08-08T08:11:52.056Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76e4ca99d8efb433c36f13",
+    "user": "Admin",
+    "action": "Media upload",
+    "details": "Uploaded WhatsApp Image 2026-08-07 at 6.07.30 PM.jpeg",
+    "createdAt": "2026-08-08T08:11:54.644Z",
+    "updatedAt": "2026-08-08T08:11:54.644Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76e4cb99d8efb433c36f16",
+    "user": "Admin",
+    "action": "Media upload",
+    "details": "Uploaded WhatsApp Image 2026-08-07 at 6.07.13 PM.jpeg",
+    "createdAt": "2026-08-08T08:11:55.954Z",
+    "updatedAt": "2026-08-08T08:11:55.954Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76e4cf99d8efb433c36f19",
+    "user": "Admin",
+    "action": "Media upload",
+    "details": "Uploaded WhatsApp Image 2026-08-07 at 6.06.52 PM.jpeg",
+    "createdAt": "2026-08-08T08:11:59.569Z",
+    "updatedAt": "2026-08-08T08:11:59.569Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76e742562ca59d796d9da4",
+    "user": "Admin",
+    "action": "Media upload",
+    "details": "Uploaded blob-test.png",
+    "createdAt": "2026-08-08T08:22:26.369Z",
+    "updatedAt": "2026-08-08T08:22:26.369Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76e76e3c2dcebe0536ef85",
+    "user": "Admin",
+    "action": "Media upload",
+    "details": "Uploaded blob-test.png",
+    "createdAt": "2026-08-08T08:23:10.843Z",
+    "updatedAt": "2026-08-08T08:23:10.843Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76e7703c2dcebe0536ef89",
+    "user": "Admin",
+    "action": "Media deleted",
+    "details": "Deleted 1786177390700-504102639.png",
+    "createdAt": "2026-08-08T08:23:12.699Z",
+    "updatedAt": "2026-08-08T08:23:12.699Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76ea5a36d596faa24ab602",
+    "user": "Admin",
+    "action": "Login",
+    "details": "Admin signed in",
+    "createdAt": "2026-08-08T08:35:38.589Z",
+    "updatedAt": "2026-08-08T08:35:38.589Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76ea5b36d596faa24ab606",
+    "user": "Admin",
+    "action": "Media upload",
+    "details": "Uploaded audit-test.png",
+    "createdAt": "2026-08-08T08:35:39.199Z",
+    "updatedAt": "2026-08-08T08:35:39.199Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76ea5c36d596faa24ab60a",
+    "user": "Admin",
+    "action": "Media deleted",
+    "details": "Deleted audit-test.png",
+    "createdAt": "2026-08-08T08:35:40.322Z",
+    "updatedAt": "2026-08-08T08:35:40.322Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76ea5c36d596faa24ab60d",
+    "user": "Admin",
+    "action": "Media deleted",
+    "details": "Deleted audit-test.png",
+    "createdAt": "2026-08-08T08:35:40.594Z",
+    "updatedAt": "2026-08-08T08:35:40.594Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76ea5c36d596faa24ab610",
+    "user": "Admin",
+    "action": "Media deleted",
+    "details": "Deleted x.png",
+    "createdAt": "2026-08-08T08:35:40.892Z",
+    "updatedAt": "2026-08-08T08:35:40.892Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76eac2df0be2a5829a80e6",
+    "user": "Admin",
+    "action": "Login",
+    "details": "Admin signed in",
+    "createdAt": "2026-08-08T08:37:22.841Z",
+    "updatedAt": "2026-08-08T08:37:22.841Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76eac4df0be2a5829a80ea",
+    "user": "Admin",
+    "action": "Media upload",
+    "details": "Uploaded audit-test.png",
+    "createdAt": "2026-08-08T08:37:24.680Z",
+    "updatedAt": "2026-08-08T08:37:24.680Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76eac6df0be2a5829a80ee",
+    "user": "Admin",
+    "action": "Media deleted",
+    "details": "Deleted audit-test.png",
+    "createdAt": "2026-08-08T08:37:26.614Z",
+    "updatedAt": "2026-08-08T08:37:26.614Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76eb4b5933ebdaf39bd4c3",
+    "user": "Admin",
+    "action": "Login",
+    "details": "Admin signed in",
+    "createdAt": "2026-08-08T08:39:39.683Z",
+    "updatedAt": "2026-08-08T08:39:39.683Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76eb4e5933ebdaf39bd4c9",
+    "user": "Admin",
+    "action": "Media upload",
+    "details": "Uploaded live-test.png",
+    "createdAt": "2026-08-08T08:39:42.416Z",
+    "updatedAt": "2026-08-08T08:39:42.416Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76eb505933ebdaf39bd4cd",
+    "user": "Admin",
+    "action": "Media deleted",
+    "details": "Deleted live-test.png",
+    "createdAt": "2026-08-08T08:39:44.709Z",
+    "updatedAt": "2026-08-08T08:39:44.709Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a76eb9dadcdae084f03b6c4",
+    "user": "Admin",
+    "action": "Media cleanup",
+    "details": "Removed 13 demo gallery items and 2 empty sections",
+    "createdAt": "2026-08-08T08:41:01.103Z"
+  }
+]

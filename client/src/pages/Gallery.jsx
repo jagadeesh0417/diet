@@ -13,8 +13,6 @@ import { useSite } from "../context/SiteContext";
 
 const PAGE_SIZE = 12;
 
-const HERO_IMAGE = "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=1600&q=70";
-
 const STATS = [
   { icon: "⭐", value: 500, suffix: "+", label: "Happy Clients" },
   { icon: "🥗", value: 1200, suffix: "+", label: "Meal Plans" },
@@ -169,10 +167,7 @@ export default function Gallery() {
 
       {/* ================= HERO ================= */}
       <section className="relative overflow-hidden bg-primary">
-        <div className="absolute inset-0">
-          <img src={HERO_IMAGE} alt="" className="h-full w-full scale-110 object-cover opacity-30 blur-lg" loading="lazy" />
-          <div className="absolute inset-0 bg-gradient-to-b from-primary-darker/80 via-primary/75 to-primary" />
-        </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-primary-darker/80 via-primary/75 to-primary" />
         <div className="absolute -right-24 top-8 h-64 w-64 rounded-full bg-lime/15 blur-3xl" aria-hidden="true" />
         <div className="absolute -left-20 bottom-0 h-56 w-56 rounded-full bg-sage/15 blur-3xl" aria-hidden="true" />
 
@@ -267,7 +262,7 @@ export default function Gallery() {
           )}
 
           {!loading && items.length === 0 && (
-            <p className="py-20 text-center text-charcoal/50">No media here yet — check back soon.</p>
+            <p className="py-20 text-center text-charcoal/50">No images have been added to this section yet.</p>
           )}
         </div>
       </section>

@@ -1,0 +1,44 @@
+[
+  {
+    "_id": "6a6daf36e75f43b834e145a6",
+    "name": "Chandrakala N",
+    "role": "Weight Management Program",
+    "photo": "",
+    "rating": 5,
+    "text": "I had a very positive experience following the program. Within two months I saw clear and measurable improvements — my weight reduced by 2.2 kg and my waist came down by 6 cm. My body fat percentage and BMI also improved, and my overall InBody score increased. What stood out even more was how I felt — more energetic, lighter, better sleep and almost no leg pain. The approach felt structured and sustainable rather than extreme. I would recommend this to anyone looking for a disciplined and result-oriented plan.",
+    "result": "Lost 2.2 kg & 6 cm off waist in 2 months",
+    "featured": true,
+    "published": true,
+    "createdAt": "2026-08-01T08:32:54.840Z",
+    "updatedAt": "2026-08-01T08:32:54.840Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a6daf36e75f43b834e145a8",
+    "name": "Geetha Murthy",
+    "role": "Weight & Body Composition Program",
+    "photo": "",
+    "rating": 5,
+    "text": "I had an excellent experience with Dr. Sushma Appaiah over the last 3 months. I lost 5.8 kg with major improvements in body fat, waist and hip measurements, visceral fat, and overall body composition. My energy levels are good and my periods remained regular, which shows the diet was healthy and well balanced. The results feel sustainable, not extreme. Truly professional guidance — highly recommend Dr. Sushma Appaiah.",
+    "result": "Lost 5.8 kg in 3 months",
+    "featured": true,
+    "published": true,
+    "createdAt": "2026-08-01T08:32:54.927Z",
+    "updatedAt": "2026-08-01T08:32:54.927Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a6daf37e75f43b834e145aa",
+    "name": "Shruthi Vinayak",
+    "role": "Gut Health & Weight Gain",
+    "photo": "",
+    "rating": 5,
+    "text": "I went to GOLZ with gut issues. Dr. Sushma gave me a diet plan which was not only simple to follow — all the ingredients were from the kitchen and easily available in the market. In just 3 months I saw tremendous change in my health. I was underweight and struggling to gain weight; my weight started increasing and I started feeling more energetic. Along with the diet she gave me pranayama which helped me become more stable emotionally and mentally. It was a complete holistic approach in a natural way. I would recommend GOLZ nutrition to everyone who wants to lead a happy, healthy and peaceful life. Thank you Dr. Sushma from the bottom of my heart.",
+    "result": "Healthy weight gain & new energy in 3 months",
+    "featured": true,
+    "published": true,
+    "createdAt": "2026-08-01T08:32:55.003Z",
+    "updatedAt": "2026-08-01T08:32:55.003Z",
+    "__v": 0
+  }
+]

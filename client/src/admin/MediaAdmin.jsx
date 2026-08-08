@@ -1,24 +1,29 @@
 import { useEffect, useRef, useState } from "react";
-import { Upload, Trash2, Pencil, Copy, Check, Search, ExternalLink, FolderOpen, Film, FileImage } from "lucide-react";
+import {
+  Upload, Trash2, Pencil, Copy, Check, Search, ExternalLink, FolderOpen, Film, FileImage, CheckSquare, Square,
+} from "lucide-react";
 import api from "../api/client";
 import SEO from "../components/SEO";
 import PageLoader from "../components/PageLoader";
+import ImgFallback from "../components/ImgFallback";
 import { Modal, ConfirmDialog, Toast, EmptyState } from "./AdminUI";
 import { formatDate } from "../utils/helpers";
 
 export default function MediaAdmin() {
   const [files, setFiles] = useState(null);
   const [search, setSearch] = useState("");
+  const [selected, setSelected] = useState(new Set());
   const [toast, setToast] = useState(null);
   const [uploading, setUploading] = useState(0);
   const [renaming, setRenaming] = useState(null);
   const [deleting, setDeleting] = useState(null);
+  const [bulkDelete, setBulkDelete] = useState(false);
   const [preview, setPreview] = useState(null);
   const [copied, setCopied] = useState(null);
   const fileRef = useRef(null);
 
   const load = () =>
-    api.get("/admin/media").then(({ data }) => setFiles(data)).catch(() => {
+    api.get("/admin/media").then(({ data }) => { setFiles(data); setSelected(new Set()); }).catch(() => {
       showToast("Failed to load media library", "error");
       setFiles([]);
     });
@@ -57,9 +62,27 @@ export default function MediaAdmin() {
     try { await navigator.clipboard.writeText(full); setCopied(url); setTimeout(() => setCopied(null), 1600); } catch { /* noop */ }
   };
 
+  const toggleSelect = (id) => {
+    setSelected((prev) => {
+      const next = new Set(prev);
+      if (next.has(id)) next.delete(id); else next.add(id);
+      return next;
+    });
+  };
+
   const visible = (files || []).filter((f) => !search || f.name.toLowerCase().includes(search.toLowerCase()));
   const images = visible.filter((f) => /\.(jpe?g|png|webp|gif|avif)$/i.test(f.name));
   const videos = visible.filter((f) => /\.(mp4|webm|mov)$/i.test(f.name));
+  const allVisibleSelected = visible.length > 0 && visible.every((f) => selected.has(f._id));
+
+  const toggleSelectAll = () => {
+    setSelected((prev) => {
+      if (allVisibleSelected) return new Set();
+      const next = new Set(prev);
+      visible.forEach((f) => next.add(f._id));
+      return next;
+    });
+  };
 
   return (
     <>
@@ -69,9 +92,16 @@ export default function MediaAdmin() {
           <Search size={16} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-charcoal/40" />
           <input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search files…" aria-label="Search media files" className="input !py-2.5 !pl-10" />
         </div>
-        <button onClick={() => fileRef.current?.click()} disabled={uploading > 0} className="btn-primary !px-5 !py-2.5 !text-sm disabled:opacity-60">
-          <Upload size={16} /> {uploading > 0 ? `Uploading ${uploading}…` : "Upload Files"}
-        </button>
+        <div className="flex items-center gap-3">
+          {selected.size > 0 && (
+            <button onClick={() => setBulkDelete(true)} className="btn-primary !bg-red-500 !px-5 !py-2.5 !text-sm hover:!bg-red-600">
+              <Trash2 size={15} /> Delete selected ({selected.size})
+            </button>
+          )}
+          <button onClick={() => fileRef.current?.click()} disabled={uploading > 0} className="btn-primary !px-5 !py-2.5 !text-sm disabled:opacity-60">
+            <Upload size={16} /> {uploading > 0 ? `Uploading ${uploading}…` : "Upload Files"}
+          </button>
+        </div>
         <input ref={fileRef} type="file" multiple accept="image/*,video/*" className="hidden"
           onChange={(e) => { const list = Array.from(e.target.files || []); if (list.length) uploadFiles(list); e.target.value = ""; }} />
       </div>
@@ -82,6 +112,14 @@ export default function MediaAdmin() {
         <EmptyState text="No files yet. Upload images or videos to build your media library." />
       ) : (
         <>
+          <button
+            onClick={toggleSelectAll}
+            className="mb-3 flex items-center gap-2 rounded-lg px-2 py-1 text-xs font-semibold text-charcoal/55 transition hover:text-primary"
+          >
+            {allVisibleSelected ? <CheckSquare size={14} className="text-primary" /> : <Square size={14} />}
+            {allVisibleSelected ? "Deselect all" : `Select all (${visible.length})`}
+          </button>
+
           {images.length > 0 && (
             <>
               <h2 className="mb-3 flex items-center gap-2 font-heading text-sm font-semibold text-charcoal/60">
@@ -89,9 +127,16 @@ export default function MediaAdmin() {
               </h2>
               <div className="mb-8 columns-2 gap-4 sm:columns-3 lg:columns-4 xl:columns-5">
                 {images.map((f) => (
-                  <div key={f.name} className="group relative mb-4 break-inside-avoid overflow-hidden rounded-2xl border border-gray-100 bg-white shadow-card">
+                  <div key={f._id} className={`group relative mb-4 break-inside-avoid overflow-hidden rounded-2xl border bg-white shadow-card ${selected.has(f._id) ? "border-primary ring-2 ring-primary/30" : "border-gray-100"}`}>
                     <button onClick={() => setPreview(f)} className="block w-full" aria-label={`Preview ${f.name}`}>
-                      <img src={f.url} alt={f.name} className="h-auto w-full object-contain" loading="lazy" />
+                      <ImgFallback src={f.url} alt={f.name} className="h-auto w-full object-contain" fallbackClassName="aspect-square" />
+                    </button>
+                    <button
+                      onClick={() => toggleSelect(f._id)}
+                      className={`absolute left-2 top-2 rounded-md p-1.5 shadow transition ${selected.has(f._id) ? "bg-primary text-white" : "bg-white/90 text-charcoal hover:bg-primary hover:text-white"}`}
+                      aria-label={selected.has(f._id) ? "Deselect file" : "Select file"}
+                    >
+                      {selected.has(f._id) ? <CheckSquare size={14} /> : <Square size={14} />}
                     </button>
                     <div className="absolute inset-x-0 bottom-0 flex items-center justify-between bg-gradient-to-t from-charcoal/85 to-transparent p-2 opacity-0 transition group-hover:opacity-100">
                       <button onClick={() => copyUrl(f.url)} className="rounded-lg bg-white/15 p-1.5 text-white hover:bg-primary" title="Copy URL" aria-label="Copy URL">
@@ -119,12 +164,19 @@ export default function MediaAdmin() {
               </h2>
               <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {videos.map((f) => (
-                  <div key={f.name} className="flex items-center gap-3 rounded-2xl border border-gray-100 bg-white p-3 shadow-card">
+                  <div key={f._id} className={`flex items-center gap-3 rounded-2xl border bg-white p-3 shadow-card ${selected.has(f._id) ? "border-primary ring-2 ring-primary/30" : "border-gray-100"}`}>
                     <video src={f.url} className="h-16 w-24 shrink-0 rounded-xl bg-charcoal object-cover" />
                     <div className="min-w-0 flex-1">
                       <p className="truncate text-sm font-medium text-charcoal">{f.name}</p>
                       <p className="text-xs text-charcoal/45">{formatDate(f.modified)} • {(f.size / 1024 / 1024).toFixed(1)} MB</p>
                     </div>
+                    <button
+                      onClick={() => toggleSelect(f._id)}
+                      className={`rounded-md p-1.5 ${selected.has(f._id) ? "bg-primary text-white" : "text-charcoal/50 hover:bg-primary/10 hover:text-primary"}`}
+                      aria-label={selected.has(f._id) ? "Deselect file" : "Select file"}
+                    >
+                      {selected.has(f._id) ? <CheckSquare size={14} /> : <Square size={14} />}
+                    </button>
                     <div className="flex gap-1">
                       <button onClick={() => copyUrl(f.url)} className="rounded-lg p-1.5 text-charcoal/50 hover:bg-primary/10 hover:text-primary" title="Copy URL" aria-label="Copy URL">
                         {copied === f.url ? <Check size={14} /> : <Copy size={14} />}
@@ -156,7 +208,7 @@ export default function MediaAdmin() {
               const newName = e.target.newName.value.trim();
               if (!newName) return;
               try {
-                await api.put("/admin/media/rename", { name: renaming.name, newName, url: renaming.url });
+                await api.put("/admin/media/rename", { _id: renaming._id, newName });
                 setRenaming(null);
                 showToast("File renamed");
                 load();
@@ -185,7 +237,7 @@ export default function MediaAdmin() {
             {/\.(mp4|webm|mov)$/i.test(preview.name) ? (
               <video src={preview.url} controls className="w-full rounded-2xl bg-charcoal" />
             ) : (
-              <img src={preview.url} alt={preview.name} className="max-h-[70vh] w-full rounded-2xl object-contain bg-charcoal/5" />
+              <ImgFallback src={preview.url} alt={preview.name} className="max-h-[70vh] w-full rounded-2xl object-contain bg-charcoal/5" />
             )}
             <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-sm">
               <p className="text-charcoal/60">
@@ -204,19 +256,39 @@ export default function MediaAdmin() {
         )}
       </Modal>
 
+      {/* Single delete — one media ID at a time */}
       <ConfirmDialog
         open={!!deleting}
         onClose={() => setDeleting(null)}
         title="Delete this file?"
-        text="The file will be removed from the library. Items referencing it on the site may break."
+        text="Only this file will be removed. Items referencing it on the site may break."
         onConfirm={async () => {
           try {
-            await api.delete("/admin/media", { data: { name: deleting.name, url: deleting.url } });
+            await api.delete(`/admin/media/${deleting._id}`);
             showToast("File deleted");
           } catch (err) {
             showToast(err.response?.data?.message || "Delete failed", "error");
           }
           setDeleting(null);
+          load();
+        }}
+      />
+
+      {/* Bulk delete — explicit IDs only */}
+      <ConfirmDialog
+        open={bulkDelete}
+        onClose={() => setBulkDelete(false)}
+        title={`Delete ${selected.size} selected files?`}
+        text="Only the selected files will be removed."
+        onConfirm={async () => {
+          try {
+            const ids = [...selected];
+            await api.delete("/admin/media", { data: { ids } });
+            showToast(`${ids.length} files deleted`);
+          } catch (err) {
+            showToast(err.response?.data?.message || "Delete failed", "error");
+          }
+          setBulkDelete(false);
           load();
         }}
       />

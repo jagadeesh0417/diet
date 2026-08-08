@@ -2,6 +2,7 @@ import express from "express";
 import Testimonial from "../../models/Testimonial.js";
 import ActivityLog from "../../models/ActivityLog.js";
 import { processUpload } from "../../middleware/upload.js";
+import { ensureMediaRecord } from "../../utils/media.js";
 
 const router = express.Router();
 
@@ -29,8 +30,9 @@ router.post("/:id/photo", async (req, res) => {
     const item = await Testimonial.findById(req.params.id);
     if (!item) return res.status(404).json({ message: "Testimonial not found" });
     if (!req.file) return res.status(400).json({ message: "No file uploaded" });
-    const { url } = await processUpload(req.file, "golz/testimonials");
-    item.photo = url;
+    const upload = await processUpload(req.file, "golz/testimonials");
+    await ensureMediaRecord({ file: req.file, upload, user: req.user });
+    item.photo = upload.url;
     await item.save();
     res.json(item);
   } catch (err) {

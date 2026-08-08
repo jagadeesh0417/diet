@@ -5,6 +5,7 @@ import { X, ChevronLeft, ChevronRight, ZoomIn, ZoomOut, Play } from "lucide-reac
 /** Lightbox with zoom, navigation and keyboard support. */
 export default function Lightbox({ items, index, onClose, onNavigate }) {
   const [zoom, setZoom] = useState(1);
+  const [broken, setBroken] = useState(false);
   const item = items?.[index];
 
   const prev = useCallback(() => onNavigate((index - 1 + items.length) % items.length), [index, items, onNavigate]);
@@ -24,7 +25,7 @@ export default function Lightbox({ items, index, onClose, onNavigate }) {
     };
   }, [onClose, prev, next]);
 
-  useEffect(() => setZoom(1), [index]);
+  useEffect(() => { setZoom(1); setBroken(false); }, [index]);
 
   return (
     <AnimatePresence>
@@ -55,6 +56,15 @@ export default function Lightbox({ items, index, onClose, onNavigate }) {
             <button onClick={prev} className="absolute left-2 z-10 rounded-full bg-white/10 p-3 text-white backdrop-blur transition hover:scale-110 hover:bg-white/25 sm:left-6" aria-label="Previous"><ChevronLeft size={22} /></button>
             {item.type === "video" ? (
               <video src={item.url} controls autoPlay className="max-h-full max-w-full rounded-xl shadow-2xl" />
+            ) : broken ? (
+              <div className="flex max-h-full max-w-full flex-col items-center justify-center gap-3 rounded-xl bg-white/10 p-10 text-center text-white/60">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <rect x="3" y="3" width="18" height="18" rx="2" />
+                  <circle cx="9" cy="9" r="2" />
+                  <path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21" />
+                </svg>
+                <span className="text-sm font-medium">Image unavailable</span>
+              </div>
             ) : (
               <motion.img
                 key={index}
@@ -63,6 +73,7 @@ export default function Lightbox({ items, index, onClose, onNavigate }) {
                 transition={{ duration: 0.3 }}
                 src={item.url}
                 alt={item.alt || item.caption || "Gallery image"}
+                onError={() => setBroken(true)}
                 className="max-h-full max-w-full rounded-xl object-contain shadow-2xl"
                 style={{ transform: `scale(${zoom})` }}
               />

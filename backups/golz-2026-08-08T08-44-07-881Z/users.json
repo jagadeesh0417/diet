@@ -1,0 +1,25 @@
+[
+  {
+    "_id": "6a6daf34e75f43b834e14566",
+    "name": "Admin",
+    "email": "admin@nutrix.com",
+    "password": "$2a$10$ssuguIfJ4kfDPPDALZzAZuueRqru1J9JKiXapXyzbDkvd8NatI0V6",
+    "role": "admin",
+    "active": true,
+    "createdAt": "2026-08-01T08:32:52.333Z",
+    "updatedAt": "2026-08-01T08:32:52.333Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a749d2f7b907df3b3b8443b",
+    "email": "nutrigolz@gmail.com",
+    "__v": 0,
+    "active": true,
+    "createdAt": "2026-08-06T14:41:51.389Z",
+    "name": "Admin",
+    "password": "$2a$10$T.LdujMtyR.O5sqNA5oGYuVS6Xipe8CURm81r3ZA89pMcYUokhS4C",
+    "role": "admin",
+    "updatedAt": "2026-08-08T08:39:38.431Z",
+    "lastLogin": "2026-08-08T08:39:38.425Z"
+  }
+]

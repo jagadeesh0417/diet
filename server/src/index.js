@@ -61,8 +61,10 @@ app.post("/api/admin/upload", ...adminGuard, upload.single("file"), async (req, 
   try {
     if (!req.file) return res.status(400).json({ message: "No file uploaded" });
     const { processUpload } = await import("./middleware/upload.js");
-    const { url, thumb } = await processUpload(req.file, "golz/misc");
-    res.json({ url, thumb });
+    const { ensureMediaRecord } = await import("./utils/media.js");
+    const upload = await processUpload(req.file, "golz/misc");
+    const media = await ensureMediaRecord({ file: req.file, upload, user: req.user });
+    res.json({ url: upload.url, thumb: upload.thumb, _id: media._id });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

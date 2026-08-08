@@ -2,22 +2,22 @@ import express from "express";
 import GalleryItem from "../../models/GalleryItem.js";
 import GallerySection from "../../models/GallerySection.js";
 import ActivityLog from "../../models/ActivityLog.js";
-import { del } from "@vercel/blob";
 import { processUpload } from "../../middleware/upload.js";
+import { ensureMediaRecord, removeStoredFile } from "../../utils/media.js";
+import Media from "../../models/Media.js";
 
 const router = express.Router();
 
-const BLOB_URL_RE = /^https:\/\/[a-z0-9-]+\.public\.blob\.vercel-storage\.com\//i;
-const isStoredUrl = (url) => BLOB_URL_RE.test(String(url || ""));
-
-/** Best-effort removal of the underlying blob file; never fails the request. */
-async function removeStoredFile(url) {
-  if (!isStoredUrl(url)) return;
-  try {
-    await del(url);
-  } catch (err) {
-    console.error("[gallery] blob cleanup failed:", err.message);
+/** Best-effort removal of the media record + stored file for one gallery item's URL. */
+async function removeItemMedia(url, thumb) {
+  const media = url ? await Media.findOne({ url }) : null;
+  if (media) {
+    await removeStoredFile(media);
+    await Media.deleteOne({ _id: media._id });
+    return;
   }
+  await removeStoredFile({ storage: "blob", storageKey: url, resourceType: "image" });
+  if (thumb && thumb !== url) await removeStoredFile({ storage: "blob", storageKey: thumb, resourceType: "image" });
 }
 
 function log(user, action, details) {
@@ -133,10 +133,11 @@ router.post("/", async (req, res) => {
     if (!data.url && !req.file) return res.status(400).json({ message: "Image or video is required" });
     if (req.file) {
       const isVideo = /^video\//.test(req.file.mimetype);
-      const { url, thumb } = await processUpload(req.file, isVideo ? "golz/videos" : "golz/gallery");
-      data.url = url;
-      data.thumb = thumb;
+      const upload = await processUpload(req.file, isVideo ? "golz/videos" : "golz/gallery");
+      data.url = upload.url;
+      data.thumb = upload.thumb;
       data.type = isVideo ? "video" : "image";
+      await ensureMediaRecord({ file: req.file, upload, user: req.user, gallerySectionId: String(data.category || "").trim() });
     }
     const maxOrder = await GalleryItem.findOne().sort({ order: -1 });
     data.order = (maxOrder?.order ?? 0) + 1;
@@ -152,12 +153,18 @@ router.post("/upload", async (req, res) => {
   try {
     if (!req.file) return res.status(400).json({ message: "No file uploaded" });
     const isVideo = /^video\//.test(req.file.mimetype);
-    const { url, thumb } = await processUpload(req.file, isVideo ? "golz/videos" : "golz/gallery");
+    const upload = await processUpload(req.file, isVideo ? "golz/videos" : "golz/gallery");
+    await ensureMediaRecord({
+      file: req.file,
+      upload,
+      user: req.user,
+      gallerySectionId: String(req.body.category || "General").trim(),
+    });
     const maxOrder = await GalleryItem.findOne().sort({ order: -1 });
     const item = await GalleryItem.create({
       type: isVideo ? "video" : "image",
-      url,
-      thumb,
+      url: upload.url,
+      thumb: upload.thumb,
       category: req.body.category || "General",
       caption: req.body.caption || "",
       description: req.body.description || "",
@@ -202,8 +209,7 @@ router.delete("/:id", async (req, res) => {
   try {
     const item = await GalleryItem.findByIdAndDelete(req.params.id);
     if (!item) return res.status(404).json({ message: "Item not found" });
-    await removeStoredFile(item.url);
-    if (item.thumb && item.thumb !== item.url) await removeStoredFile(item.thumb);
+    await removeItemMedia(item.url, item.thumb);
     await log(req.user.name, "Gallery item deleted", `Deleted ${item.type}`);
     res.json({ ok: true });
   } catch (err) {
@@ -214,12 +220,10 @@ router.delete("/:id", async (req, res) => {
 router.post("/bulk-delete", async (req, res) => {
   try {
     const ids = req.body.ids || [];
+    if (!Array.isArray(ids) || ids.length === 0) return res.status(400).json({ message: "No media selected" });
     const items = await GalleryItem.find({ _id: { $in: ids } });
     await GalleryItem.deleteMany({ _id: { $in: ids } });
-    for (const item of items) {
-      await removeStoredFile(item.url);
-      if (item.thumb && item.thumb !== item.url) await removeStoredFile(item.thumb);
-    }
+    for (const item of items) await removeItemMedia(item.url, item.thumb);
     await log(req.user.name, "Gallery bulk delete", `Deleted ${items.length} items`);
     res.json({ ok: true, deleted: items.length });
   } catch (err) {

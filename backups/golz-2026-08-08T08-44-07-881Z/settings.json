@@ -1,0 +1,330 @@
+[
+  {
+    "_id": "6a6daf37e75f43b834e145b0",
+    "key": "general",
+    "value": {
+      "clinicName": "GOLZ (Giggles of Livez)",
+      "tagline": "Personalized Nutrition Care, Mysuru",
+      "email": "nutrigolz@gmail.com",
+      "phone": "+91 934-267-4406",
+      "whatsapp": "919342674406",
+      "address": "@Kshema Healthcare, #338, Bogadi Main Road, Bogadi, Mysuru, Karnataka 570026",
+      "mapEmbed": "https://maps.google.com/maps?q=Bogadi%20Main%20Road%20Mysuru%20Karnataka%20570026&t=&z=14&ie=UTF8&iwloc=&output=embed",
+      "workingHours": [
+        {
+          "day": "Monday – Saturday",
+          "hours": "10:30 AM – 5:00 PM"
+        },
+        {
+          "day": "Sunday",
+          "hours": "Closed"
+        }
+      ],
+      "socials": {
+        "facebook": "",
+        "instagram": "",
+        "youtube": "",
+        "twitter": "",
+        "linkedin": ""
+      },
+      "currency": "₹"
+    },
+    "createdAt": "2026-08-01T08:32:55.184Z",
+    "updatedAt": "2026-08-01T08:32:55.184Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a6daf37e75f43b834e145b2",
+    "key": "homepage",
+    "value": {
+      "heroTitle": "Real food. Real plans. Real results—built around you.",
+      "heroSubtitle": "Science-backed, personalized nutrition plans designed to improve your health without giving up the foods you love. Online and in-clinic consultations available.",
+      "heroBadge": "Personalized Nutrition Care Since 2015",
+      "heroImage": "https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=1200&q=70",
+      "heroPortrait": "/hero-banner.png",
+      "ctaPrimary": {
+        "label": "Book a Consultation",
+        "link": "/contact"
+      },
+      "ctaSecondary": {
+        "label": "Explore Services",
+        "link": "/services"
+      },
+      "stats": [
+        {
+          "value": 20,
+          "suffix": "+",
+          "label": "Years of science-backed nutrition care"
+        },
+        {
+          "value": 15000,
+          "suffix": "+",
+          "label": "Nutrition & wellness programs completed"
+        },
+        {
+          "value": 5000,
+          "suffix": "+",
+          "label": "Personalized diet plans delivered"
+        },
+        {
+          "value": 3000,
+          "suffix": "+",
+          "label": "Specialized diet plans for children"
+        }
+      ],
+      "trustItems": [
+        {
+          "title": "Certified Nutrition Expert",
+          "text": "Ph.D. — CSIR-CFTRI, Mysuru"
+        },
+        {
+          "title": "Personalized Plans",
+          "text": "Every plan built around your body & goals"
+        },
+        {
+          "title": "Online & In-Clinic",
+          "text": "Consult from home or visit us in Mysuru"
+        },
+        {
+          "title": "Science-Based Nutrition",
+          "text": "Every recommendation is evidence-backed"
+        },
+        {
+          "title": "Continuous Support",
+          "text": "We stay with you until results stick"
+        }
+      ],
+      "aboutPreview": {
+        "title": "Meet Dr. Sushma Appaiah",
+        "text": "Dr. Sushma Appaiah is the Founder of GOLZ (Giggles of Livez) and a distinguished nutrition scientist with 19 years of experience in clinical nutrition, corporate wellness, and health counselling.\n\nA recipient of the DST Women Scientist Award and recognized as the Most Innovative Nutrition Counsellor of the Year, Dr. Sushma is known for developing innovative food formulations for special children and translating scientific research into practical nutrition solutions.\n\nHer areas of expertise include reversing diabetes, weight management, PCOD (recently termed as PMOS), thyroid disorders, pregnancy nutrition, sports nutrition, autism and special child nutrition, and nutrigenomics, empowering individuals and families to build healthier lives through personalized nutrition.",
+        "image": "/doctor-portrait.png",
+        "buttonLabel": "Know More",
+        "buttonLink": "/about",
+        "list": [
+          "Clinical Nutrition Expert",
+          "Lifestyle Disease Management",
+          "Personalized Diet Plans",
+          "Child & Women's Nutrition Specialist"
+        ]
+      },
+      "whyChooseUs": [
+        {
+          "icon": "Utensils",
+          "title": "Personalized Meal Plans",
+          "text": "Custom plans for your body type, lifestyle and food preferences."
+        },
+        {
+          "icon": "FlaskConical",
+          "title": "Evidence-Based Guidance",
+          "text": "Protocols grounded in clinical research, not trends."
+        },
+        {
+          "icon": "HeartHandshake",
+          "title": "Special-Child Expertise",
+          "text": "Proven plans for autism, ADHD and specially-abled children."
+        },
+        {
+          "icon": "Wallet",
+          "title": "Affordable Packages",
+          "text": "Premium care at prices designed for every budget."
+        },
+        {
+          "icon": "RefreshCcw",
+          "title": "Regular Follow-Ups",
+          "text": "Structured check-ins keep you on track week after week."
+        },
+        {
+          "icon": "TrendingUp",
+          "title": "Long-Term Results",
+          "text": "Habits that last — so results stay, for good."
+        }
+      ],
+      "cta": {
+        "title": "Ready to Start Your Health Journey?",
+        "subtitle": "Book your consultation today and get a plan designed around you.",
+        "buttonLabel": "Book Now",
+        "buttonLink": "/contact",
+        "image": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1200&q=70"
+      }
+    },
+    "createdAt": "2026-08-01T08:32:55.266Z",
+    "updatedAt": "2026-08-07T12:08:23.034Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a6daf37e75f43b834e145b4",
+    "key": "about",
+    "value": {
+      "heroTitle": "About Dr. Sushma Appaiah",
+      "name": "Dr. Sushma Appaiah",
+      "designation": "Founder & Nutrition Scientist, GOLZ",
+      "image": "/doctor-portrait.png",
+      "bio": "Dr. Sushma Appaiah is the Founder of GOLZ (Giggles of Livez) and a distinguished nutrition scientist with 19 years of experience in clinical nutrition, corporate wellness, and health counselling.\n\nShe holds a Ph.D. in Food Science & Technology from CSIR-CFTRI, Mysore, and an M.Sc. in Food & Nutrition (2nd Rank) from the University of Mysore.\n\nOver the years, she has helped clients across 13 countries achieve sustainable health through evidence-based nutrition and personalized care.\n\nA recipient of the DST Women Scientist Award and recognized as the Most Innovative Nutrition Counsellor of the Year, Dr. Sushma is known for developing innovative food formulations for special children and translating scientific research into practical nutrition solutions.\n\nHer areas of expertise include reversing diabetes, PCOD (recently termed as PMOS), thyroid disorders, pregnancy nutrition, sports nutrition, autism and special child nutrition, and nutrigenomics, empowering individuals and families to build healthier lives through personalized nutrition.",
+      "story": "Dr. Sushma Appaiah is the Founder of GOLZ (Giggles of Livez) and a distinguished nutrition scientist with 19 years of experience in clinical nutrition, corporate wellness, and health counselling. She holds a Ph.D. in Food Science & Technology from CSIR-CFTRI, Mysore, and an M.Sc. in Food & Nutrition (2nd Rank) from the University of Mysore. Over the years, she has helped clients across 13 countries achieve sustainable health through evidence-based nutrition and personalized care.",
+      "approach": "Since founding GOLZ in Mysore in 2015, she's grown it into two centres serving clients across 13 countries — but the philosophy has never changed: nutrition should be personal. She doesn't hand out generic meal charts. She reads your body — your condition, your labs, even your genetics through nutrigenomics — and builds a plan that fits your life. Over the years, that approach has helped thousands reverse diabetes, manage PCOS and thyroid issues, recover from illness, and simply feel better.",
+      "helpGroups": [
+        {
+          "title": "Metabolic & Lifestyle",
+          "items": [
+            "Diabetes reversal",
+            "PCOS",
+            "Thyroid",
+            "Weight management",
+            "Onco (cancer recovery)",
+            "Sports nutrition",
+            "Stress & mental wellbeing"
+          ]
+        },
+        {
+          "title": "Life-stage & Family",
+          "items": [
+            "Pregnancy, GDM & lactation",
+            "Autism & ADHD child nutrition",
+            "Nutrigenomics"
+          ]
+        }
+      ],
+      "specialNeeds": {
+        "heading": "Nutrition for children with special needs",
+        "text": "Specialised child nutrition is at the heart of Dr. Sushma's work — she's delivered over 3,000 diet plans for children with autism, ADHD, and developmental needs, through institutions like AIISH (Mysore) and early-intervention school programs. Certified in Autism & ADHD Nutrition Therapy (Cambridge International Institute, UK), she builds gentle, practical plans that work with a child's sensitivities, not against them.",
+        "stat": {
+          "value": 3000,
+          "suffix": "+",
+          "label": "diet plans delivered for children with special needs"
+        },
+        "credibility": "Certified in Autism & ADHD Nutrition Therapy, Level 1 & 2 — Cambridge International Institute, UK",
+        "ctaLabel": "Book a consultation for your child"
+      },
+      "credentials": [
+        "Ph.D, Food Science & Technology — CSIR-CFTRI, Mysore",
+        "M.Sc, Food & Nutrition (2nd Rank) — University of Mysore",
+        "Advanced Nutrigenomics Expert — Genebox Academy",
+        "Autism & ADHD Nutrition Therapy, Level 1 & 2 — Cambridge International Institute, UK",
+        "19 years in personalised nutrition counselling"
+      ],
+      "recognition": [
+        "DST Women Scientist Awardee — Govt. of India",
+        "Most Innovative Nutrition Counsellor of the Year — New Delhi",
+        "Women Achiever Entrepreneur, Impacting Global Health — Ministry of Science & Technology (IISF 2020)",
+        "Changemaker Award — for serving 800+ COVID patients and frontline workers"
+      ],
+      "recognitionFootnote": "…among 10+ national and international honours.",
+      "beyondClinic": "Beyond her practice, Dr. Sushma shapes how nutrition is taught in India. She's developed UGC-approved nutrition programs, convenes the Indian Dietetics Association's Mysore chapter, has delivered 250+ invited talks, published 15+ peer-reviewed papers, and — during the pandemic — coordinated nutrition training for 20,000+ Anganwadi and ASHA workers across the country.",
+      "affiliations": "AFSTI · Indian Dietetics Association (IDA) · Indian Nutritional Medical Association (INMA)",
+      "mission": "To make evidence-based nutrition simple, accessible and enjoyable — so every client can achieve lasting health without deprivation or fad diets.",
+      "vision": "A world where personalized nutrition is the first line of defence against lifestyle disease, not the last resort.",
+      "qualifications": [
+        "Ph.D. Food Science & Technology, CSIR-CFTRI, Mysore",
+        "M.Sc. Food & Nutrition (2nd Rank), University of Mysore",
+        "Certified Diabetes Educator (CDE)",
+        "Certified Sports Nutritionist"
+      ],
+      "certifications": [
+        "DST Women Scientist Award recipient",
+        "Most Innovative Nutrition Counsellor of the Year",
+        "Certified Nutrigenomics Counsellor — Gene Box Academy",
+        "Special Child Nutrition Specialist"
+      ],
+      "experienceYears": 19,
+      "achievements": [
+        "Recipient of the DST Women Scientist Award",
+        "Recognized as the Most Innovative Nutrition Counsellor of the Year",
+        "Helped clients across 13 countries",
+        "Developed innovative food formulations for special children"
+      ],
+      "stats": [
+        {
+          "value": 19,
+          "suffix": "+",
+          "label": "Years Experience"
+        },
+        {
+          "value": 15000,
+          "suffix": "+",
+          "label": "Programs Completed"
+        },
+        {
+          "value": 5000,
+          "suffix": "+",
+          "label": "Diet Plans Delivered"
+        },
+        {
+          "value": 3000,
+          "suffix": "+",
+          "label": "Plans for Special Kids"
+        }
+      ],
+      "timeline": [
+        {
+          "year": "2007",
+          "title": "Began Clinical Practice",
+          "text": "Started her journey in clinical nutrition and food science after completing M.Sc. with 2nd Rank at the University of Mysore."
+        },
+        {
+          "year": "2012",
+          "title": "Ph.D. from CSIR-CFTRI",
+          "text": "Completed doctoral research in Food Science & Technology at India's premier food research institute."
+        },
+        {
+          "year": "2015",
+          "title": "Founded GOLZ",
+          "text": "Launched GOLZ (Giggles of Livez) in Mysuru with a vision of joyful, personalized nutrition care."
+        },
+        {
+          "year": "2019",
+          "title": "15,000+ Programs Milestone",
+          "text": "Crossed 15,000 nutrition & health programs completed for clients across India and beyond."
+        },
+        {
+          "year": "2022",
+          "title": "Clients Across 13 Countries",
+          "text": "Expanded online consultations, serving clients worldwide with precision, DNA-personalized nutrition."
+        },
+        {
+          "year": "2025",
+          "title": "National Recognition",
+          "text": "Honored as the Most Innovative Nutrition Counsellor of the Year."
+        }
+      ],
+      "whyTrust": [
+        {
+          "icon": "Award",
+          "title": "Evidence-Based Care",
+          "text": "Protocols follow the latest clinical research and food science."
+        },
+        {
+          "icon": "HeartHandshake",
+          "title": "Special-Child Expertise",
+          "text": "Trusted plans for autism, ADHD and specially-abled children."
+        },
+        {
+          "icon": "ClipboardCheck",
+          "title": "Precision Tracking",
+          "text": "Body composition analysis and regular monitoring at every step."
+        },
+        {
+          "icon": "Clock",
+          "title": "On-Time Results",
+          "text": "Clear milestones and measurable, sustainable progress."
+        }
+      ]
+    },
+    "createdAt": "2026-08-01T08:32:55.347Z",
+    "updatedAt": "2026-08-01T08:32:55.347Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a6daf37e75f43b834e145b6",
+    "key": "seo",
+    "value": {
+      "metaTitle": "GOLZ (Giggles of Livez) — Personalized Nutrition Care, Mysuru",
+      "metaDescription": "Dr. Sushma Appaiah's GOLZ — science-backed, personalized nutrition plans in Mysuru for weight, diabetes, thyroid, PCOS, pregnancy, children & special needs. Online & in-clinic consultations.",
+      "keywords": "nutritionist Mysuru, dietitian Mysuru, diabetes diet, PCOS diet, thyroid nutrition, special child nutrition, pregnancy diet, weight loss program",
+      "ogImage": "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&w=1200&q=70",
+      "favicon": ""
+    },
+    "createdAt": "2026-08-01T08:32:55.442Z",
+    "updatedAt": "2026-08-01T08:32:55.442Z",
+    "__v": 0
+  }
+]

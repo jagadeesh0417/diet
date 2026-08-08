@@ -23,7 +23,13 @@ export async function uploadToCloudinary(filePath, { folder = "golz", resourceTy
   const thumb = res.resource_type === "video"
     ? res.secure_url.replace(/\.mp4$/, ".jpg")
     : res.secure_url.replace(/\.(png|jpe?g|webp)$/, ".jpg");
-  return { url: res.secure_url, thumb, publicId: res.public_id };
+  return {
+    url: res.secure_url,
+    thumb,
+    publicId: res.public_id,
+    assetId: res.asset_id,
+    resourceType: res.resource_type === "video" ? "video" : "image",
+  };
 }
 
 export function isCloudinaryConfigured() {

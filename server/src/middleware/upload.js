@@ -75,7 +75,13 @@ export async function processUpload(file, folder = "golz") {
   const cloud = await uploadToCloudinary(localPath, { folder, resourceType: isVideo ? "video" : "image" });
   if (cloud) {
     fs.unlink(localPath, () => {});
-    return { url: cloud.url, thumb: cloud.thumb, storage: "cloudinary" };
+    return {
+      url: cloud.url,
+      thumb: cloud.thumb,
+      storage: "cloudinary",
+      publicId: cloud.publicId,
+      assetId: cloud.assetId,
+    };
   }
   const url = `/uploads/${path.basename(localPath)}`;
   return { url, thumb: isVideo ? "" : url, storage: "local" };

@@ -6,6 +6,7 @@ import {
 import api from "../api/client";
 import SEO from "../components/SEO";
 import PageLoader from "../components/PageLoader";
+import ImgFallback from "../components/ImgFallback";
 import { Modal, ConfirmDialog, Toast, Field, Toggle, EmptyState } from "./AdminUI";
 import { formatDate } from "../utils/helpers";
 
@@ -175,7 +176,7 @@ export default function GalleryAdmin() {
             {sections.map((s, i) => (
               <div key={s._id} className={`flex flex-wrap items-center gap-3 rounded-2xl border p-3 ${s.published ? "border-gray-100 bg-white" : "border-dashed border-charcoal/20 bg-charcoal/[0.03] opacity-70"}`}>
                 {s.cover ? (
-                  <img src={s.cover} alt="" className="h-10 w-14 shrink-0 rounded-lg object-cover" />
+                  <ImgFallback src={s.cover} alt="" className="h-10 w-14 shrink-0 rounded-lg object-cover" fallbackClassName="h-10 w-14 shrink-0 rounded-lg" />
                 ) : (
                   <span className="flex h-10 w-14 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-xs font-bold text-primary">{s.name.slice(0, 2).toUpperCase()}</span>
                 )}
@@ -223,7 +224,7 @@ export default function GalleryAdmin() {
               {g.type === "video" ? (
                 <video src={g.url} muted className="aspect-square w-full object-cover" />
               ) : (
-                <img src={g.url} alt={g.alt} className="h-auto w-full object-contain" loading="lazy" />
+                <ImgFallback src={g.url} alt={g.alt} className="h-auto w-full object-contain" fallbackClassName="aspect-square" />
               )}
               <span className="absolute left-2 top-2 rounded-md bg-charcoal/70 px-2 py-0.5 text-[10px] font-semibold text-white">{g.category}</span>
               <button
@@ -269,7 +270,7 @@ export default function GalleryAdmin() {
             <div className="flex gap-4">
               {editing.type === "video"
                 ? <video src={editing.url} controls className="h-32 w-48 shrink-0 rounded-xl object-cover" />
-                : <img src={editing.url} alt="" className="h-32 w-48 shrink-0 rounded-xl object-cover" />}
+                : <ImgFallback src={editing.url} alt="" className="h-32 w-48 shrink-0 rounded-xl object-cover" fallbackClassName="h-32 w-48 shrink-0 rounded-xl" />}
               <div className="flex-1 space-y-4">
                 <Field label="Section">
                   <select className="input" value={editing.category} onChange={(e) => setEditing({ ...editing, category: e.target.value })}>

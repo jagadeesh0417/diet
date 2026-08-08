@@ -1,0 +1,28 @@
+[
+  {
+    "_id": "6a6daf37e75f43b834e145ac",
+    "name": "Meera Joshi",
+    "phone": "+91 90000 11111",
+    "email": "meera@example.com",
+    "subject": "Weight management plan",
+    "message": "Hello, I would like to know about the weight management program pricing and whether online consultations are available.",
+    "read": true,
+    "replied": true,
+    "createdAt": "2026-08-01T08:32:55.083Z",
+    "updatedAt": "2026-08-01T08:32:55.083Z",
+    "__v": 0
+  },
+  {
+    "_id": "6a6daf37e75f43b834e145ad",
+    "name": "Vikram Rao",
+    "phone": "+91 90000 22222",
+    "email": "vikram@example.com",
+    "subject": "Diabetes consultation",
+    "message": "My father (58) was diagnosed with prediabetes. Can you please share details about the diabetes program?",
+    "read": false,
+    "replied": false,
+    "createdAt": "2026-08-01T08:32:55.083Z",
+    "updatedAt": "2026-08-01T08:32:55.083Z",
+    "__v": 0
+  }
+]
