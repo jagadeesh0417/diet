@@ -1,4 +1,5 @@
 import express from "express";
+import mongoose from "mongoose";
 import GalleryItem from "../../models/GalleryItem.js";
 import GallerySection from "../../models/GallerySection.js";
 import ActivityLog from "../../models/ActivityLog.js";
@@ -7,6 +8,10 @@ import { ensureMediaRecord, removeStoredFile } from "../../utils/media.js";
 import Media from "../../models/Media.js";
 
 const router = express.Router();
+
+const validId = (id) => mongoose.Types.ObjectId.isValid(id);
+
+const ITEM_FIELDS = ["type", "url", "thumb", "caption", "description", "alt", "order", "featured", "published"];
 
 /** Best-effort removal of the media record + stored file for one gallery item's URL. */
 async function removeItemMedia(url, thumb) {
@@ -68,6 +73,7 @@ router.post("/sections", async (req, res) => {
 
 router.put("/sections/:id", async (req, res) => {
   try {
+    if (!validId(req.params.id)) return res.status(400).json({ message: "Invalid section ID" });
     const section = await GallerySection.findById(req.params.id);
     if (!section) return res.status(404).json({ message: "Section not found" });
     const oldName = section.name;
@@ -97,6 +103,9 @@ router.put("/sections/:id", async (req, res) => {
 router.post("/sections/reorder", async (req, res) => {
   try {
     const ids = req.body.ids || [];
+    if (!Array.isArray(ids) || ids.some((id) => !validId(id))) {
+      return res.status(400).json({ message: "Invalid section IDs" });
+    }
     for (let i = 0; i < ids.length; i++) {
       await GallerySection.updateOne({ _id: ids[i] }, { $set: { order: i + 1 } });
     }
@@ -109,6 +118,7 @@ router.post("/sections/reorder", async (req, res) => {
 
 router.delete("/sections/:id", async (req, res) => {
   try {
+    if (!validId(req.params.id)) return res.status(400).json({ message: "Invalid section ID" });
     const section = await GallerySection.findByIdAndDelete(req.params.id);
     if (!section) return res.status(404).json({ message: "Section not found" });
     await GalleryItem.updateMany({ category: section.name }, { $set: { category: "General", gallerySectionId: null } });
@@ -190,14 +200,16 @@ router.post("/upload", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   try {
+    if (!validId(req.params.id)) return res.status(400).json({ message: "Invalid item ID" });
     const item = await GalleryItem.findById(req.params.id);
     if (!item) return res.status(404).json({ message: "Item not found" });
     if ("category" in req.body && String(req.body.category) !== item.category) {
       item.category = String(req.body.category || "General");
       item.gallerySectionId = await findSectionId(item.category);
     }
-    const { category, ...rest } = req.body;
-    Object.assign(item, rest);
+    for (const field of ITEM_FIELDS) {
+      if (field in req.body) item[field] = req.body[field];
+    }
     await item.save();
     await log(req.user.name, "Gallery item updated", `Updated ${item.type}`);
     res.json(item);
@@ -209,6 +221,9 @@ router.put("/:id", async (req, res) => {
 router.post("/reorder", async (req, res) => {
   try {
     const ids = req.body.ids || [];
+    if (!Array.isArray(ids) || ids.some((id) => !validId(id))) {
+      return res.status(400).json({ message: "Invalid item IDs" });
+    }
     for (let i = 0; i < ids.length; i++) {
       await GalleryItem.updateOne({ _id: ids[i] }, { $set: { order: i + 1 } });
     }
@@ -221,6 +236,7 @@ router.post("/reorder", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
   try {
+    if (!validId(req.params.id)) return res.status(400).json({ message: "Invalid item ID" });
     const item = await GalleryItem.findByIdAndDelete(req.params.id);
     if (!item) return res.status(404).json({ message: "Item not found" });
     await removeItemMedia(item.url, item.thumb);

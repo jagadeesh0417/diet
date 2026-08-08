@@ -120,6 +120,7 @@ router.put("/rename", async (req, res) => {
     const { _id, name, newName, url } = req.body;
     if (!newName) return res.status(400).json({ message: "A new file name is required" });
     if (!/^[\w.-]+$/.test(newName)) return res.status(400).json({ message: "Invalid file name" });
+    if (_id && !validId(_id)) return res.status(400).json({ message: "Invalid media ID" });
 
     let media = _id ? await Media.findById(_id) : null;
     if (!media && url) media = await Media.findOne({ url });
