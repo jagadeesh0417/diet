@@ -8,6 +8,7 @@ import Reveal from "../components/Reveal";
 import PageLoader from "../components/PageLoader";
 import Lightbox, { PlayBadge } from "../components/Lightbox";
 import LazyImage from "../components/LazyImage";
+import ImgFallback from "../components/ImgFallback";
 import Counter from "../components/Counter";
 import { useSite } from "../context/SiteContext";
 
@@ -60,11 +61,13 @@ export default function Gallery() {
 
   const secInfo = useCallback((cat, list) => sectionByName[cat] || { name: cat, title: cat, description: "", cover: "", count: list.length }, [sectionByName]);
 
+  const allSectionNames = useMemo(() => new Set(sections.map((s) => s.name)), [sections]);
+
   const chipList = useMemo(() => {
-    const withItems = sections.filter((s) => s.count > 0);
-    if (withItems.length) return ["All", ...withItems.map((s) => s.name)];
-    return categories;
-  }, [sections, categories]);
+    const names = sections.filter((s) => s.published !== false).map((s) => s.name);
+    const extras = categories.filter((c) => c !== "All" && !allSectionNames.has(c));
+    return ["All", ...names, ...extras];
+  }, [sections, categories, allSectionNames]);
 
   const grouped = useMemo(() => {
     const map = new Map();
@@ -72,17 +75,16 @@ export default function Gallery() {
       if (!map.has(it.category)) map.set(it.category, []);
       map.get(it.category).push(it);
     }
-    const known = sections.map((s) => s.name);
-    return [...map.entries()].sort((a, b) => {
-      const ia = known.indexOf(a[0]);
-      const ib = known.indexOf(b[0]);
-      return (ia === -1 ? known.length : ia) - (ib === -1 ? known.length : ib);
-    });
+    const hidden = new Set(sections.filter((s) => s.published === false).map((s) => s.name));
+    const order = sections.filter((s) => s.published !== false).map((s) => s.name);
+    const extras = [...map.keys()].filter((c) => !hidden.has(c) && !order.includes(c));
+    return [...order, ...extras].map((name) => [name, map.get(name) || []]);
   }, [items, sections]);
 
   const open = useCallback(async (cat, index = 0) => {
     try {
       const { data } = await api.get("/public/gallery", { params: { category: cat, limit: 1000 } });
+      if (!data.items.length) return;
       setLightbox({ items: data.items, index: Math.min(index, Math.max(data.items.length - 1, 0)) });
     } catch { /* noop */ }
   }, []);
@@ -143,12 +145,12 @@ export default function Gallery() {
         className="group mb-7 flex w-full cursor-pointer items-center gap-4 rounded-2xl text-left focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/30"
         aria-label={`Open ${sec.title || sec.name}`}
       >
-        {sec.cover && <img src={sec.cover} alt="" className="h-16 w-24 shrink-0 rounded-2xl object-cover shadow-soft" loading="lazy" />}
+        {sec.cover && <ImgFallback src={sec.cover} alt="" className="h-16 w-24 shrink-0 rounded-2xl object-cover shadow-soft" fallbackClassName="h-16 w-24 shrink-0 rounded-2xl" />}
         <div className="min-w-0 flex-1">
           <h2 className="font-heading text-2xl font-bold tracking-tight text-ink transition-colors group-hover:text-primary">{sec.title || sec.name}</h2>
           {sec.description && <p className="mt-1 max-w-2xl text-sm leading-relaxed text-muted sm:text-base">{sec.description}</p>}
         </div>
-        {showPill && (
+        {showPill && sec.count > 0 && (
           <span className="shrink-0 rounded-full border border-primary/25 bg-white px-4 py-2 text-sm font-semibold text-primary transition-all duration-300 group-hover:border-primary group-hover:bg-primary group-hover:text-white">
             View all ({sec.count}) <ChevronRight size={14} className="inline transition-transform duration-300 group-hover:translate-x-0.5" />
           </span>
@@ -228,16 +230,24 @@ export default function Gallery() {
               {grouped.map(([cat, list]) => (
                 <div key={cat}>
                   {sectionHeader(secInfo(cat, list), () => open(cat, 0))}
-                  {renderGrid(list.slice(0, 4), (i) => open(cat, i))}
-                  {list.length > 4 && (
-                    <div className="mt-7 text-center">
-                      <button
-                        onClick={() => open(cat, 0)}
-                        className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-primary/25 bg-white px-6 py-3 text-sm font-semibold text-primary shadow-soft transition-all duration-300 hover:border-primary hover:bg-primary hover:text-white focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/30"
-                      >
-                        View all {list.length} {list.length === 1 ? "photo" : "photos"} <ChevronDown size={16} />
-                      </button>
-                    </div>
+                  {list.length === 0 ? (
+                    <p className="rounded-2xl border border-dashed border-line bg-white/60 px-6 py-12 text-center text-sm text-charcoal/50">
+                      No images have been added to this section yet.
+                    </p>
+                  ) : (
+                    <>
+                      {renderGrid(list.slice(0, 4), (i) => open(cat, i))}
+                      {list.length > 4 && (
+                        <div className="mt-7 text-center">
+                          <button
+                            onClick={() => open(cat, 0)}
+                            className="inline-flex cursor-pointer items-center gap-2 rounded-full border border-primary/25 bg-white px-6 py-3 text-sm font-semibold text-primary shadow-soft transition-all duration-300 hover:border-primary hover:bg-primary hover:text-white focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/30"
+                          >
+                            View all {list.length} {list.length === 1 ? "photo" : "photos"} <ChevronDown size={16} />
+                          </button>
+                        </div>
+                      )}
+                    </>
                   )}
                 </div>
               ))}

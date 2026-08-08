@@ -51,7 +51,6 @@ export default function Blog() {
         title="Nutrition Insights"
         subtitle="Practical, science-backed articles to help you eat smarter and live healthier."
         breadcrumb={["Blog"]}
-        image="https://images.unsplash.com/photo-1490645935967-10de6ba17061?auto=format&fit=crop&w=1600&q=70"
       />
 
       <section className="section-pad">

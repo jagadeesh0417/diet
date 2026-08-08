@@ -23,6 +23,7 @@ export default function GalleryAdmin() {
   const [toast, setToast] = useState(null);
   const [dragIndex, setDragIndex] = useState(null);
   const [uploading, setUploading] = useState(0);
+  const [busy, setBusy] = useState(false);
   const [uploadSection, setUploadSection] = useState("General");
   const [sectionModal, setSectionModal] = useState(null);
   const [deletingSection, setDeletingSection] = useState(null);
@@ -82,13 +83,23 @@ export default function GalleryAdmin() {
   };
 
   const toggle = async (item, field) => {
-    await api.put(`/admin/gallery/${item._id}`, { [field]: !item[field] });
-    load();
+    try {
+      await api.put(`/admin/gallery/${item._id}`, { [field]: !item[field] });
+      showToast(field === "featured" ? (item[field] ? "Removed from featured" : "Marked as featured") : (item[field] ? "Item hidden" : "Item published"));
+      load();
+    } catch (err) {
+      showToast(err.response?.data?.message || `Failed to update ${field}`, "error");
+    }
   };
 
   const reorder = async (next) => {
     setItems(next);
-    await api.post("/admin/gallery/reorder", { ids: next.map((g) => g._id) });
+    try {
+      await api.post("/admin/gallery/reorder", { ids: next.map((g) => g._id) });
+    } catch (err) {
+      showToast(err.response?.data?.message || "Reorder failed", "error");
+      load();
+    }
   };
 
   const moveSection = async (index, dir) => {
@@ -97,12 +108,22 @@ export default function GalleryAdmin() {
     if (target < 0 || target >= next.length) return;
     [next[index], next[target]] = [next[target], next[index]];
     setSections(next);
-    await api.post("/admin/gallery/sections/reorder", { ids: next.map((s) => s._id) }).catch(() => {});
+    try {
+      await api.post("/admin/gallery/sections/reorder", { ids: next.map((s) => s._id) });
+    } catch (err) {
+      showToast(err.response?.data?.message || "Reorder failed", "error");
+      loadSections();
+    }
   };
 
   const toggleSection = async (s) => {
-    await api.put(`/admin/gallery/sections/${s._id}`, { published: !s.published });
-    loadSections();
+    try {
+      await api.put(`/admin/gallery/sections/${s._id}`, { published: !s.published });
+      showToast(s.published ? "Section hidden" : "Section visible");
+      loadSections();
+    } catch (err) {
+      showToast(err.response?.data?.message || "Update failed", "error");
+    }
   };
 
   const saveSection = async () => {
@@ -149,15 +170,30 @@ export default function GalleryAdmin() {
             aria-label="Upload to section"
             title="Section to upload into"
           >
-            {sections.length ? sections.map((s) => <option key={s._id} value={s.name}>{s.name}</option>) : <option value="General">General</option>}
+            {sections.length ? sections.map((s) => <option key={s._id} value={s.name}>{s.title || s.name}</option>) : <option value="General">General</option>}
           </select>
-          <button onClick={() => fileRef.current?.click()} disabled={uploading > 0} className="btn-primary !px-5 !py-2.5 !text-sm disabled:opacity-60">
+          <button
+            onClick={() => fileRef.current?.click()}
+            disabled={uploading > 0 || busy || sections.length === 0}
+            className="btn-primary !px-5 !py-2.5 !text-sm disabled:opacity-60"
+            title={sections.length === 0 ? "Please select a gallery section first" : `Upload to ${uploadSection}`}
+          >
             <Upload size={16} /> {uploading > 0 ? `Uploading ${uploading}…` : `Upload to ${uploadSection}`}
           </button>
           <input ref={fileRef} type="file" multiple accept="image/*,video/*" className="hidden"
             onChange={(e) => { const files = Array.from(e.target.files || []); if (files.length) uploadFiles(files); e.target.value = ""; }} />
         </div>
       </div>
+
+      {sections.length === 0 ? (
+        <p className="mb-6 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-700">
+          Please select a gallery section first — add a section below, then choose it in the dropdown to upload images into it.
+        </p>
+      ) : (
+        <p className="mb-6 rounded-xl border border-primary/15 bg-primary/5 px-4 py-3 text-sm text-primary">
+          Selected section: <strong>{uploadSection}</strong>
+        </p>
+      )}
 
       {/* Sections manager */}
       <div className="card mb-6 p-5">
@@ -327,10 +363,12 @@ export default function GalleryAdmin() {
 
       <ConfirmDialog
         open={!!deleting}
-        onClose={() => setDeleting(null)}
+        onClose={() => { if (!busy) setDeleting(null); }}
         title="Delete this item?"
         text="It will be removed from the public gallery immediately."
+        busy={busy}
         onConfirm={async () => {
+          setBusy(true);
           try {
             await api.delete(`/admin/gallery/${deleting._id}`);
             showToast("Item deleted");
@@ -338,15 +376,18 @@ export default function GalleryAdmin() {
             showToast(err.response?.data?.message || "Delete failed", "error");
           }
           setDeleting(null);
+          setBusy(false);
           load();
         }}
       />
       <ConfirmDialog
         open={bulkDelete}
-        onClose={() => setBulkDelete(false)}
+        onClose={() => { if (!busy) setBulkDelete(false); }}
         title={`Delete ${selected.length} items?`}
         text="All selected media will be removed permanently."
+        busy={busy}
         onConfirm={async () => {
+          setBusy(true);
           try {
             await api.post("/admin/gallery/bulk-delete", { ids: selected });
             showToast(`${selected.length} items deleted`);
@@ -354,15 +395,18 @@ export default function GalleryAdmin() {
             showToast(err.response?.data?.message || "Delete failed", "error");
           }
           setBulkDelete(false);
+          setBusy(false);
           load();
         }}
       />
       <ConfirmDialog
         open={!!deletingSection}
-        onClose={() => setDeletingSection(null)}
+        onClose={() => { if (!busy) setDeletingSection(null); }}
         title={`Delete section "${deletingSection?.name}"?`}
         text="Its media will be moved to the General section. Nothing is deleted."
+        busy={busy}
         onConfirm={async () => {
+          setBusy(true);
           try {
             await api.delete(`/admin/gallery/sections/${deletingSection._id}`);
             showToast("Section deleted");
@@ -370,6 +414,7 @@ export default function GalleryAdmin() {
             showToast(err.response?.data?.message || "Delete failed", "error");
           }
           setDeletingSection(null);
+          setBusy(false);
           loadSections();
           load();
         }}

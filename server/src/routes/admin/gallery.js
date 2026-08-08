@@ -31,6 +31,12 @@ async function sectionCounts() {
   return Object.fromEntries(counts.map((c) => [c._id, c.n]));
 }
 
+/** Resolve a section record by name (case-insensitive), returns _id or null. */
+async function findSectionId(name) {
+  const section = await GallerySection.findOne({ name: new RegExp(`^${escapeRegExp(name || "General")}$`, "i") });
+  return section ? section._id : null;
+}
+
 // ---------- Sections ----------
 
 router.get("/sections", async (_req, res) => {
@@ -73,7 +79,7 @@ router.put("/sections/:id", async (req, res) => {
       });
       if (dup) return res.status(400).json({ message: "A section with this name already exists" });
       section.name = name;
-      await GalleryItem.updateMany({ category: oldName }, { $set: { category: name } });
+      await GalleryItem.updateMany({ category: oldName }, { $set: { category: name, gallerySectionId: section._id } });
       await log(req.user.name, "Gallery section renamed", `Renamed to "${name}"`);
     }
     if ("title" in req.body) section.title = String(req.body.title || "").trim() || oldName;
@@ -105,7 +111,7 @@ router.delete("/sections/:id", async (req, res) => {
   try {
     const section = await GallerySection.findByIdAndDelete(req.params.id);
     if (!section) return res.status(404).json({ message: "Section not found" });
-    await GalleryItem.updateMany({ category: section.name }, { $set: { category: "General" } });
+    await GalleryItem.updateMany({ category: section.name }, { $set: { category: "General", gallerySectionId: null } });
     await log(req.user.name, "Gallery section deleted", `Deleted "${section.name}", items moved to General`);
     res.json({ ok: true });
   } catch (err) {
@@ -137,6 +143,7 @@ router.post("/", async (req, res) => {
       data.url = upload.url;
       data.thumb = upload.thumb;
       data.type = isVideo ? "video" : "image";
+      data.gallerySectionId = await findSectionId(data.category);
       await ensureMediaRecord({ file: req.file, upload, user: req.user, gallerySectionId: String(data.category || "").trim() });
     }
     const maxOrder = await GalleryItem.findOne().sort({ order: -1 });
@@ -161,11 +168,13 @@ router.post("/upload", async (req, res) => {
       gallerySectionId: String(req.body.category || "General").trim(),
     });
     const maxOrder = await GalleryItem.findOne().sort({ order: -1 });
+    const category = req.body.category || "General";
     const item = await GalleryItem.create({
       type: isVideo ? "video" : "image",
       url: upload.url,
       thumb: upload.thumb,
-      category: req.body.category || "General",
+      category,
+      gallerySectionId: await findSectionId(category),
       caption: req.body.caption || "",
       description: req.body.description || "",
       alt: req.body.alt || "",
@@ -183,7 +192,12 @@ router.put("/:id", async (req, res) => {
   try {
     const item = await GalleryItem.findById(req.params.id);
     if (!item) return res.status(404).json({ message: "Item not found" });
-    Object.assign(item, req.body);
+    if ("category" in req.body && String(req.body.category) !== item.category) {
+      item.category = String(req.body.category || "General");
+      item.gallerySectionId = await findSectionId(item.category);
+    }
+    const { category, ...rest } = req.body;
+    Object.assign(item, rest);
     await item.save();
     await log(req.user.name, "Gallery item updated", `Updated ${item.type}`);
     res.json(item);

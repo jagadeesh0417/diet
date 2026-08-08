@@ -47,6 +47,8 @@ app.use("/api/auth", adminAuthRoutes);
 
 const adminGuard = [requireAuth, requireAdmin];
 const fileUpload = upload.single("file");
+// Admin APIs are always live — never cache so uploads/deletes show immediately.
+app.use("/api/admin", (_req, res, next) => { res.set("Cache-Control", "no-store"); next(); });
 app.use("/api/admin/dashboard", ...adminGuard, adminDashboardRoutes);
 app.use("/api/admin/services", ...adminGuard, fileUpload, adminServiceRoutes);
 app.use("/api/admin/blogs", ...adminGuard, adminBlogRoutes);
