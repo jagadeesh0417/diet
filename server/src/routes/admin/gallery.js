@@ -2,9 +2,23 @@ import express from "express";
 import GalleryItem from "../../models/GalleryItem.js";
 import GallerySection from "../../models/GallerySection.js";
 import ActivityLog from "../../models/ActivityLog.js";
+import { del } from "@vercel/blob";
 import { processUpload } from "../../middleware/upload.js";
 
 const router = express.Router();
+
+const BLOB_URL_RE = /^https:\/\/[a-z0-9-]+\.public\.blob\.vercel-storage\.com\//i;
+const isStoredUrl = (url) => BLOB_URL_RE.test(String(url || ""));
+
+/** Best-effort removal of the underlying blob file; never fails the request. */
+async function removeStoredFile(url) {
+  if (!isStoredUrl(url)) return;
+  try {
+    await del(url);
+  } catch (err) {
+    console.error("[gallery] blob cleanup failed:", err.message);
+  }
+}
 
 function log(user, action, details) {
   return ActivityLog.create({ user, action, details });
@@ -188,6 +202,8 @@ router.delete("/:id", async (req, res) => {
   try {
     const item = await GalleryItem.findByIdAndDelete(req.params.id);
     if (!item) return res.status(404).json({ message: "Item not found" });
+    await removeStoredFile(item.url);
+    if (item.thumb && item.thumb !== item.url) await removeStoredFile(item.thumb);
     await log(req.user.name, "Gallery item deleted", `Deleted ${item.type}`);
     res.json({ ok: true });
   } catch (err) {
@@ -198,9 +214,14 @@ router.delete("/:id", async (req, res) => {
 router.post("/bulk-delete", async (req, res) => {
   try {
     const ids = req.body.ids || [];
+    const items = await GalleryItem.find({ _id: { $in: ids } });
     await GalleryItem.deleteMany({ _id: { $in: ids } });
-    await log(req.user.name, "Gallery bulk delete", `Deleted ${ids.length} items`);
-    res.json({ ok: true, deleted: ids.length });
+    for (const item of items) {
+      await removeStoredFile(item.url);
+      if (item.thumb && item.thumb !== item.url) await removeStoredFile(item.thumb);
+    }
+    await log(req.user.name, "Gallery bulk delete", `Deleted ${items.length} items`);
+    res.json({ ok: true, deleted: items.length });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

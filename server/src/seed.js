@@ -286,22 +286,6 @@ const BLOGS = [
   },
 ];
 
-const GALLERY = [
-  { type: "image", category: "Healthy Recipes", caption: "Rainbow Buddha Bowl — 540 calories", url: img("photo-1546069901-ba9599a7e63c"), alt: "Rainbow buddha bowl" },
-  { type: "image", category: "Healthy Recipes", caption: "Overnight oats with berries & chia", url: img("photo-1517673132405-a56a62b18caf"), alt: "Overnight oats" },
-  { type: "image", category: "Healthy Recipes", caption: "Grilled salmon with quinoa", url: img("photo-1467003909585-2f8a72700288"), alt: "Grilled salmon plate" },
-  { type: "image", category: "Client Transformations", caption: "Client — lost 14 kg in 6 months", url: img("photo-1571019613454-1cb2f99b2d8b"), alt: "Client transformation" },
-  { type: "image", category: "Client Transformations", caption: "Client — HbA1c from 9.2 to 6.1", url: img("photo-1517836357463-d25dfeac3438"), alt: "Client transformation fitness" },
-  { type: "image", category: "Client Transformations", caption: "Client — PCOS journey, 8 kg down", url: img("photo-1544367567-0f2fcb009e0b"), alt: "Client transformation" },
-  { type: "image", category: "Workshops", caption: "Corporate wellness workshop", url: img("photo-1522071820081-009f0129c71c"), alt: "Corporate nutrition workshop" },
-  { type: "image", category: "Workshops", caption: "Healthy cooking masterclass", url: img("photo-1556910103-1c02745aae4d"), alt: "Cooking masterclass" },
-  { type: "image", category: "Events", caption: "Nutrition Awareness Day", url: img("photo-1511578314322-379afb476865"), alt: "Nutrition awareness event" },
-  { type: "image", category: "Seminars", caption: "PCOS awareness seminar", url: img("photo-1475721027785-f74eccf877e2"), alt: "PCOS seminar" },
-  { type: "image", category: "Seminars", caption: "Diabetes reversal talk", url: img("photo-1540575467063-178a50c2df87"), alt: "Diabetes seminar audience" },
-  { type: "image", category: "Clinic Photos", caption: "Our consultation studio", url: img("photo-1519494026892-80bbd2d6fd0d"), alt: "Clinic consultation studio" },
-  { type: "video", category: "Workshops", caption: "Meal prep workshop — quick 5-minute clip", url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4", alt: "Meal prep workshop video" },
-];
-
 const TESTIMONIALS = [
   {
     name: "Chandrakala N",
@@ -538,10 +522,6 @@ export async function seedIfEmpty({ force = RESET } = {}) {
     });
   }
 
-  for (const [i, g] of GALLERY.entries()) {
-    await GalleryItem.create({ ...g, order: i + 1, featured: i < 4 });
-  }
-
   for (const [i, t] of TESTIMONIALS.entries()) {
     await Testimonial.create({ ...t, featured: true });
   }
@@ -563,7 +543,7 @@ export async function seedIfEmpty({ force = RESET } = {}) {
     }
   }
 
-  console.log("[seed] done. Admin login → admin@nutrix.com / Admin@123");
+  console.log("[seed] done. Admin login → nutrigolz@gmail.com / Admin1234");
   return true;
 }
 

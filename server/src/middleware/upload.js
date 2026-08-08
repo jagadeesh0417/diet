@@ -46,8 +46,12 @@ function blobName(folder, file) {
 }
 
 /**
- * Processes an uploaded file — pushes to Vercel Blob (permanent, serverless-safe),
- * falling back to Cloudinary, then local storage. Returns { url, thumb, storage }.
+ * Processes an uploaded file — pushes to Vercel Blob (permanent, serverless-safe).
+ * When blob storage is configured a failed push is a hard error: it is NEVER
+ * silently stashed into ephemeral local storage, where the file would vanish
+ * (broken images) while the API reports success.
+ * Local/Cloudinary storage is used only when blob is not configured (local dev).
+ * Returns { url, thumb, storage }.
  */
 export async function processUpload(file, folder = "golz") {
   const localPath = file.path;
@@ -63,7 +67,8 @@ export async function processUpload(file, folder = "golz") {
       fs.unlink(localPath, () => {});
       return { url: blob.url, thumb: isVideo ? "" : blob.url, storage: "blob", pathname: blob.pathname };
     } catch (err) {
-      console.error("[upload] Blob upload failed, falling back:", err.message);
+      fs.unlink(localPath, () => {});
+      throw new Error(`File upload failed: ${err.message}`);
     }
   }
 

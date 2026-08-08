@@ -27,12 +27,16 @@ export default function GalleryAdmin() {
   const [deletingSection, setDeletingSection] = useState(null);
   const fileRef = useRef(null);
 
-  const load = () => api.get("/admin/gallery").then(({ data }) => { setItems(data); setSelected([]); });
+  const load = () =>
+    api.get("/admin/gallery").then(({ data }) => { setItems(data); setSelected([]); }).catch(() => {
+      showToast("Failed to load gallery", "error");
+      setItems([]);
+    });
   const loadSections = () =>
     api.get("/admin/gallery/sections").then(({ data }) => {
       setSections(data);
       setUploadSection((cur) => (data.some((s) => s.name === cur) ? cur : (data[0]?.name ?? "General")));
-    });
+    }).catch(() => showToast("Failed to load gallery sections", "error"));
 
   useEffect(() => {
     load();
@@ -53,16 +57,25 @@ export default function GalleryAdmin() {
 
   const uploadFiles = async (files) => {
     setUploading(files.length);
+    const failed = [];
     for (const file of files) {
       const form = new FormData();
       form.append("file", file);
       form.append("category", uploadSection);
       try {
         await api.post("/admin/gallery/upload", form);
-      } catch { /* skip failed file */ }
+      } catch (err) {
+        failed.push({ name: file.name, message: err.response?.data?.message || "Upload failed" });
+      }
       setUploading((u) => u - 1);
     }
-    showToast("Upload complete");
+    if (failed.length === 0) {
+      showToast(`Uploaded ${files.length} file${files.length > 1 ? "s" : ""} to ${uploadSection}`);
+    } else if (failed.length === files.length) {
+      showToast(`Upload failed: ${failed[0].message}`, "error");
+    } else {
+      showToast(`${files.length - failed.length} uploaded, ${failed.length} failed (e.g. ${failed[0].name}: ${failed[0].message})`, "error");
+    }
     load();
     loadSections();
   };
@@ -317,10 +330,14 @@ export default function GalleryAdmin() {
         title="Delete this item?"
         text="It will be removed from the public gallery immediately."
         onConfirm={async () => {
-          await api.delete(`/admin/gallery/${deleting._id}`);
+          try {
+            await api.delete(`/admin/gallery/${deleting._id}`);
+            showToast("Item deleted");
+          } catch (err) {
+            showToast(err.response?.data?.message || "Delete failed", "error");
+          }
           setDeleting(null);
           load();
-          showToast("Item deleted");
         }}
       />
       <ConfirmDialog
@@ -329,10 +346,14 @@ export default function GalleryAdmin() {
         title={`Delete ${selected.length} items?`}
         text="All selected media will be removed permanently."
         onConfirm={async () => {
-          await api.post("/admin/gallery/bulk-delete", { ids: selected });
+          try {
+            await api.post("/admin/gallery/bulk-delete", { ids: selected });
+            showToast(`${selected.length} items deleted`);
+          } catch (err) {
+            showToast(err.response?.data?.message || "Delete failed", "error");
+          }
           setBulkDelete(false);
           load();
-          showToast(`${selected.length} items deleted`);
         }}
       />
       <ConfirmDialog
@@ -341,11 +362,15 @@ export default function GalleryAdmin() {
         title={`Delete section "${deletingSection?.name}"?`}
         text="Its media will be moved to the General section. Nothing is deleted."
         onConfirm={async () => {
-          await api.delete(`/admin/gallery/sections/${deletingSection._id}`);
+          try {
+            await api.delete(`/admin/gallery/sections/${deletingSection._id}`);
+            showToast("Section deleted");
+          } catch (err) {
+            showToast(err.response?.data?.message || "Delete failed", "error");
+          }
           setDeletingSection(null);
           loadSections();
           load();
-          showToast("Section deleted");
         }}
       />
       <Toast message={toast?.message} type={toast?.type} onClose={() => setToast(null)} />

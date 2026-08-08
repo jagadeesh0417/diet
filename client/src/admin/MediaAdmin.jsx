@@ -17,7 +17,11 @@ export default function MediaAdmin() {
   const [copied, setCopied] = useState(null);
   const fileRef = useRef(null);
 
-  const load = () => api.get("/admin/media").then(({ data }) => setFiles(data));
+  const load = () =>
+    api.get("/admin/media").then(({ data }) => setFiles(data)).catch(() => {
+      showToast("Failed to load media library", "error");
+      setFiles([]);
+    });
 
   useEffect(() => {
     load();
@@ -27,15 +31,24 @@ export default function MediaAdmin() {
 
   const uploadFiles = async (list) => {
     setUploading(list.length);
+    const failed = [];
     for (const file of list) {
       const form = new FormData();
       form.append("file", file);
       try {
         await api.post("/admin/media/upload", form);
-      } catch { /* skip failed file */ }
+      } catch (err) {
+        failed.push({ name: file.name, message: err.response?.data?.message || "Upload failed" });
+      }
       setUploading((u) => u - 1);
     }
-    showToast("Upload complete");
+    if (failed.length === 0) {
+      showToast(`Uploaded ${list.length} file${list.length > 1 ? "s" : ""}`);
+    } else if (failed.length === list.length) {
+      showToast(`Upload failed: ${failed[0].message}`, "error");
+    } else {
+      showToast(`${list.length - failed.length} uploaded, ${failed.length} failed (e.g. ${failed[0].name}: ${failed[0].message})`, "error");
+    }
     load();
   };
 
@@ -197,9 +210,13 @@ export default function MediaAdmin() {
         title="Delete this file?"
         text="The file will be removed from the library. Items referencing it on the site may break."
         onConfirm={async () => {
-          await api.delete("/admin/media", { data: { name: deleting.name, url: deleting.url } });
+          try {
+            await api.delete("/admin/media", { data: { name: deleting.name, url: deleting.url } });
+            showToast("File deleted");
+          } catch (err) {
+            showToast(err.response?.data?.message || "Delete failed", "error");
+          }
           setDeleting(null);
-          showToast("File deleted");
           load();
         }}
       />

@@ -1,7 +1,7 @@
 import express from "express";
 import fs from "fs";
 import path from "path";
-import { list, del, copy } from "@vercel/blob";
+import { list, del, copy, head, BlobNotFoundError } from "@vercel/blob";
 import { UPLOAD_DIR, processUpload, isBlobConfigured, BLOB_PREFIX } from "../../middleware/upload.js";
 import GalleryItem from "../../models/GalleryItem.js";
 import Blog from "../../models/Blog.js";
@@ -16,6 +16,20 @@ const fileNameOf = (url) => {
   const base = String(url || "").split("?")[0];
   return decodeURIComponent(base.split("/").pop() || "");
 };
+
+const BLOB_URL_RE = /^https:\/\/[a-z0-9-]+\.public\.blob\.vercel-storage\.com\//i;
+const isStoredUrl = (url) => BLOB_URL_RE.test(String(url || ""));
+
+/** True when the file exists in blob storage (false on 404, throws on real errors). */
+async function blobExists(url) {
+  try {
+    await head(url);
+    return true;
+  } catch (err) {
+    if (err instanceof BlobNotFoundError || err?.status === 404) return false;
+    throw err;
+  }
+}
 
 /** List every file in the media library (Blob storage on Vercel, local files otherwise). */
 router.get("/", async (_req, res) => {
@@ -32,7 +46,8 @@ router.get("/", async (_req, res) => {
       );
     }
   } catch (err) {
-    console.error("[media] Blob list failed, falling back:", err.message);
+    console.error("[media] Blob list failed:", err.message);
+    return res.status(502).json({ message: `Could not list media storage: ${err.message}` });
   }
   const files = fs.existsSync(UPLOAD_DIR)
     ? fs.readdirSync(UPLOAD_DIR).map((name) => {
@@ -72,6 +87,8 @@ router.put("/rename", async (req, res) => {
     if (isBlobConfigured()) {
       if (!url) return res.status(400).json({ message: "File URL is required" });
       fromUrl = String(url).split("?")[0];
+      if (!isStoredUrl(fromUrl)) return res.status(400).json({ message: "Only files in the media library can be renamed" });
+      if (!(await blobExists(fromUrl))) return res.status(404).json({ message: "File not found" });
       const { url: copied } = await copy(fromUrl, `${BLOB_PREFIX}/media/${newName}`, { access: "public" });
       toUrl = copied;
       await del(fromUrl);
@@ -107,10 +124,18 @@ router.delete("/", async (req, res) => {
     if (!name && !url) return res.status(400).json({ message: "File name required" });
     if (isBlobConfigured()) {
       if (!url) return res.status(400).json({ message: "File URL required" });
+      if (!isStoredUrl(url)) return res.status(400).json({ message: "Only files in the media library can be deleted" });
+      const exists = await blobExists(url);
+      if (!exists) {
+        return res.status(404).json({ message: "File not found — it may have already been removed" });
+      }
       await del(url);
     } else {
       const file = path.join(UPLOAD_DIR, path.basename(name));
-      if (fs.existsSync(file)) fs.unlinkSync(file);
+      if (!fs.existsSync(file)) {
+        return res.status(404).json({ message: "File not found" });
+      }
+      fs.unlinkSync(file);
     }
     await ActivityLog.create({ user: req.user.name, action: "Media deleted", details: `Deleted ${name || url}` });
     res.json({ ok: true });
