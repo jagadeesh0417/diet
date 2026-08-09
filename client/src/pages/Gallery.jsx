@@ -85,9 +85,10 @@ export default function Gallery() {
     try {
       const { data } = await api.get("/public/gallery", { params: { category: cat, limit: 1000 } });
       if (!data.items.length) return;
-      setLightbox({ items: data.items, index: Math.min(index, Math.max(data.items.length - 1, 0)) });
+      const section = secInfo(cat, data.items);
+      setLightbox({ items: data.items.map((it) => ({ ...it, section })), index: Math.min(index, Math.max(data.items.length - 1, 0)) });
     } catch { /* noop */ }
-  }, []);
+  }, [secInfo]);
   const navigate = useCallback((index) => setLightbox((lb) => (lb ? { ...lb, index } : lb)), []);
 
   const renderGrid = (list, onOpen) => (

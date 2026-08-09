@@ -1,4 +1,4 @@
-﻿import { useEffect, useRef, useState, useCallback, lazy, Suspense } from "react";
+﻿import { useEffect, useRef, useState, useCallback, useMemo, lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion";
 import {
@@ -6,6 +6,7 @@ import {
   Leaf, GraduationCap, Sparkles,
 } from "lucide-react";
 import { useSite } from "../context/SiteContext";
+import api from "../api/client";
 import SEO from "../components/SEO";
 import Reveal from "../components/Reveal";
 import SectionHeading from "../components/SectionHeading";
@@ -62,6 +63,14 @@ export default function Home() {
   );
   const [lightbox, setLightbox] = useState(null);
   const navigateLightbox = useCallback((index) => setLightbox((lb) => (lb ? { ...lb, index } : lb)), []);
+  const [gallerySections, setGallerySections] = useState([]);
+
+  useEffect(() => {
+    api.get("/public/gallery/sections").then(({ data }) => setGallerySections(Array.isArray(data) ? data : []));
+  }, []);
+
+  const sectionByName = useMemo(() => Object.fromEntries(gallerySections.map((s) => [s.name, s])), [gallerySections]);
+  const withSection = useCallback((g) => ({ ...g, section: sectionByName[g.category] || { name: g.category, title: g.category } }), [sectionByName]);
 
   return (
     <>
@@ -366,7 +375,7 @@ export default function Home() {
             {site.gallery.slice(0, 8).map((g, i) => (
               <Reveal key={g._id} delay={(i % 4) * 0.06} className="mb-3 break-inside-avoid sm:mb-4">
                 <button
-                  onClick={() => setLightbox({ items: site.gallery, index: i })}
+                  onClick={() => setLightbox({ items: site.gallery.map(withSection), index: i })}
                   className="group relative block w-full cursor-pointer overflow-hidden rounded-2xl text-left focus:outline-none focus-visible:ring-4 focus-visible:ring-primary/30"
                   aria-label={`Open ${g.caption || g.alt || "gallery item"}`}
                 >

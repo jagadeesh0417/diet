@@ -7,6 +7,7 @@ export default function Lightbox({ items, index, onClose, onNavigate }) {
   const [zoom, setZoom] = useState(1);
   const [broken, setBroken] = useState(false);
   const item = items?.[index];
+  const section = item?.section;
 
   const prev = useCallback(() => onNavigate((index - 1 + items.length) % items.length), [index, items, onNavigate]);
   const next = useCallback(() => onNavigate((index + 1) % items.length), [index, items, onNavigate]);
@@ -86,12 +87,16 @@ export default function Lightbox({ items, index, onClose, onNavigate }) {
                 {item.category && <span className="text-white/40">·</span>}
                 {item.category && <span>{item.category}</span>}
               </span>
-              {(item.caption || item.alt || item.description) && (
-                <div className="max-w-2xl rounded-2xl bg-ink/60 px-6 py-4 text-center backdrop-blur-md">
-                  {(item.caption || item.alt) && (
-                    <p className="font-heading text-lg font-semibold leading-snug text-white">{item.caption || item.alt}</p>
+              {((section?.title || section?.name || section?.description) || (item.caption || item.alt || item.description)) && (
+                <div className="max-h-[38vh] max-w-2xl overflow-y-auto rounded-2xl bg-ink/60 px-6 py-4 text-center backdrop-blur-md">
+                  {(section?.title || section?.name || item.caption || item.alt) && (
+                    <p className="break-words font-heading text-lg font-semibold leading-snug text-white">
+                      {section?.title || section?.name || item.caption || item.alt}
+                    </p>
                   )}
-                  {item.description && <p className="mt-1.5 text-sm leading-relaxed text-white/75">{item.description}</p>}
+                  {(section?.description || item.description) && (
+                    <p className="mt-1.5 break-words text-sm leading-relaxed text-white/75">{section?.description || item.description}</p>
+                  )}
                 </div>
               )}
             </div>
