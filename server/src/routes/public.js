@@ -36,7 +36,7 @@ router.get("/site", async (_req, res) => {
       getSetting("seo"),
       Service.find({ published: true }).sort({ order: 1, createdAt: 1 }).limit(12),
       Testimonial.find({ published: true }).sort({ featured: -1, createdAt: -1 }).limit(12),
-      GalleryItem.find({ published: true }).sort({ order: 1, featured: -1, createdAt: -1 }).limit(9),
+      GalleryItem.find({ published: true }).sort({ order: 1, featured: -1, createdAt: -1 }),
       Blog.find({ published: true }).sort({ publishedAt: -1 }).limit(3),
       GalleryItem.distinct("category", { published: true }),
     ]);

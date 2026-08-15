@@ -372,7 +372,7 @@ export default function Home() {
             subtitle="Recipes, workshops, events and real client transformations."
           />
           <div className="columns-2 gap-3 sm:columns-3 sm:gap-4 lg:columns-4">
-            {site.gallery.slice(0, 8).map((g, i) => (
+            {site.gallery.map((g, i) => (
               <Reveal key={g._id} delay={(i % 4) * 0.06} className="mb-3 break-inside-avoid sm:mb-4">
                 <button
                   onClick={() => setLightbox({ items: site.gallery.map(withSection), index: i })}
